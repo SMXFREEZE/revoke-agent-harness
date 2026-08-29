@@ -63,7 +63,12 @@
   }
 
   /* ---- Quality control ------------------------------------------------ */
-  function qc(reads) {
+  const ADAPTERS = [
+    'AGATCGGAAGAGC', // Illumina TruSeq universal adapter
+    'CTGTCTCTTATACACATCT', // Illumina/Nextera transposase adapter
+  ];
+
+  function summarizeReads(reads) {
     let totalBases = 0, gc = 0, qSum = 0, qCount = 0, q30 = 0, minLen = Infinity, maxLen = 0;
     // per-read mean-Q histogram over Q[16..40] in 12 bins (for a sparkline)
     const QLO = 16, QHI = 40, BINS = 12, qHist = new Array(BINS).fill(0);
@@ -97,6 +102,93 @@
       q30Pct: qCount ? (100 * q30) / qCount : 0,
       qHist, qLo: QLO, qHi: QHI,
     };
+  }
+
+  function meanPhred(qual) {
+    if (!qual.length) return 0;
+    let sum = 0;
+    for (let i = 0; i < qual.length; i++) sum += Math.max(0, qual.charCodeAt(i) - 33);
+    return sum / qual.length;
+  }
+
+  // Trim known adapters and low-quality ends, then reject reads that remain too
+  // short, too ambiguous, or too low-quality. The returned reads are the only
+  // reads allowed into k-mer classification and downstream calculations.
+  function filterReads(reads, options) {
+    options = options || {};
+    const minLength = options.minLength == null ? 30 : options.minLength;
+    const minBaseQ = options.minBaseQ == null ? 20 : options.minBaseQ;
+    const minMeanQ = options.minMeanQ == null ? 20 : options.minMeanQ;
+    const maxAmbiguousPct = options.maxAmbiguousPct == null ? 5 : options.maxAmbiguousPct;
+    const minReportReads = options.minReportReads == null ? 20 : options.minReportReads;
+    const minPassPct = options.minPassPct == null ? 70 : options.minPassPct;
+    const retained = [];
+    const rejectedReasons = { malformed: 0, tooShort: 0, lowMeanQ: 0, tooAmbiguous: 0 };
+    let adapterTrimmedReads = 0, qualityTrimmedReads = 0, trimmedBases = 0;
+
+    for (const original of reads) {
+      const rawSeq = String(original && original.seq || '').toUpperCase();
+      const rawQual = String(original && original.qual || '');
+      const pairedLength = Math.min(rawSeq.length, rawQual.length);
+      if (!pairedLength) { rejectedReasons.malformed++; continue; }
+
+      let seq = rawSeq.slice(0, pairedLength);
+      let qual = rawQual.slice(0, pairedLength);
+      let adapterAt = seq.length;
+      for (const adapter of ADAPTERS) {
+        const at = seq.indexOf(adapter);
+        if (at !== -1 && at < adapterAt) adapterAt = at;
+      }
+      if (adapterAt < seq.length) {
+        trimmedBases += seq.length - adapterAt;
+        seq = seq.slice(0, adapterAt);
+        qual = qual.slice(0, adapterAt);
+        adapterTrimmedReads++;
+      }
+
+      let start = 0, end = qual.length;
+      while (start < end && qual.charCodeAt(start) - 33 < minBaseQ) start++;
+      while (end > start && qual.charCodeAt(end - 1) - 33 < minBaseQ) end--;
+      if (start > 0 || end < qual.length) {
+        trimmedBases += start + (qual.length - end);
+        seq = seq.slice(start, end);
+        qual = qual.slice(start, end);
+        qualityTrimmedReads++;
+      }
+
+      if (seq.length < minLength) { rejectedReasons.tooShort++; continue; }
+      if (meanPhred(qual) < minMeanQ) { rejectedReasons.lowMeanQ++; continue; }
+      let ambiguous = 0;
+      for (let i = 0; i < seq.length; i++) if (seq[i] === 'N') ambiguous++;
+      if ((100 * ambiguous) / seq.length > maxAmbiguousPct) { rejectedReasons.tooAmbiguous++; continue; }
+      retained.push({ seq, qual });
+    }
+
+    const summary = summarizeReads(retained);
+    const rawReads = reads.length;
+    const passPct = rawReads ? (100 * retained.length) / rawReads : 0;
+    const qualityGatePassed = retained.length >= minReportReads
+      && passPct >= minPassPct
+      && summary.meanQ >= minMeanQ;
+    return {
+      reads: retained,
+      quality: {
+        ...summary,
+        rawReads,
+        filteredReads: rawReads - retained.length,
+        passPct,
+        adapterTrimmedReads,
+        qualityTrimmedReads,
+        trimmedBases,
+        rejectedReasons,
+        thresholds: { minLength, minBaseQ, minMeanQ, maxAmbiguousPct, minReportReads, minPassPct },
+        qualityGatePassed,
+      },
+    };
+  }
+
+  function qc(reads, options) {
+    return filterReads(reads, options).quality;
   }
 
   // ---- composite clinical indices (0–100, plain-language scores) -------
@@ -241,7 +333,7 @@
     if (status('ecoli') === 'high' || status('klebs') === 'high' || (phylum.Proteobacteria || 0) > 4)
       recs.push({ ...STRAIN_KB.boulardii, why: `Proteobacteria are elevated (${(phylum.Proteobacteria||0).toFixed(1)}%) — E. coli & Klebsiella above range.` });
     if (status('lacto') === 'low')
-      recs.push({ ...STRAIN_KB.lacto, why: `Lactobacillus is low, and you noted two recent antibiotic courses.` });
+      recs.push({ ...STRAIN_KB.lacto, why: `Lactobacillus is low (${(byId.lacto || 0).toFixed(2)}%, below ${taxaById.lacto.healthyLo}%).` });
     if (div.shannon < 3.0)
       recs.push({ ...STRAIN_KB.diversity, why: `Your diversity (Shannon ${div.shannon.toFixed(2)}) is on the lower side of the healthy band.` });
     return recs;
@@ -257,11 +349,13 @@
 
     onStage('parse', 'Reading FASTQ records');
     await sleep(180);
-    const reads = parseFastq(fastqText);
+    const parsedReads = parseFastq(fastqText);
 
     onStage('qc', 'Quality control');
     await sleep(180);
-    const quality = qc(reads);
+    const filtered = filterReads(parsedReads, { minLength: Math.max(30, reference.k || 21) });
+    const reads = filtered.reads;
+    const quality = filtered.quality;
 
     onStage('index', 'Building reference k-mer index');
     await sleep(160);
@@ -318,13 +412,14 @@
       phylum[t.phylum] = (phylum[t.phylum] || 0) + (classified ? (100 * byId[t.id]) / classified : 0);
     }
 
-    // F/B ratio + enterotype
+    // F/B ratio + enterotype. Enterotype evidence is aggregated by genus across
+    // every reference taxon and left unclassified when support is absent, sparse,
+    // or balanced; a zero-evidence tie must never default to Bacteroides.
     const F = phylum.Firmicutes || 0;
     const B = phylum.Bacteroidetes || 0;
     const fbRatio = B > 0 ? F / B : 0;
-    const bact = (byId.bunif || 0) + (byId.bvulg || 0);
-    const prev = byId.pcopr || 0;
-    const enterotype = bact >= prev ? 'Bacteroides-type (Type 1)' : 'Prevotella-type (Type 2)';
+    const enterotypeEvidence = inferEnterotype(byId, reference.taxa, classified);
+    const enterotype = enterotypeEvidence.label;
 
     // diversity over ALL species (named + filler) by read counts
     const div = diversity(byId);
@@ -333,17 +428,46 @@
     await sleep(220);
     const byIdPct = {};
     for (const a of abundance) byIdPct[a.id] = a.pct;
-    const recs = recommend(byIdPct, taxaById, div, phylum);
+    const recs = quality.qualityGatePassed ? recommend(byIdPct, taxaById, div, phylum) : [];
     const idx = scores(byIdPct, phylum, div, taxaById);
 
     onStage('done', 'Report ready');
     return {
-      quality, index: { distinctKmers: index.distinctKmers, k: index.k, minHits },
+      quality, reportEligible: quality.qualityGatePassed,
+      index: { distinctKmers: index.distinctKmers, k: index.k, minHits },
       classified, unclassifiedPct: total ? (100 * (total - classified)) / total : 0,
-      abundance, otherPct, phylum, fbRatio, enterotype, diversity: div,
+      abundance, otherPct, phylum, fbRatio, enterotype, enterotypeEvidence, diversity: div,
       scores: idx, recommendations: recs,
     };
   }
 
-  global.MetaScope = { run, parseFastq, qc, buildIndex, classifyRead, diversity, STRAIN_KB };
+  function inferEnterotype(countsById, taxa, classified) {
+    let bacteroides = 0, prevotella = 0;
+    for (const taxon of taxa || []) {
+      const genus = String(taxon.genus || String(taxon.species || '').split(/\s+/)[0])
+        .replace(/[^A-Za-z]/g, '').toLowerCase();
+      if (genus === 'bacteroides') bacteroides += countsById[taxon.id] || 0;
+      if (genus === 'prevotella') prevotella += countsById[taxon.id] || 0;
+    }
+    const supportReads = bacteroides + prevotella;
+    const minimumSupportReads = Math.max(10, Math.ceil((classified || 0) * 0.02));
+    const dominantShare = supportReads ? Math.max(bacteroides, prevotella) / supportReads : 0;
+    const evidence = { bacteroides, prevotella, supportReads, minimumSupportReads, dominantShare };
+    if (supportReads < minimumSupportReads) {
+      return { label: 'Unclassified', reason: 'insufficient genus-level evidence', ...evidence };
+    }
+    if (dominantShare < 0.65) {
+      return { label: 'Unclassified', reason: 'Bacteroides and Prevotella evidence is too balanced', ...evidence };
+    }
+    return {
+      label: bacteroides > prevotella ? 'Bacteroides-type (Type 1)' : 'Prevotella-type (Type 2)',
+      reason: 'supported by genus-level read evidence',
+      ...evidence,
+    };
+  }
+
+  global.MetaScope = {
+    run, parseFastq, qc, filterReads, buildIndex, classifyRead, diversity,
+    recommend, inferEnterotype, STRAIN_KB,
+  };
 })(window);
