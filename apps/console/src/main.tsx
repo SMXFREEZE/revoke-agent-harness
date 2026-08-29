@@ -180,7 +180,7 @@ function App() {
           <strong>OPENAI</strong><i />
           <strong>BRIGHT DATA</strong><i />
           <strong>DAYTONA</strong><i />
-          <strong>QODO <small>release gate pending</small></strong>
+          <strong>QODO <small>PR #1 review active</small></strong>
         </section>
 
         <section className="command-section">

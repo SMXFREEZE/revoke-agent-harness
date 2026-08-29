@@ -1,5 +1,8 @@
 # REVOKE
 
+**Live command center:** https://smxfreeze.github.io/revoke-agent-harness/  
+**Public implementation PR:** https://github.com/SMXFREEZE/revoke-agent-harness/pull/1
+
 REVOKE is a human-approved stop-sale command center. When a consumer-safety
 recall expands, it verifies current evidence, matches newly affected products
 to a simulated merchant catalog and orders, executes exposure calculations in
