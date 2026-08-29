@@ -9,7 +9,7 @@
  *
  * Tools:
  *   analyze_gut_sample   run the engine on a FASTQ (or the built-in demo sample)
- *   get_report           the latest report as structured JSON
+ *   get_report           one analysis report as structured JSON
  *   explain_microbe      one microbe: abundance + role + medical context
  *   get_plan             the personalised probiotic recommendations
  *
@@ -22,6 +22,7 @@ import path from "path";
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { ListToolsRequestSchema, CallToolRequestSchema } from "@modelcontextprotocol/sdk/types.js";
+import { createAnalysisStore } from "./analysis-store.mjs";
 
 const require = createRequire(import.meta.url);
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -54,10 +55,8 @@ const KB = {
 };
 const kbFor = (name) => KB[(name || "").toLowerCase().split(" ")[0]] || null;
 
-let report = null;
 async function runEngine(text) {
-  report = await W.MetaScope.run(text, { reference: W.GGG_REFERENCE, onStage: () => {}, onProgress: () => {} });
-  return report;
+  return W.MetaScope.run(text, { reference: W.GGG_REFERENCE, onStage: () => {}, onProgress: () => {} });
 }
 function summarise(p) {
   const sc = p.scores || {}, div = p.diversity || {};
@@ -75,6 +74,14 @@ function summarise(p) {
   };
 }
 const ok = (obj) => ({ content: [{ type: "text", text: typeof obj === "string" ? obj : JSON.stringify(obj, null, 2) }] });
+const analyses = createAnalysisStore();
+const analysisIdProperty = {
+  type: "string",
+  minLength: 1,
+  maxLength: 128,
+  description: "The analysisId returned by analyze_gut_sample.",
+};
+const reportFor = (analysisId) => analyses.get(analysisId);
 
 // ---- live external medical platforms (no key needed) ----
 async function pubmed(query, n = 5) {
@@ -97,10 +104,12 @@ async function trials(query, n = 5) {
 const TOOLS = [
   { name: "analyze_gut_sample", description: "Run the MetaScope shotgun-metagenomics engine on a FASTQ. Omit `fastq` to use the built-in demo sample (patient Jordan Vale). Returns a structured gut report: score, diversity, F/B ratio, enterotype, every taxon, flags, and the personalised plan.",
     inputSchema: { type: "object", properties: { fastq: { type: "string", description: "Raw FASTQ text. Optional; defaults to the demo sample." } } } },
-  { name: "get_report", description: "Return the most recent gut report as structured JSON. Run analyze_gut_sample first.", inputSchema: { type: "object", properties: {} } },
-  { name: "explain_microbe", description: "Explain one microbe from the latest report: its abundance and status plus clinical context (role, associated conditions, dietary levers, evidence).",
-    inputSchema: { type: "object", properties: { name: { type: "string", description: "Microbe name or genus, e.g. 'Akkermansia' or 'E. coli'." } }, required: ["name"] } },
-  { name: "get_plan", description: "Return the personalised probiotic recommendations from the latest report.", inputSchema: { type: "object", properties: {} } },
+  { name: "get_report", description: "Return one gut report by analysis ID. Analyses expire after 30 idle minutes and the server retains at most 32.",
+    inputSchema: { type: "object", properties: { analysisId: analysisIdProperty }, required: ["analysisId"] } },
+  { name: "explain_microbe", description: "Explain one microbe from a named analysis: its abundance and status plus clinical context (role, associated conditions, dietary levers, evidence).",
+    inputSchema: { type: "object", properties: { analysisId: analysisIdProperty, name: { type: "string", description: "Microbe name or genus, e.g. 'Akkermansia' or 'E. coli'." } }, required: ["analysisId", "name"] } },
+  { name: "get_plan", description: "Return the personalised probiotic recommendations for one analysis ID.",
+    inputSchema: { type: "object", properties: { analysisId: analysisIdProperty }, required: ["analysisId"] } },
   { name: "search_medical_evidence", description: "Search live PubMed (NCBI) for peer-reviewed research on a microbe, condition or topic. Returns real papers (title, year, journal, PMID, link). Use it to back a finding with literature.",
     inputSchema: { type: "object", properties: { query: { type: "string", description: "e.g. 'Akkermansia muciniphila obesity' or 'Faecalibacterium prausnitzii IBD'." } }, required: ["query"] } },
   { name: "find_clinical_trials", description: "Search live ClinicalTrials.gov for trials related to a microbe, probiotic or condition. Returns real studies (NCT id, title, status, link).",
@@ -116,16 +125,25 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
       const text = args.fastq && args.fastq.trim() ? args.fastq : W.GGG_SAMPLE_FASTQ;
       const p = await runEngine(text);
       if (!p || !p.classified) return ok("No reads recognised. Provide a plain-text FASTQ.");
-      return ok(summarise(p));
+      const analysisId = analyses.create(p);
+      return ok({ analysisId, ...summarise(p) });
     }
-    if (name === "get_report") return report ? ok(summarise(report)) : ok("No report yet. Call analyze_gut_sample first.");
-    if (name === "get_plan") return report ? ok({ plan: summarise(report).plan }) : ok("No report yet. Call analyze_gut_sample first.");
+    if (name === "get_report") {
+      const report = reportFor(args.analysisId);
+      return report ? ok({ analysisId: args.analysisId, ...summarise(report) }) : ok("Unknown or expired analysisId. Call analyze_gut_sample first.");
+    }
+    if (name === "get_plan") {
+      const report = reportFor(args.analysisId);
+      return report ? ok({ analysisId: args.analysisId, plan: summarise(report).plan }) : ok("Unknown or expired analysisId. Call analyze_gut_sample first.");
+    }
     if (name === "explain_microbe") {
-      if (!report) return ok("No report yet. Call analyze_gut_sample first.");
+      const report = reportFor(args.analysisId);
+      if (!report) return ok("Unknown or expired analysisId. Call analyze_gut_sample first.");
       const q = (args.name || "").toLowerCase();
       const hit = (report.abundance || []).find((a) => a.species.toLowerCase().includes(q) || a.species.toLowerCase().split(" ").some((w) => w.length > 3 && q.includes(w)) || q.includes(a.species.toLowerCase().split(" ")[0]));
       const kb = kbFor(hit ? hit.species : args.name);
       return ok({
+        analysisId: args.analysisId,
         microbe: hit ? hit.species : args.name,
         found: !!hit,
         abundance: hit ? { percent: Number(hit.pct?.toFixed?.(2)), status: hit.status, phylum: hit.phylum, healthyRange: `${hit.healthyLo}-${hit.healthyHi}%` } : null,

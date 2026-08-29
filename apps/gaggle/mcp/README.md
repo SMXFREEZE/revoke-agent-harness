@@ -10,12 +10,12 @@ flagged microbe, then reason about it in conversation.
 
 | Tool | What it does |
 | --- | --- |
-| `analyze_gut_sample` | Runs the MetaScope engine on a FASTQ (or the built-in demo sample). Returns gut-health score, diversity, F/B ratio, enterotype, every taxon, flags, and the personalised plan. |
-| `get_report` | The latest report as structured JSON. |
-| `explain_microbe` | One microbe: its abundance and status plus clinical context (role, associated conditions, dietary levers, evidence). |
+| `analyze_gut_sample` | Runs the MetaScope engine on a FASTQ (or the built-in demo sample). Returns a unique `analysisId` plus gut-health score, diversity, F/B ratio, enterotype, every taxon, flags, and the personalised plan. |
+| `get_report` | One report by required `analysisId`. |
+| `explain_microbe` | One microbe from a required `analysisId`: its abundance and status plus clinical context (role, associated conditions, dietary levers, evidence). |
 | `search_medical_evidence` | Live **PubMed** (NCBI) search for a microbe/condition. Returns real papers (title, year, journal, PMID, link). |
 | `find_clinical_trials` | Live **ClinicalTrials.gov** search. Returns real studies (NCT id, title, status, link). |
-| `get_plan` | The personalised probiotic recommendations. |
+| `get_plan` | The personalised probiotic recommendations for a required `analysisId`. |
 
 The last two reach live external medical platforms (no key needed), so an agent can
 analyse a sample, flag a microbe, then back it with real published research and active
@@ -53,7 +53,12 @@ Then ask Claude things like:
 - "Explain Akkermansia, then look up trials testing it as a probiotic."
 - "What is in their personalised plan?"
 
-The agent calls `analyze_gut_sample`, then `explain_microbe` / `get_plan`, and
-grounds its answers in the real engine output plus the curated medical context.
+The agent calls `analyze_gut_sample`, preserves its `analysisId`, then passes that
+ID to `explain_microbe` / `get_plan`, and grounds its answers in the real engine
+output plus the curated medical context.
+
+Analyses are isolated by ID, expire after 30 idle minutes, and are bounded to the
+32 most recently accessed reports. This prevents parallel clients from reading
+or overwriting one another's report state.
 
 > Synthetic demo data. Not medical advice.
