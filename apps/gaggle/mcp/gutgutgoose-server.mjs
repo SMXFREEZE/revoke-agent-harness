@@ -23,6 +23,7 @@ import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { ListToolsRequestSchema, CallToolRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { createAnalysisStore } from "./analysis-store.mjs";
+import { guardReport, insufficientEvidenceResponse, summarisePlan, summariseReport } from "./report-summary.mjs";
 import { MAX_MICROBE_NAME_LENGTH, parseMicrobeName } from "./tool-input.mjs";
 
 const require = createRequire(import.meta.url);
@@ -59,21 +60,6 @@ const kbFor = (name) => KB[(name || "").toLowerCase().split(" ")[0]] || null;
 async function runEngine(text) {
   return W.MetaScope.run(text, { reference: W.GGG_REFERENCE, onStage: () => {}, onProgress: () => {} });
 }
-function summarise(p) {
-  const sc = p.scores || {}, div = p.diversity || {};
-  const score = Math.round((sc.scfa + sc.resilience + (100 - sc.dysbiosis)) / 3);
-  const flags = (p.abundance || []).filter((a) => a.status !== "ok");
-  return {
-    gutHealthScore: score,
-    reads: p.classified,
-    diversity: { shannon: Number(div.shannon?.toFixed?.(2)), richness: div.richness },
-    firmicutesToBacteroidetes: Number(p.fbRatio?.toFixed?.(2)),
-    enterotype: p.enterotype,
-    taxa: (p.abundance || []).map((a) => ({ species: a.species, phylum: a.phylum, percent: Number(a.pct?.toFixed?.(2)), status: a.status })),
-    flagged: flags.map((a) => ({ species: a.species, status: a.status, percent: Number(a.pct?.toFixed?.(2)) })),
-    plan: (p.recommendations || []).slice(0, 5).map((r) => ({ strain: r.strain, tag: r.tag, why: (r.why || "").replace(/\s*[—–]\s*/g, ", ") })),
-  };
-}
 const ok = (obj) => ({ content: [{ type: "text", text: typeof obj === "string" ? obj : JSON.stringify(obj, null, 2) }] });
 const analyses = createAnalysisStore();
 const analysisIdProperty = {
@@ -103,7 +89,7 @@ async function trials(query, n = 5) {
 }
 
 const TOOLS = [
-  { name: "analyze_gut_sample", description: "Run the MetaScope shotgun-metagenomics engine on a FASTQ. Omit `fastq` to use the built-in demo sample (patient Jordan Vale). Returns a structured gut report: score, diversity, F/B ratio, enterotype, every taxon, flags, and the personalised plan.",
+  { name: "analyze_gut_sample", description: "Run the MetaScope shotgun-metagenomics engine on a FASTQ. Omit `fastq` to use the built-in demo sample (patient Jordan Vale). Returns a gut report only when QC and classified-evidence thresholds pass; otherwise returns a typed insufficient-evidence result.",
     inputSchema: { type: "object", properties: { fastq: { type: "string", description: "Raw FASTQ text. Optional; defaults to the demo sample." } } } },
   { name: "get_report", description: "Return one gut report by analysis ID. Analyses expire after 30 idle minutes and the server retains at most 32.",
     inputSchema: { type: "object", properties: { analysisId: analysisIdProperty }, required: ["analysisId"] } },
@@ -125,28 +111,32 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
     if (name === "analyze_gut_sample") {
       const text = args.fastq && args.fastq.trim() ? args.fastq : W.GGG_SAMPLE_FASTQ;
       const p = await runEngine(text);
-      if (!p || !p.classified) return ok("No reads recognised. Provide a plain-text FASTQ.");
+      if (!p) return ok(insufficientEvidenceResponse(null, { operation: name }));
       const analysisId = analyses.create(p);
-      return ok({ analysisId, ...summarise(p) });
+      return ok(summariseReport(p, { analysisId, operation: name }));
     }
     if (name === "get_report") {
       const report = reportFor(args.analysisId);
-      return report ? ok({ analysisId: args.analysisId, ...summarise(report) }) : ok("Unknown or expired analysisId. Call analyze_gut_sample first.");
+      return report ? ok(summariseReport(report, { analysisId: args.analysisId, operation: name })) : ok("Unknown or expired analysisId. Call analyze_gut_sample first.");
     }
     if (name === "get_plan") {
       const report = reportFor(args.analysisId);
-      return report ? ok({ analysisId: args.analysisId, plan: summarise(report).plan }) : ok("Unknown or expired analysisId. Call analyze_gut_sample first.");
+      return report ? ok(summarisePlan(report, { analysisId: args.analysisId, operation: name })) : ok("Unknown or expired analysisId. Call analyze_gut_sample first.");
     }
     if (name === "explain_microbe") {
       const microbeName = parseMicrobeName(args.name);
       if (!microbeName) return ok(`Invalid microbe name. Provide 1-${MAX_MICROBE_NAME_LENGTH} non-whitespace characters.`);
       const report = reportFor(args.analysisId);
       if (!report) return ok("Unknown or expired analysisId. Call analyze_gut_sample first.");
+      const blocked = guardReport(report, { analysisId: args.analysisId, operation: name });
+      if (blocked) return ok(blocked);
       const q = microbeName.toLowerCase();
       const hit = (report.abundance || []).find((a) => a.species.toLowerCase().includes(q) || a.species.toLowerCase().split(" ").some((w) => w.length > 3 && q.includes(w)) || q.includes(a.species.toLowerCase().split(" ")[0]));
       const kb = kbFor(hit ? hit.species : microbeName);
       return ok({
         analysisId: args.analysisId,
+        status: "report_ready",
+        reportEligible: true,
         microbe: hit ? hit.species : microbeName,
         found: !!hit,
         abundance: hit ? { percent: Number(hit.pct?.toFixed?.(2)), status: hit.status, phylum: hit.phylum, healthyRange: `${hit.healthyLo}-${hit.healthyHi}%` } : null,
