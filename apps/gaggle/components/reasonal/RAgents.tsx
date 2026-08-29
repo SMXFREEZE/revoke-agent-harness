@@ -43,7 +43,7 @@ export function RAgents() {
           <div className="gaggle-runtime rz-agents__beamcard">
             <div className="gaggle-runtime__head">
               <span><i aria-hidden /> Verified golden run</span>
-              <code>CASE GGG-0042</code>
+              <code>CASE GGL-0042</code>
             </div>
 
             <div className="gaggle-runtime__revision" aria-label="Belief revision">
