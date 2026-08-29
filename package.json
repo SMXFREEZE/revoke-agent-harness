@@ -1,0 +1,27 @@
+{
+  "name": "revoke",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Human-approved product recall containment powered by TrueForge, OpenAI, Bright Data, and Qodo.",
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "services/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "dev": "npm run dev --workspace @revoke/console",
+    "dev:commerce": "npm run dev --workspace @revoke/commerce-mcp",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "test:coverage": "npm run test:coverage --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "check": "npm run lint && npm run typecheck && npm run test && npm run build"
+  },
+  "engines": {
+    "node": ">=22.14"
+  },
+  "license": "MIT"
+}
+
