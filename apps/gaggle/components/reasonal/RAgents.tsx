@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { withBasePath } from "@/lib/utils/base-path";
+import { verifyTraceIntegrity } from "@/lib/utils/trace-integrity";
 import { RWordReveal } from "./reveal";
 
 type TraceAgent = {
@@ -226,6 +227,9 @@ export function RAgents() {
         const payload: unknown = await response.json();
         if (!isTracePayload(payload) || payload.timeline.length === 0) {
           throw new Error("The exported trace is empty or does not match the verified replay schema.");
+        }
+        if (!(await verifyTraceIntegrity(payload))) {
+          throw new Error("The exported trace failed SHA-256 integrity verification.");
         }
 
         setTrace(payload);

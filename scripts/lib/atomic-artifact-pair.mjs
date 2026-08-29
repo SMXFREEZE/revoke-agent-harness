@@ -1,7 +1,11 @@
-import { access, mkdir, mkdtemp, open, rename, rm } from "node:fs/promises";
+import { access, mkdir, mkdtemp, open, readFile, rename, rm } from "node:fs/promises";
+import { randomUUID } from "node:crypto";
+import { hostname } from "node:os";
 import { basename, dirname, resolve } from "node:path";
 
 const ARTIFACT_NAMES = ["trace.json", "case-crate.json"];
+const LOCK_LEASE_MS = 30_000;
+const LOCK_OWNER_FILE = "owner.json";
 
 async function exists(path) {
   try {
@@ -37,7 +41,98 @@ async function syncDirectory(path) {
   }
 }
 
-export async function publishArtifactPair({ outputDirectory, artifacts, beforePublishArtifact }) {
+function processIsAlive(pid) {
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch (error) {
+    return error?.code !== "ESRCH";
+  }
+}
+
+async function readLockOwner(lockDirectory) {
+  try {
+    return JSON.parse(await readFile(resolve(lockDirectory, LOCK_OWNER_FILE), "utf8"));
+  } catch (error) {
+    if (error?.code === "ENOENT" || error instanceof SyntaxError) return null;
+    throw error;
+  }
+}
+
+function validLockOwner(owner) {
+  return (
+    owner?.schemaVersion === 1 &&
+    typeof owner.ownerId === "string" &&
+    Number.isInteger(owner.pid) &&
+    typeof owner.hostname === "string" &&
+    Number.isFinite(Date.parse(owner.leaseExpiresAt))
+  );
+}
+
+async function acquireLock(lockDirectory, lockOptions = {}) {
+  const now = lockOptions.now ?? Date.now;
+  const currentHostname = lockOptions.hostname ?? hostname();
+  const isProcessAlive = lockOptions.isProcessAlive ?? processIsAlive;
+  const leaseDurationMs = lockOptions.leaseDurationMs ?? LOCK_LEASE_MS;
+  const owner = {
+    schemaVersion: 1,
+    ownerId: randomUUID(),
+    pid: lockOptions.pid ?? process.pid,
+    hostname: currentHostname,
+    acquiredAt: new Date(now()).toISOString(),
+    leaseExpiresAt: new Date(now() + leaseDurationMs).toISOString(),
+  };
+
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const candidateDirectory = await mkdtemp(`${lockDirectory}.candidate-`);
+    try {
+      await writeSynced(resolve(candidateDirectory, LOCK_OWNER_FILE), `${JSON.stringify(owner)}\n`);
+      await syncDirectory(candidateDirectory);
+      try {
+        await rename(candidateDirectory, lockDirectory);
+        return owner;
+      } catch (error) {
+        if (!(await exists(lockDirectory))) throw error;
+      }
+    } finally {
+      await rm(candidateDirectory, { recursive: true, force: true });
+    }
+
+    const existingOwner = await readLockOwner(lockDirectory);
+    const demonstrablyStale =
+      validLockOwner(existingOwner) &&
+      existingOwner.hostname === currentHostname &&
+      Date.parse(existingOwner.leaseExpiresAt) <= now() &&
+      !isProcessAlive(existingOwner.pid);
+    if (!demonstrablyStale) {
+      throw new Error("A Gaggle artifact export is already in progress.");
+    }
+
+    const staleDirectory = `${lockDirectory}.stale-${existingOwner.ownerId}-${randomUUID()}`;
+    try {
+      await rename(lockDirectory, staleDirectory);
+      await rm(staleDirectory, { recursive: true, force: true });
+    } catch (error) {
+      if (error?.code !== "ENOENT") throw error;
+    }
+  }
+  throw new Error("Could not acquire the Gaggle artifact export lock.");
+}
+
+async function releaseLock(lockDirectory, ownerId) {
+  const owner = await readLockOwner(lockDirectory);
+  if (owner?.ownerId === ownerId) {
+    await rm(lockDirectory, { recursive: true, force: true });
+  }
+}
+
+export async function publishArtifactPair({
+  outputDirectory,
+  artifacts,
+  beforePublishArtifact,
+  beforeRestoreArtifact,
+  lockOptions,
+}) {
   if (!outputDirectory || typeof outputDirectory !== "string") {
     throw new Error("An output directory is required.");
   }
@@ -48,16 +143,10 @@ export async function publishArtifactPair({ outputDirectory, artifacts, beforePu
   const parentDirectory = dirname(outputDirectory);
   const lockDirectory = resolve(parentDirectory, `.${basename(outputDirectory)}.export.lock`);
   await mkdir(parentDirectory, { recursive: true });
-  try {
-    await mkdir(lockDirectory);
-  } catch (error) {
-    if (error?.code === "EEXIST") {
-      throw new Error("A Gaggle artifact export is already in progress.", { cause: error });
-    }
-    throw error;
-  }
+  const lockOwner = await acquireLock(lockDirectory, lockOptions);
 
   let transactionDirectory;
+  let preserveTransactionDirectory = false;
   try {
     await mkdir(outputDirectory, { recursive: true });
     transactionDirectory = await mkdtemp(resolve(parentDirectory, ".gaggle-export-"));
@@ -72,7 +161,7 @@ export async function publishArtifactPair({ outputDirectory, artifacts, beforePu
         if (await exists(target)) {
           const backup = resolve(transactionDirectory, `previous-${name}`);
           await rename(target, backup);
-          backups.push({ target, backup });
+          backups.push({ name, target, backup });
         }
       }
       for (const [index, name] of ARTIFACT_NAMES.entries()) {
@@ -91,27 +180,38 @@ export async function publishArtifactPair({ outputDirectory, artifacts, beforePu
           rollbackErrors.push(rollbackError);
         }
       }
-      for (const { target, backup } of backups.reverse()) {
+      const restoreErrors = [];
+      for (const [index, { name, target, backup }] of backups.reverse().entries()) {
         try {
+          await beforeRestoreArtifact?.({ name, target, backup, index });
           await rename(backup, target);
         } catch (rollbackError) {
           rollbackErrors.push(rollbackError);
+          restoreErrors.push(rollbackError);
         }
       }
       if (rollbackErrors.length > 0) {
-        throw new AggregateError(
+        preserveTransactionDirectory = restoreErrors.length > 0;
+        const recoveryMessage = preserveTransactionDirectory
+          ? ` Recovery files were preserved at ${transactionDirectory}.`
+          : "";
+        const aggregateError = new AggregateError(
           [error, ...rollbackErrors],
-          "Artifact pair publication and rollback failed.",
+          `Artifact pair publication and rollback failed.${recoveryMessage}`,
           { cause: error },
         );
+        if (preserveTransactionDirectory) aggregateError.recoveryDirectory = transactionDirectory;
+        throw aggregateError;
       }
       throw error;
     }
   } finally {
     try {
-      if (transactionDirectory) await rm(transactionDirectory, { recursive: true, force: true });
+      if (transactionDirectory && !preserveTransactionDirectory) {
+        await rm(transactionDirectory, { recursive: true, force: true });
+      }
     } finally {
-      await rm(lockDirectory, { recursive: true, force: true });
+      await releaseLock(lockDirectory, lockOwner.ownerId);
     }
   }
 }
