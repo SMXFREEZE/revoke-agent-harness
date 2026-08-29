@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "name": "Scientific Evidence Case Crate",
+  "crateType": "scientific-evidence-case-crate",
+  "roCrateConformanceClaimed": false,
+  "generatedAt": "2026-08-29T23:33:25.171Z",
+  "safety": {
+    "environment": "synthetic-rd-prototype",
+    "clinicalValidation": false,
+    "statement": "This crate records a synthetic experimental R&D workflow. It is not a diagnosis, treatment recommendation, or clinical validation."
+  },
+  "run": {
+    "id": "gaggle-0042",
+    "sessionId": "01m17kj6cy2prqvxret528beb4",
+    "orchestrator": "TrueForge",
+    "status": "awaiting_approval",
+    "sanitizedTracePath": "trace.json",
+    "sanitizedTraceIntegrity": {
+      "algorithm": "sha256",
+      "canonicalization": "sorted-json-v1",
+      "scope": "entire-trace-with-run.integrity.value-omitted",
+      "value": "sha256:ef17e1c5932a1d34b0c9301704ebdae3755b1211971cd03d91c8078b4eca0571"
+    }
+  },
+  "case": {
+    "caseId": "GGG-0042",
+    "fixtureUrl": "https://raw.githubusercontent.com/SMXFREEZE/revoke-agent-harness/main/fixtures/gaggle/case-0042.json",
+    "fixtureHash": "sha256:3809143e368da5c8f4ce9086a91e303351609a3d0b05258f9cb0be24472ae3e4"
+  },
+  "proposal": {
+    "proposalId": "gaggle-proposal-0042",
+    "proposalHash": "sha256:fa33575d844316a3df6ab77ad8814ae1fdd11eab99291db1a1799ae70d525a8b",
+    "status": "scientist_approval_required"
+  },
+  "experiment": {
+    "id": "EXP-004",
+    "model": "experimental-rd-compatibility-v1",
+    "executor": "Daytona",
+    "inputHash": "sha256:06de0327ef7ef7e90655ee94f0cd0ea95808217f04b537e87f788304d44c18e2",
+    "resultHash": "sha256:97860d580d6a9c5f342bf26124ac8b1f87a579dd6d1b24aa97b69daf7b18f86f",
+    "clinicalValidation": false
+  },
+  "provenance": {
+    "evidenceCollector": "Bright Data",
+    "orchestrationRuntime": "TrueForge",
+    "deterministicExecutor": "Daytona",
+    "sources": [
+      {
+        "id": "E-001",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/16672507/",
+        "publisher": "PubMed / NCBI",
+        "retrievedAt": "2026-08-29T16:00:00.000Z",
+        "sourceType": "in_vitro_strain",
+        "biologicalScope": "strain_specific",
+        "direction": "supports",
+        "methodologyFlags": [
+          "not_exact_candidate_strain",
+          "in_vitro_only"
+        ]
+      },
+      {
+        "id": "E-002",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/26420851/",
+        "publisher": "PubMed / NCBI",
+        "retrievedAt": "2026-08-29T16:00:00.000Z",
+        "sourceType": "in_vitro_strain",
+        "biologicalScope": "strain_specific",
+        "direction": "supports",
+        "methodologyFlags": [
+          "not_exact_candidate_strain",
+          "in_vitro_only"
+        ]
+      },
+      {
+        "id": "E-003",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/29868585/",
+        "publisher": "PubMed / NCBI",
+        "retrievedAt": "2026-08-29T16:00:00.000Z",
+        "sourceType": "human_species",
+        "biologicalScope": "species_level",
+        "direction": "contradicts",
+        "methodologyFlags": [
+          "not_candidate_specific",
+          "endpoint_mismatch"
+        ]
+      },
+      {
+        "id": "E-004",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/33001550/",
+        "publisher": "PubMed / NCBI",
+        "retrievedAt": "2026-08-29T16:00:00.000Z",
+        "sourceType": "mechanistic_inference",
+        "biologicalScope": "species_level",
+        "direction": "supports",
+        "methodologyFlags": [
+          "not_exact_candidate_strain",
+          "mechanistic_only"
+        ]
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "name": "Sanitized TrueForge run trace",
+      "path": "trace.json",
+      "mediaType": "application/json",
+      "integrity": {
+        "algorithm": "sha256",
+        "canonicalization": "sorted-json-v1",
+        "scope": "entire-trace-with-run.integrity.value-omitted",
+        "value": "sha256:ef17e1c5932a1d34b0c9301704ebdae3755b1211971cd03d91c8078b4eca0571"
+      }
+    },
+    {
+      "name": "Synthetic case fixture",
+      "url": "https://raw.githubusercontent.com/SMXFREEZE/revoke-agent-harness/main/fixtures/gaggle/case-0042.json",
+      "mediaType": "application/json",
+      "hash": "sha256:3809143e368da5c8f4ce9086a91e303351609a3d0b05258f9cb0be24472ae3e4"
+    }
+  ]
+}

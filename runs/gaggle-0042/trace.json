@@ -1,0 +1,3012 @@
+{
+  "schemaVersion": 1,
+  "run": {
+    "id": "gaggle-0042",
+    "sessionId": "01m17kj6cy2prqvxret528beb4",
+    "source": "TrueForge",
+    "status": "awaiting_approval",
+    "startedAt": "2026-08-29T20:32:17.680Z",
+    "updatedAt": "2026-08-29T23:03:48.394Z",
+    "exportedAt": "2026-08-29T23:33:25.171Z",
+    "integrity": {
+      "algorithm": "sha256",
+      "canonicalization": "sorted-json-v1",
+      "scope": "entire-trace-with-run.integrity.value-omitted",
+      "value": "sha256:ef17e1c5932a1d34b0c9301704ebdae3755b1211971cd03d91c8078b4eca0571"
+    }
+  },
+  "summary": {
+    "eventCount": 247,
+    "turnCount": 6,
+    "continuationCount": 5,
+    "recoveryCount": 1,
+    "dynamicSubagentCount": 12,
+    "completedAgentCount": 12,
+    "erroredAgentCount": 0,
+    "toolCallCount": 113,
+    "toolResponseCount": 112,
+    "brightData": {
+      "searchCount": 3,
+      "scrapeCount": 20
+    },
+    "daytona": {
+      "sandboxCount": 1,
+      "execCount": 41
+    },
+    "approval": {
+      "requiredCount": 2,
+      "allowedCount": 0,
+      "deniedCount": 1,
+      "protocolViolationCount": 0
+    }
+  },
+  "approval": {
+    "status": "waiting_for_scientist",
+    "proposal": {
+      "proposalId": "gaggle-proposal-0042",
+      "proposalHash": "sha256:fa33575d844316a3df6ab77ad8814ae1fdd11eab99291db1a1799ae70d525a8b"
+    }
+  },
+  "agents": [
+    {
+      "id": "agent-01",
+      "role": "defense",
+      "label": "Defense",
+      "status": "complete",
+      "turn": "turn-1",
+      "startedAt": "2026-08-29T20:32:49.200Z",
+      "completedAt": "2026-08-29T20:35:30.715Z",
+      "toolCallCount": 15
+    },
+    {
+      "id": "agent-02",
+      "role": "prosecution",
+      "label": "Prosecution",
+      "status": "complete",
+      "turn": "turn-1",
+      "startedAt": "2026-08-29T20:32:49.205Z",
+      "completedAt": "2026-08-29T20:34:32.405Z",
+      "toolCallCount": 13
+    },
+    {
+      "id": "agent-03",
+      "role": "methodologist",
+      "label": "Methodologist",
+      "status": "complete",
+      "turn": "turn-1",
+      "startedAt": "2026-08-29T20:32:49.208Z",
+      "completedAt": "2026-08-29T20:36:30.346Z",
+      "toolCallCount": 27
+    },
+    {
+      "id": "agent-04",
+      "role": "evidence_clerk",
+      "label": "Evidence Clerk",
+      "status": "complete",
+      "turn": "turn-1",
+      "startedAt": "2026-08-29T20:32:49.212Z",
+      "completedAt": "2026-08-29T20:33:11.941Z",
+      "toolCallCount": 4
+    },
+    {
+      "id": "agent-05",
+      "role": "experimentalist",
+      "label": "Experimentalist",
+      "status": "complete",
+      "turn": "turn-1",
+      "startedAt": "2026-08-29T20:32:49.217Z",
+      "completedAt": "2026-08-29T20:33:59.376Z",
+      "toolCallCount": 0
+    },
+    {
+      "id": "agent-06",
+      "role": "red_team",
+      "label": "Blind Red Team",
+      "status": "complete",
+      "turn": "turn-2",
+      "startedAt": "2026-08-29T20:47:50.061Z",
+      "completedAt": "2026-08-29T20:48:15.873Z",
+      "toolCallCount": 3
+    },
+    {
+      "id": "agent-07",
+      "role": "juror_mechanistic_rigor",
+      "label": "Juror: Mechanistic rigor",
+      "status": "complete",
+      "turn": "turn-2",
+      "startedAt": "2026-08-29T20:48:28.358Z",
+      "completedAt": "2026-08-29T20:48:32.946Z",
+      "toolCallCount": 0
+    },
+    {
+      "id": "agent-08",
+      "role": "juror_human_evidence",
+      "label": "Juror: Human evidence",
+      "status": "complete",
+      "turn": "turn-2",
+      "startedAt": "2026-08-29T20:48:28.360Z",
+      "completedAt": "2026-08-29T20:48:42.136Z",
+      "toolCallCount": 4
+    },
+    {
+      "id": "agent-09",
+      "role": "juror_ecological_compatibility",
+      "label": "Juror: Ecological compatibility",
+      "status": "complete",
+      "turn": "turn-2",
+      "startedAt": "2026-08-29T20:48:28.363Z",
+      "completedAt": "2026-08-29T20:48:32.025Z",
+      "toolCallCount": 0
+    },
+    {
+      "id": "agent-10",
+      "role": "juror_methodological_conservatism",
+      "label": "Juror: Methodological conservatism",
+      "status": "complete",
+      "turn": "turn-2",
+      "startedAt": "2026-08-29T20:48:28.365Z",
+      "completedAt": "2026-08-29T20:48:57.501Z",
+      "toolCallCount": 9
+    },
+    {
+      "id": "agent-11",
+      "role": "juror_balanced_evidence",
+      "label": "Juror: Balanced evidence",
+      "status": "complete",
+      "turn": "turn-2",
+      "startedAt": "2026-08-29T20:48:28.368Z",
+      "completedAt": "2026-08-29T20:48:36.725Z",
+      "toolCallCount": 0
+    },
+    {
+      "id": "agent-12",
+      "role": "disagreement_analyst",
+      "label": "Disagreement Analyst",
+      "status": "complete",
+      "turn": "turn-2",
+      "startedAt": "2026-08-29T20:49:03.768Z",
+      "completedAt": "2026-08-29T20:49:11.103Z",
+      "toolCallCount": 0
+    }
+  ],
+  "timeline": [
+    {
+      "sequence": 1,
+      "at": "2026-08-29T20:32:17.680Z",
+      "turn": "turn-1",
+      "type": "turn.started",
+      "label": "turn-1 started",
+      "status": "running"
+    },
+    {
+      "sequence": 2,
+      "at": "2026-08-29T20:32:19.135Z",
+      "turn": "turn-1",
+      "type": "connector.ready",
+      "label": "Bright Data connector initialized",
+      "provider": "Bright Data",
+      "status": "ready"
+    },
+    {
+      "sequence": 3,
+      "at": "2026-08-29T20:32:19.135Z",
+      "turn": "turn-1",
+      "type": "connector.ready",
+      "label": "Gaggle Lab MCP connector initialized",
+      "provider": "Gaggle Lab MCP",
+      "status": "ready"
+    },
+    {
+      "sequence": 4,
+      "at": "2026-08-29T20:32:22.747Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Discover available tools",
+      "provider": "TrueForge",
+      "tool": "list_tools",
+      "status": "requested"
+    },
+    {
+      "sequence": 5,
+      "at": "2026-08-29T20:32:22.747Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Discover available tools",
+      "provider": "TrueForge",
+      "tool": "list_tools",
+      "status": "requested"
+    },
+    {
+      "sequence": 6,
+      "at": "2026-08-29T20:32:22.752Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Discover available tools completed",
+      "provider": "TrueForge",
+      "tool": "list_tools",
+      "status": "complete"
+    },
+    {
+      "sequence": 7,
+      "at": "2026-08-29T20:32:22.752Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Discover available tools completed",
+      "provider": "TrueForge",
+      "tool": "list_tools",
+      "status": "complete"
+    },
+    {
+      "sequence": 8,
+      "at": "2026-08-29T20:32:26.709Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Load tool contract",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "requested"
+    },
+    {
+      "sequence": 9,
+      "at": "2026-08-29T20:32:26.709Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Load tool contract",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "requested"
+    },
+    {
+      "sequence": 10,
+      "at": "2026-08-29T20:32:26.709Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Load tool contract",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "requested"
+    },
+    {
+      "sequence": 11,
+      "at": "2026-08-29T20:32:26.709Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Load tool contract",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "requested"
+    },
+    {
+      "sequence": 12,
+      "at": "2026-08-29T20:32:26.709Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Load tool contract",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "requested"
+    },
+    {
+      "sequence": 13,
+      "at": "2026-08-29T20:32:26.713Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Load tool contract completed",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "complete"
+    },
+    {
+      "sequence": 14,
+      "at": "2026-08-29T20:32:26.713Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Load tool contract completed",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "complete"
+    },
+    {
+      "sequence": 15,
+      "at": "2026-08-29T20:32:26.713Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Load tool contract completed",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "complete"
+    },
+    {
+      "sequence": 16,
+      "at": "2026-08-29T20:32:26.713Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Load tool contract completed",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "complete"
+    },
+    {
+      "sequence": 17,
+      "at": "2026-08-29T20:32:26.713Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Load tool contract completed",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "complete"
+    },
+    {
+      "sequence": 18,
+      "at": "2026-08-29T20:32:29.627Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Read synthetic case",
+      "provider": "Gaggle Lab MCP",
+      "tool": "get_synthetic_case",
+      "status": "requested"
+    },
+    {
+      "sequence": 19,
+      "at": "2026-08-29T20:32:29.627Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Read current time",
+      "provider": "TrueForge",
+      "tool": "get_current_datetime",
+      "status": "requested"
+    },
+    {
+      "sequence": 20,
+      "at": "2026-08-29T20:32:29.632Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Read current time completed",
+      "provider": "TrueForge",
+      "tool": "get_current_datetime",
+      "status": "complete"
+    },
+    {
+      "sequence": 21,
+      "at": "2026-08-29T20:32:29.649Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Read synthetic case completed",
+      "provider": "Gaggle Lab MCP",
+      "tool": "get_synthetic_case",
+      "status": "complete"
+    },
+    {
+      "sequence": 22,
+      "at": "2026-08-29T20:32:49.190Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Delegate specialist investigation",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "requested"
+    },
+    {
+      "sequence": 23,
+      "at": "2026-08-29T20:32:49.190Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Delegate specialist investigation",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "requested"
+    },
+    {
+      "sequence": 24,
+      "at": "2026-08-29T20:32:49.190Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Delegate specialist investigation",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "requested"
+    },
+    {
+      "sequence": 25,
+      "at": "2026-08-29T20:32:49.190Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Delegate specialist investigation",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "requested"
+    },
+    {
+      "sequence": 26,
+      "at": "2026-08-29T20:32:49.190Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Delegate specialist investigation",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "requested"
+    },
+    {
+      "sequence": 27,
+      "at": "2026-08-29T20:32:49.200Z",
+      "turn": "turn-1",
+      "type": "agent.started",
+      "label": "Defense started",
+      "agent": "Defense",
+      "status": "running"
+    },
+    {
+      "sequence": 28,
+      "at": "2026-08-29T20:32:49.205Z",
+      "turn": "turn-1",
+      "type": "agent.started",
+      "label": "Prosecution started",
+      "agent": "Prosecution",
+      "status": "running"
+    },
+    {
+      "sequence": 29,
+      "at": "2026-08-29T20:32:49.208Z",
+      "turn": "turn-1",
+      "type": "agent.started",
+      "label": "Methodologist started",
+      "agent": "Methodologist",
+      "status": "running"
+    },
+    {
+      "sequence": 30,
+      "at": "2026-08-29T20:32:49.212Z",
+      "turn": "turn-1",
+      "type": "agent.started",
+      "label": "Evidence Clerk started",
+      "agent": "Evidence Clerk",
+      "status": "running"
+    },
+    {
+      "sequence": 31,
+      "at": "2026-08-29T20:32:49.217Z",
+      "turn": "turn-1",
+      "type": "agent.started",
+      "label": "Experimentalist started",
+      "agent": "Experimentalist",
+      "status": "running"
+    },
+    {
+      "sequence": 32,
+      "at": "2026-08-29T20:32:51.645Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Discover available tools",
+      "agent": "Prosecution",
+      "provider": "TrueForge",
+      "tool": "list_tools",
+      "status": "requested"
+    },
+    {
+      "sequence": 33,
+      "at": "2026-08-29T20:32:51.649Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Discover available tools completed",
+      "agent": "Prosecution",
+      "provider": "TrueForge",
+      "tool": "list_tools",
+      "status": "complete"
+    },
+    {
+      "sequence": 34,
+      "at": "2026-08-29T20:32:51.660Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Discover available tools",
+      "agent": "Defense",
+      "provider": "TrueForge",
+      "tool": "list_tools",
+      "status": "requested"
+    },
+    {
+      "sequence": 35,
+      "at": "2026-08-29T20:32:51.663Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Discover available tools completed",
+      "agent": "Defense",
+      "provider": "TrueForge",
+      "tool": "list_tools",
+      "status": "complete"
+    },
+    {
+      "sequence": 36,
+      "at": "2026-08-29T20:32:51.835Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Discover available tools",
+      "agent": "Evidence Clerk",
+      "provider": "TrueForge",
+      "tool": "list_tools",
+      "status": "requested"
+    },
+    {
+      "sequence": 37,
+      "at": "2026-08-29T20:32:51.838Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Discover available tools completed",
+      "agent": "Evidence Clerk",
+      "provider": "TrueForge",
+      "tool": "list_tools",
+      "status": "complete"
+    },
+    {
+      "sequence": 38,
+      "at": "2026-08-29T20:32:52.565Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Discover available tools",
+      "agent": "Methodologist",
+      "provider": "TrueForge",
+      "tool": "list_tools",
+      "status": "requested"
+    },
+    {
+      "sequence": 39,
+      "at": "2026-08-29T20:32:52.565Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Discover available tools",
+      "agent": "Methodologist",
+      "provider": "TrueForge",
+      "tool": "list_tools",
+      "status": "requested"
+    },
+    {
+      "sequence": 40,
+      "at": "2026-08-29T20:32:52.568Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Discover available tools completed",
+      "agent": "Methodologist",
+      "provider": "TrueForge",
+      "tool": "list_tools",
+      "status": "complete"
+    },
+    {
+      "sequence": 41,
+      "at": "2026-08-29T20:32:52.568Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Discover available tools completed",
+      "agent": "Methodologist",
+      "provider": "TrueForge",
+      "tool": "list_tools",
+      "status": "complete"
+    },
+    {
+      "sequence": 42,
+      "at": "2026-08-29T20:32:52.955Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Load tool contract",
+      "agent": "Defense",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "requested"
+    },
+    {
+      "sequence": 43,
+      "at": "2026-08-29T20:32:52.955Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Load tool contract",
+      "agent": "Defense",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "requested"
+    },
+    {
+      "sequence": 44,
+      "at": "2026-08-29T20:32:52.960Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Load tool contract completed",
+      "agent": "Defense",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "complete"
+    },
+    {
+      "sequence": 45,
+      "at": "2026-08-29T20:32:52.960Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Load tool contract completed",
+      "agent": "Defense",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "complete"
+    },
+    {
+      "sequence": 46,
+      "at": "2026-08-29T20:32:53.294Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Load tool contract",
+      "agent": "Prosecution",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "requested"
+    },
+    {
+      "sequence": 47,
+      "at": "2026-08-29T20:32:53.294Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Load tool contract",
+      "agent": "Prosecution",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "requested"
+    },
+    {
+      "sequence": 48,
+      "at": "2026-08-29T20:32:53.296Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Load tool contract completed",
+      "agent": "Prosecution",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "complete"
+    },
+    {
+      "sequence": 49,
+      "at": "2026-08-29T20:32:53.296Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Load tool contract completed",
+      "agent": "Prosecution",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "complete"
+    },
+    {
+      "sequence": 50,
+      "at": "2026-08-29T20:32:54.920Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Search live evidence",
+      "agent": "Defense",
+      "provider": "Bright Data",
+      "tool": "search_engine",
+      "status": "requested"
+    },
+    {
+      "sequence": 51,
+      "at": "2026-08-29T20:32:55.633Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Load tool contract",
+      "agent": "Evidence Clerk",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "requested"
+    },
+    {
+      "sequence": 52,
+      "at": "2026-08-29T20:32:55.633Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Load tool contract",
+      "agent": "Evidence Clerk",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "requested"
+    },
+    {
+      "sequence": 53,
+      "at": "2026-08-29T20:32:55.636Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Load tool contract completed",
+      "agent": "Evidence Clerk",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "complete"
+    },
+    {
+      "sequence": 54,
+      "at": "2026-08-29T20:32:55.636Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Load tool contract completed",
+      "agent": "Evidence Clerk",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "complete"
+    },
+    {
+      "sequence": 55,
+      "at": "2026-08-29T20:32:55.879Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Load tool contract",
+      "agent": "Methodologist",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "requested"
+    },
+    {
+      "sequence": 56,
+      "at": "2026-08-29T20:32:55.879Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Load tool contract",
+      "agent": "Methodologist",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "requested"
+    },
+    {
+      "sequence": 57,
+      "at": "2026-08-29T20:32:55.879Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Load tool contract",
+      "agent": "Methodologist",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "requested"
+    },
+    {
+      "sequence": 58,
+      "at": "2026-08-29T20:32:55.882Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Load tool contract completed",
+      "agent": "Methodologist",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "complete"
+    },
+    {
+      "sequence": 59,
+      "at": "2026-08-29T20:32:55.882Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Load tool contract completed",
+      "agent": "Methodologist",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "complete"
+    },
+    {
+      "sequence": 60,
+      "at": "2026-08-29T20:32:55.882Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Load tool contract completed",
+      "agent": "Methodologist",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "complete"
+    },
+    {
+      "sequence": 61,
+      "at": "2026-08-29T20:32:55.960Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Search live evidence",
+      "agent": "Prosecution",
+      "provider": "Bright Data",
+      "tool": "search_engine",
+      "status": "requested"
+    },
+    {
+      "sequence": 62,
+      "at": "2026-08-29T20:32:57.476Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Search live evidence completed",
+      "agent": "Prosecution",
+      "provider": "Bright Data",
+      "tool": "search_engine",
+      "status": "complete"
+    },
+    {
+      "sequence": 63,
+      "at": "2026-08-29T20:32:58.479Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Read synthetic case",
+      "agent": "Evidence Clerk",
+      "provider": "Gaggle Lab MCP",
+      "tool": "get_synthetic_case",
+      "status": "requested"
+    },
+    {
+      "sequence": 64,
+      "at": "2026-08-29T20:32:58.490Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Read synthetic case completed",
+      "agent": "Evidence Clerk",
+      "provider": "Gaggle Lab MCP",
+      "tool": "get_synthetic_case",
+      "status": "complete"
+    },
+    {
+      "sequence": 65,
+      "at": "2026-08-29T20:32:58.689Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Read synthetic case",
+      "agent": "Methodologist",
+      "provider": "Gaggle Lab MCP",
+      "tool": "get_synthetic_case",
+      "status": "requested"
+    },
+    {
+      "sequence": 66,
+      "at": "2026-08-29T20:32:58.689Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Search live evidence",
+      "agent": "Methodologist",
+      "provider": "Bright Data",
+      "tool": "search_engine",
+      "status": "requested"
+    },
+    {
+      "sequence": 67,
+      "at": "2026-08-29T20:32:58.699Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Read synthetic case completed",
+      "agent": "Methodologist",
+      "provider": "Gaggle Lab MCP",
+      "tool": "get_synthetic_case",
+      "status": "complete"
+    },
+    {
+      "sequence": 68,
+      "at": "2026-08-29T20:33:01.853Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Search live evidence completed",
+      "agent": "Defense",
+      "provider": "Bright Data",
+      "tool": "search_engine",
+      "status": "complete"
+    },
+    {
+      "sequence": 69,
+      "at": "2026-08-29T20:33:01.880Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Extract source evidence",
+      "agent": "Prosecution",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "requested"
+    },
+    {
+      "sequence": 70,
+      "at": "2026-08-29T20:33:01.880Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Extract source evidence",
+      "agent": "Prosecution",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "requested"
+    },
+    {
+      "sequence": 71,
+      "at": "2026-08-29T20:33:01.880Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Extract source evidence",
+      "agent": "Prosecution",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "requested"
+    },
+    {
+      "sequence": 72,
+      "at": "2026-08-29T20:33:04.018Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Extract source evidence completed",
+      "agent": "Prosecution",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "complete"
+    },
+    {
+      "sequence": 73,
+      "at": "2026-08-29T20:33:05.242Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Extract source evidence completed",
+      "agent": "Prosecution",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "complete"
+    },
+    {
+      "sequence": 74,
+      "at": "2026-08-29T20:33:05.336Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Extract source evidence",
+      "agent": "Defense",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "requested"
+    },
+    {
+      "sequence": 75,
+      "at": "2026-08-29T20:33:05.336Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Extract source evidence",
+      "agent": "Defense",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "requested"
+    },
+    {
+      "sequence": 76,
+      "at": "2026-08-29T20:33:05.529Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Extract source evidence completed",
+      "agent": "Prosecution",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "complete"
+    },
+    {
+      "sequence": 77,
+      "at": "2026-08-29T20:33:07.653Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Extract source evidence completed",
+      "agent": "Defense",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "complete"
+    },
+    {
+      "sequence": 78,
+      "at": "2026-08-29T20:33:08.230Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Search live evidence completed",
+      "agent": "Methodologist",
+      "provider": "Bright Data",
+      "tool": "search_engine",
+      "status": "complete"
+    },
+    {
+      "sequence": 79,
+      "at": "2026-08-29T20:33:11.939Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Delegate specialist investigation completed",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "complete"
+    },
+    {
+      "sequence": 80,
+      "at": "2026-08-29T20:33:11.941Z",
+      "turn": "turn-1",
+      "type": "agent.completed",
+      "label": "Evidence Clerk completed",
+      "agent": "Evidence Clerk",
+      "status": "complete"
+    },
+    {
+      "sequence": 81,
+      "at": "2026-08-29T20:33:13.453Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Extract source evidence",
+      "agent": "Methodologist",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "requested"
+    },
+    {
+      "sequence": 82,
+      "at": "2026-08-29T20:33:13.453Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Extract source evidence",
+      "agent": "Methodologist",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "requested"
+    },
+    {
+      "sequence": 83,
+      "at": "2026-08-29T20:33:13.453Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Extract source evidence",
+      "agent": "Methodologist",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "requested"
+    },
+    {
+      "sequence": 84,
+      "at": "2026-08-29T20:33:13.453Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Extract source evidence",
+      "agent": "Methodologist",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "requested"
+    },
+    {
+      "sequence": 85,
+      "at": "2026-08-29T20:33:17.287Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Extract source evidence completed",
+      "agent": "Methodologist",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "complete"
+    },
+    {
+      "sequence": 86,
+      "at": "2026-08-29T20:33:17.400Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Extract source evidence completed",
+      "agent": "Methodologist",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "complete"
+    },
+    {
+      "sequence": 87,
+      "at": "2026-08-29T20:33:21.187Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Extract source evidence completed",
+      "agent": "Methodologist",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "complete"
+    },
+    {
+      "sequence": 88,
+      "at": "2026-08-29T20:33:29.645Z",
+      "turn": "turn-1",
+      "type": "sandbox.started",
+      "label": "Daytona sandbox created",
+      "provider": "Daytona",
+      "status": "ready"
+    },
+    {
+      "sequence": 89,
+      "at": "2026-08-29T20:33:35.346Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Extract source evidence",
+      "agent": "Prosecution",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "requested"
+    },
+    {
+      "sequence": 90,
+      "at": "2026-08-29T20:33:35.346Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Extract source evidence",
+      "agent": "Prosecution",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "requested"
+    },
+    {
+      "sequence": 91,
+      "at": "2026-08-29T20:33:35.346Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Extract source evidence",
+      "agent": "Prosecution",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "requested"
+    },
+    {
+      "sequence": 92,
+      "at": "2026-08-29T20:33:39.619Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Extract source evidence completed",
+      "agent": "Prosecution",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "complete"
+    },
+    {
+      "sequence": 93,
+      "at": "2026-08-29T20:33:44.383Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Extract source evidence completed",
+      "agent": "Prosecution",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "complete"
+    },
+    {
+      "sequence": 94,
+      "at": "2026-08-29T20:33:45.737Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Extract source evidence completed",
+      "agent": "Prosecution",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "complete"
+    },
+    {
+      "sequence": 95,
+      "at": "2026-08-29T20:33:49.596Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Prosecution",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 96,
+      "at": "2026-08-29T20:33:51.549Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Prosecution",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 97,
+      "at": "2026-08-29T20:33:55.951Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Extract source evidence completed",
+      "agent": "Defense",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "complete"
+    },
+    {
+      "sequence": 98,
+      "at": "2026-08-29T20:33:56.208Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Prosecution",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 99,
+      "at": "2026-08-29T20:33:56.814Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Prosecution",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 100,
+      "at": "2026-08-29T20:33:59.023Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Defense",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 101,
+      "at": "2026-08-29T20:33:59.256Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Defense",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 102,
+      "at": "2026-08-29T20:33:59.374Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Delegate specialist investigation completed",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "complete"
+    },
+    {
+      "sequence": 103,
+      "at": "2026-08-29T20:33:59.376Z",
+      "turn": "turn-1",
+      "type": "agent.completed",
+      "label": "Experimentalist completed",
+      "agent": "Experimentalist",
+      "status": "complete"
+    },
+    {
+      "sequence": 104,
+      "at": "2026-08-29T20:33:59.532Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Prosecution",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 105,
+      "at": "2026-08-29T20:33:59.726Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Prosecution",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 106,
+      "at": "2026-08-29T20:34:03.350Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Defense",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 107,
+      "at": "2026-08-29T20:34:03.524Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Defense",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 108,
+      "at": "2026-08-29T20:34:06.664Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Extract source evidence",
+      "agent": "Defense",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "requested"
+    },
+    {
+      "sequence": 109,
+      "at": "2026-08-29T20:34:06.717Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Extract source evidence completed",
+      "agent": "Methodologist",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "complete"
+    },
+    {
+      "sequence": 110,
+      "at": "2026-08-29T20:34:08.968Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Extract source evidence completed",
+      "agent": "Defense",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "complete"
+    },
+    {
+      "sequence": 111,
+      "at": "2026-08-29T20:34:10.187Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Methodologist",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 112,
+      "at": "2026-08-29T20:34:10.187Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Methodologist",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 113,
+      "at": "2026-08-29T20:34:10.454Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Methodologist",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 114,
+      "at": "2026-08-29T20:34:10.462Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Methodologist",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 115,
+      "at": "2026-08-29T20:34:11.316Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Extract source evidence",
+      "agent": "Defense",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "requested"
+    },
+    {
+      "sequence": 116,
+      "at": "2026-08-29T20:34:14.708Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Methodologist",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 117,
+      "at": "2026-08-29T20:34:14.708Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Methodologist",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 118,
+      "at": "2026-08-29T20:34:14.920Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Methodologist",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 119,
+      "at": "2026-08-29T20:34:15.054Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Methodologist",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 120,
+      "at": "2026-08-29T20:34:18.657Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Methodologist",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 121,
+      "at": "2026-08-29T20:34:18.657Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Methodologist",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 122,
+      "at": "2026-08-29T20:34:18.849Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Methodologist",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 123,
+      "at": "2026-08-29T20:34:18.860Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Methodologist",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 124,
+      "at": "2026-08-29T20:34:22.620Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Methodologist",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 125,
+      "at": "2026-08-29T20:34:22.620Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Methodologist",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 126,
+      "at": "2026-08-29T20:34:22.825Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Methodologist",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 127,
+      "at": "2026-08-29T20:34:22.833Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Methodologist",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 128,
+      "at": "2026-08-29T20:34:29.314Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Extract source evidence",
+      "agent": "Methodologist",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "requested"
+    },
+    {
+      "sequence": 129,
+      "at": "2026-08-29T20:34:29.314Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Extract source evidence",
+      "agent": "Methodologist",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "requested"
+    },
+    {
+      "sequence": 130,
+      "at": "2026-08-29T20:34:32.402Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Delegate specialist investigation completed",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "complete"
+    },
+    {
+      "sequence": 131,
+      "at": "2026-08-29T20:34:32.405Z",
+      "turn": "turn-1",
+      "type": "agent.completed",
+      "label": "Prosecution completed",
+      "agent": "Prosecution",
+      "status": "complete"
+    },
+    {
+      "sequence": 132,
+      "at": "2026-08-29T20:34:32.439Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Extract source evidence completed",
+      "agent": "Methodologist",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "complete"
+    },
+    {
+      "sequence": 133,
+      "at": "2026-08-29T20:34:38.136Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Extract source evidence completed",
+      "agent": "Defense",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "complete"
+    },
+    {
+      "sequence": 134,
+      "at": "2026-08-29T20:34:41.043Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Defense",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 135,
+      "at": "2026-08-29T20:34:41.303Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Defense",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 136,
+      "at": "2026-08-29T20:34:43.956Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Defense",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 137,
+      "at": "2026-08-29T20:34:44.287Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Defense",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 138,
+      "at": "2026-08-29T20:34:45.447Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Extract source evidence completed",
+      "agent": "Methodologist",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "complete"
+    },
+    {
+      "sequence": 139,
+      "at": "2026-08-29T20:34:46.895Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Defense",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 140,
+      "at": "2026-08-29T20:34:47.081Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Defense",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 141,
+      "at": "2026-08-29T20:34:49.820Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Defense",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 142,
+      "at": "2026-08-29T20:34:50.021Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Defense",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 143,
+      "at": "2026-08-29T20:35:01.123Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Defense",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 144,
+      "at": "2026-08-29T20:35:01.870Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Defense",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 145,
+      "at": "2026-08-29T20:35:03.984Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Read current time",
+      "agent": "Methodologist",
+      "provider": "TrueForge",
+      "tool": "get_current_datetime",
+      "status": "requested"
+    },
+    {
+      "sequence": 146,
+      "at": "2026-08-29T20:35:03.988Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Read current time completed",
+      "agent": "Methodologist",
+      "provider": "TrueForge",
+      "tool": "get_current_datetime",
+      "status": "complete"
+    },
+    {
+      "sequence": 147,
+      "at": "2026-08-29T20:35:24.224Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Extract source evidence",
+      "agent": "Methodologist",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "requested"
+    },
+    {
+      "sequence": 148,
+      "at": "2026-08-29T20:35:24.224Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Extract source evidence",
+      "agent": "Methodologist",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "requested"
+    },
+    {
+      "sequence": 149,
+      "at": "2026-08-29T20:35:24.224Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Extract source evidence",
+      "agent": "Methodologist",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "requested"
+    },
+    {
+      "sequence": 150,
+      "at": "2026-08-29T20:35:27.152Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Extract source evidence completed",
+      "agent": "Methodologist",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "complete"
+    },
+    {
+      "sequence": 151,
+      "at": "2026-08-29T20:35:27.634Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Extract source evidence completed",
+      "agent": "Methodologist",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "complete"
+    },
+    {
+      "sequence": 152,
+      "at": "2026-08-29T20:35:29.448Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Extract source evidence completed",
+      "agent": "Methodologist",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "complete"
+    },
+    {
+      "sequence": 153,
+      "at": "2026-08-29T20:35:30.640Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Delegate specialist investigation completed",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "complete"
+    },
+    {
+      "sequence": 154,
+      "at": "2026-08-29T20:35:30.715Z",
+      "turn": "turn-1",
+      "type": "agent.completed",
+      "label": "Defense completed",
+      "agent": "Defense",
+      "status": "complete"
+    },
+    {
+      "sequence": 155,
+      "at": "2026-08-29T20:35:37.331Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Extract source evidence",
+      "agent": "Methodologist",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "requested"
+    },
+    {
+      "sequence": 156,
+      "at": "2026-08-29T20:35:38.986Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Extract source evidence completed",
+      "agent": "Methodologist",
+      "provider": "Bright Data",
+      "tool": "scrape_as_markdown",
+      "status": "complete"
+    },
+    {
+      "sequence": 157,
+      "at": "2026-08-29T20:35:44.123Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Methodologist",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 158,
+      "at": "2026-08-29T20:35:44.857Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Methodologist",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 159,
+      "at": "2026-08-29T20:36:30.342Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Delegate specialist investigation completed",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "complete"
+    },
+    {
+      "sequence": 160,
+      "at": "2026-08-29T20:36:30.346Z",
+      "turn": "turn-1",
+      "type": "agent.completed",
+      "label": "Methodologist completed",
+      "agent": "Methodologist",
+      "status": "complete"
+    },
+    {
+      "sequence": 161,
+      "at": "2026-08-29T20:36:39.382Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 162,
+      "at": "2026-08-29T20:36:40.013Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 163,
+      "at": "2026-08-29T20:36:43.918Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 164,
+      "at": "2026-08-29T20:36:51.470Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 165,
+      "at": "2026-08-29T20:36:59.120Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 166,
+      "at": "2026-08-29T20:37:10.066Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 167,
+      "at": "2026-08-29T20:37:41.237Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 168,
+      "at": "2026-08-29T20:37:41.811Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 169,
+      "at": "2026-08-29T20:37:56.192Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 170,
+      "at": "2026-08-29T20:38:02.112Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 171,
+      "at": "2026-08-29T20:38:10.432Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 172,
+      "at": "2026-08-29T20:40:11.666Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 173,
+      "at": "2026-08-29T20:40:15.015Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 174,
+      "at": "2026-08-29T20:40:15.430Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 175,
+      "at": "2026-08-29T20:40:24.616Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 176,
+      "at": "2026-08-29T20:40:25.257Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 177,
+      "at": "2026-08-29T20:40:39.707Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 178,
+      "at": "2026-08-29T20:41:40.416Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 179,
+      "at": "2026-08-29T20:41:55.246Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 180,
+      "at": "2026-08-29T20:41:56.017Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 181,
+      "at": "2026-08-29T20:42:16.028Z",
+      "turn": "turn-1",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 182,
+      "at": "2026-08-29T20:42:16.666Z",
+      "turn": "turn-1",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 183,
+      "at": "2026-08-29T20:42:17.781Z",
+      "turn": "turn-1",
+      "type": "turn.cancelled",
+      "label": "turn-1 reached its execution limit",
+      "status": "cancelled"
+    },
+    {
+      "sequence": 184,
+      "at": "2026-08-29T20:47:24.849Z",
+      "turn": "turn-2",
+      "type": "turn.resumed",
+      "label": "turn-2 resumed from turn-1",
+      "status": "running"
+    },
+    {
+      "sequence": 185,
+      "at": "2026-08-29T20:47:25.323Z",
+      "turn": "turn-2",
+      "type": "connector.ready",
+      "label": "Gaggle Lab MCP connector initialized",
+      "provider": "Gaggle Lab MCP",
+      "status": "ready"
+    },
+    {
+      "sequence": 186,
+      "at": "2026-08-29T20:47:35.191Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 187,
+      "at": "2026-08-29T20:47:39.677Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 188,
+      "at": "2026-08-29T20:47:50.053Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Delegate specialist investigation",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "requested"
+    },
+    {
+      "sequence": 189,
+      "at": "2026-08-29T20:47:50.061Z",
+      "turn": "turn-2",
+      "type": "agent.started",
+      "label": "Blind Red Team started",
+      "agent": "Blind Red Team",
+      "status": "running"
+    },
+    {
+      "sequence": 190,
+      "at": "2026-08-29T20:47:52.706Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Blind Red Team",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 191,
+      "at": "2026-08-29T20:47:53.240Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Blind Red Team",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 192,
+      "at": "2026-08-29T20:47:57.377Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Blind Red Team",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 193,
+      "at": "2026-08-29T20:47:57.608Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Blind Red Team",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 194,
+      "at": "2026-08-29T20:48:00.863Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Blind Red Team",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 195,
+      "at": "2026-08-29T20:48:01.091Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Blind Red Team",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 196,
+      "at": "2026-08-29T20:48:15.869Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Delegate specialist investigation completed",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "complete"
+    },
+    {
+      "sequence": 197,
+      "at": "2026-08-29T20:48:15.873Z",
+      "turn": "turn-2",
+      "type": "agent.completed",
+      "label": "Blind Red Team completed",
+      "agent": "Blind Red Team",
+      "status": "complete"
+    },
+    {
+      "sequence": 198,
+      "at": "2026-08-29T20:48:28.340Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Delegate specialist investigation",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "requested"
+    },
+    {
+      "sequence": 199,
+      "at": "2026-08-29T20:48:28.340Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Delegate specialist investigation",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "requested"
+    },
+    {
+      "sequence": 200,
+      "at": "2026-08-29T20:48:28.340Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Delegate specialist investigation",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "requested"
+    },
+    {
+      "sequence": 201,
+      "at": "2026-08-29T20:48:28.340Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Delegate specialist investigation",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "requested"
+    },
+    {
+      "sequence": 202,
+      "at": "2026-08-29T20:48:28.340Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Delegate specialist investigation",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "requested"
+    },
+    {
+      "sequence": 203,
+      "at": "2026-08-29T20:48:28.358Z",
+      "turn": "turn-2",
+      "type": "agent.started",
+      "label": "Juror: Mechanistic rigor started",
+      "agent": "Juror: Mechanistic rigor",
+      "status": "running"
+    },
+    {
+      "sequence": 204,
+      "at": "2026-08-29T20:48:28.360Z",
+      "turn": "turn-2",
+      "type": "agent.started",
+      "label": "Juror: Human evidence started",
+      "agent": "Juror: Human evidence",
+      "status": "running"
+    },
+    {
+      "sequence": 205,
+      "at": "2026-08-29T20:48:28.363Z",
+      "turn": "turn-2",
+      "type": "agent.started",
+      "label": "Juror: Ecological compatibility started",
+      "agent": "Juror: Ecological compatibility",
+      "status": "running"
+    },
+    {
+      "sequence": 206,
+      "at": "2026-08-29T20:48:28.365Z",
+      "turn": "turn-2",
+      "type": "agent.started",
+      "label": "Juror: Methodological conservatism started",
+      "agent": "Juror: Methodological conservatism",
+      "status": "running"
+    },
+    {
+      "sequence": 207,
+      "at": "2026-08-29T20:48:28.368Z",
+      "turn": "turn-2",
+      "type": "agent.started",
+      "label": "Juror: Balanced evidence started",
+      "agent": "Juror: Balanced evidence",
+      "status": "running"
+    },
+    {
+      "sequence": 208,
+      "at": "2026-08-29T20:48:31.452Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Discover available tools",
+      "agent": "Juror: Human evidence",
+      "provider": "TrueForge",
+      "tool": "list_tools",
+      "status": "requested"
+    },
+    {
+      "sequence": 209,
+      "at": "2026-08-29T20:48:31.452Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Read current time",
+      "agent": "Juror: Human evidence",
+      "provider": "TrueForge",
+      "tool": "get_current_datetime",
+      "status": "requested"
+    },
+    {
+      "sequence": 210,
+      "at": "2026-08-29T20:48:31.455Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Discover available tools completed",
+      "agent": "Juror: Human evidence",
+      "provider": "TrueForge",
+      "tool": "list_tools",
+      "status": "complete"
+    },
+    {
+      "sequence": 211,
+      "at": "2026-08-29T20:48:31.455Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Read current time completed",
+      "agent": "Juror: Human evidence",
+      "provider": "TrueForge",
+      "tool": "get_current_datetime",
+      "status": "complete"
+    },
+    {
+      "sequence": 212,
+      "at": "2026-08-29T20:48:31.728Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Discover available tools",
+      "agent": "Juror: Methodological conservatism",
+      "provider": "TrueForge",
+      "tool": "list_tools",
+      "status": "requested"
+    },
+    {
+      "sequence": 213,
+      "at": "2026-08-29T20:48:31.744Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Discover available tools completed",
+      "agent": "Juror: Methodological conservatism",
+      "provider": "TrueForge",
+      "tool": "list_tools",
+      "status": "complete"
+    },
+    {
+      "sequence": 214,
+      "at": "2026-08-29T20:48:32.023Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Delegate specialist investigation completed",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "complete"
+    },
+    {
+      "sequence": 215,
+      "at": "2026-08-29T20:48:32.025Z",
+      "turn": "turn-2",
+      "type": "agent.completed",
+      "label": "Juror: Ecological compatibility completed",
+      "agent": "Juror: Ecological compatibility",
+      "status": "complete"
+    },
+    {
+      "sequence": 216,
+      "at": "2026-08-29T20:48:32.945Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Delegate specialist investigation completed",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "complete"
+    },
+    {
+      "sequence": 217,
+      "at": "2026-08-29T20:48:32.946Z",
+      "turn": "turn-2",
+      "type": "agent.completed",
+      "label": "Juror: Mechanistic rigor completed",
+      "agent": "Juror: Mechanistic rigor",
+      "status": "complete"
+    },
+    {
+      "sequence": 218,
+      "at": "2026-08-29T20:48:33.122Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Load tool contract",
+      "agent": "Juror: Methodological conservatism",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "requested"
+    },
+    {
+      "sequence": 219,
+      "at": "2026-08-29T20:48:33.122Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Load tool contract",
+      "agent": "Juror: Methodological conservatism",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "requested"
+    },
+    {
+      "sequence": 220,
+      "at": "2026-08-29T20:48:33.124Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Load tool contract completed",
+      "agent": "Juror: Methodological conservatism",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "complete"
+    },
+    {
+      "sequence": 221,
+      "at": "2026-08-29T20:48:33.124Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Load tool contract completed",
+      "agent": "Juror: Methodological conservatism",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "complete"
+    },
+    {
+      "sequence": 222,
+      "at": "2026-08-29T20:48:35.162Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Load tool contract",
+      "agent": "Juror: Human evidence",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "requested"
+    },
+    {
+      "sequence": 223,
+      "at": "2026-08-29T20:48:35.165Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Load tool contract completed",
+      "agent": "Juror: Human evidence",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "complete"
+    },
+    {
+      "sequence": 224,
+      "at": "2026-08-29T20:48:35.738Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Juror: Methodological conservatism",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 225,
+      "at": "2026-08-29T20:48:36.602Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Read synthetic case",
+      "agent": "Juror: Human evidence",
+      "provider": "Gaggle Lab MCP",
+      "tool": "get_synthetic_case",
+      "status": "requested"
+    },
+    {
+      "sequence": 226,
+      "at": "2026-08-29T20:48:36.615Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Read synthetic case completed",
+      "agent": "Juror: Human evidence",
+      "provider": "Gaggle Lab MCP",
+      "tool": "get_synthetic_case",
+      "status": "complete"
+    },
+    {
+      "sequence": 227,
+      "at": "2026-08-29T20:48:36.723Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Delegate specialist investigation completed",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "complete"
+    },
+    {
+      "sequence": 228,
+      "at": "2026-08-29T20:48:36.725Z",
+      "turn": "turn-2",
+      "type": "agent.completed",
+      "label": "Juror: Balanced evidence completed",
+      "agent": "Juror: Balanced evidence",
+      "status": "complete"
+    },
+    {
+      "sequence": 229,
+      "at": "2026-08-29T20:48:37.445Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Juror: Methodological conservatism",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 230,
+      "at": "2026-08-29T20:48:41.002Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Juror: Methodological conservatism",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 231,
+      "at": "2026-08-29T20:48:41.191Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Juror: Methodological conservatism",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 232,
+      "at": "2026-08-29T20:48:42.134Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Delegate specialist investigation completed",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "complete"
+    },
+    {
+      "sequence": 233,
+      "at": "2026-08-29T20:48:42.136Z",
+      "turn": "turn-2",
+      "type": "agent.completed",
+      "label": "Juror: Human evidence completed",
+      "agent": "Juror: Human evidence",
+      "status": "complete"
+    },
+    {
+      "sequence": 234,
+      "at": "2026-08-29T20:48:42.635Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Juror: Methodological conservatism",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 235,
+      "at": "2026-08-29T20:48:42.840Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Juror: Methodological conservatism",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 236,
+      "at": "2026-08-29T20:48:45.524Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Juror: Methodological conservatism",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 237,
+      "at": "2026-08-29T20:48:45.708Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Juror: Methodological conservatism",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 238,
+      "at": "2026-08-29T20:48:48.688Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Juror: Methodological conservatism",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 239,
+      "at": "2026-08-29T20:48:49.880Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Juror: Methodological conservatism",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 240,
+      "at": "2026-08-29T20:48:52.681Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "agent": "Juror: Methodological conservatism",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 241,
+      "at": "2026-08-29T20:48:52.904Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "agent": "Juror: Methodological conservatism",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 242,
+      "at": "2026-08-29T20:48:57.498Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Delegate specialist investigation completed",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "complete"
+    },
+    {
+      "sequence": 243,
+      "at": "2026-08-29T20:48:57.501Z",
+      "turn": "turn-2",
+      "type": "agent.completed",
+      "label": "Juror: Methodological conservatism completed",
+      "agent": "Juror: Methodological conservatism",
+      "status": "complete"
+    },
+    {
+      "sequence": 244,
+      "at": "2026-08-29T20:49:03.762Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Delegate specialist investigation",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "requested"
+    },
+    {
+      "sequence": 245,
+      "at": "2026-08-29T20:49:03.768Z",
+      "turn": "turn-2",
+      "type": "agent.started",
+      "label": "Disagreement Analyst started",
+      "agent": "Disagreement Analyst",
+      "status": "running"
+    },
+    {
+      "sequence": 246,
+      "at": "2026-08-29T20:49:11.100Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Delegate specialist investigation completed",
+      "provider": "TrueForge",
+      "tool": "create_sub_agent",
+      "status": "complete"
+    },
+    {
+      "sequence": 247,
+      "at": "2026-08-29T20:49:11.103Z",
+      "turn": "turn-2",
+      "type": "agent.completed",
+      "label": "Disagreement Analyst completed",
+      "agent": "Disagreement Analyst",
+      "status": "complete"
+    },
+    {
+      "sequence": 248,
+      "at": "2026-08-29T20:49:35.600Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Execute deterministic experiment",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "requested"
+    },
+    {
+      "sequence": 249,
+      "at": "2026-08-29T20:49:36.431Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Execute deterministic experiment completed",
+      "provider": "Daytona",
+      "tool": "sandbox.exec",
+      "status": "complete"
+    },
+    {
+      "sequence": 250,
+      "at": "2026-08-29T20:49:39.342Z",
+      "turn": "turn-2",
+      "type": "tool.requested",
+      "label": "Preview immutable proposal",
+      "provider": "Gaggle Lab MCP",
+      "tool": "preview_experimental_proposal",
+      "status": "requested"
+    },
+    {
+      "sequence": 251,
+      "at": "2026-08-29T20:49:39.353Z",
+      "turn": "turn-2",
+      "type": "tool.completed",
+      "label": "Preview immutable proposal completed",
+      "provider": "Gaggle Lab MCP",
+      "tool": "preview_experimental_proposal",
+      "status": "complete"
+    },
+    {
+      "sequence": 252,
+      "at": "2026-08-29T20:49:56.509Z",
+      "turn": "turn-2",
+      "type": "turn.completed",
+      "label": "turn-2 completed",
+      "status": "done"
+    },
+    {
+      "sequence": 253,
+      "at": "2026-08-29T20:51:42.832Z",
+      "turn": "turn-3",
+      "type": "turn.resumed",
+      "label": "turn-3 resumed from turn-2",
+      "status": "running"
+    },
+    {
+      "sequence": 254,
+      "at": "2026-08-29T20:51:43.283Z",
+      "turn": "turn-3",
+      "type": "connector.ready",
+      "label": "Gaggle Lab MCP connector initialized",
+      "provider": "Gaggle Lab MCP",
+      "status": "ready"
+    },
+    {
+      "sequence": 255,
+      "at": "2026-08-29T20:51:50.974Z",
+      "turn": "turn-3",
+      "type": "turn.completed",
+      "label": "turn-3 completed",
+      "status": "done"
+    },
+    {
+      "sequence": 256,
+      "at": "2026-08-29T23:00:38.939Z",
+      "turn": "turn-4",
+      "type": "turn.resumed",
+      "label": "turn-4 resumed from turn-3",
+      "status": "running"
+    },
+    {
+      "sequence": 257,
+      "at": "2026-08-29T23:00:40.530Z",
+      "turn": "turn-4",
+      "type": "connector.ready",
+      "label": "Bright Data connector initialized",
+      "provider": "Bright Data",
+      "status": "ready"
+    },
+    {
+      "sequence": 258,
+      "at": "2026-08-29T23:00:40.530Z",
+      "turn": "turn-4",
+      "type": "connector.ready",
+      "label": "Gaggle Lab MCP connector initialized",
+      "provider": "Gaggle Lab MCP",
+      "status": "ready"
+    },
+    {
+      "sequence": 259,
+      "at": "2026-08-29T23:00:48.732Z",
+      "turn": "turn-4",
+      "type": "tool.requested",
+      "label": "Load tool contract",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "requested"
+    },
+    {
+      "sequence": 260,
+      "at": "2026-08-29T23:00:48.744Z",
+      "turn": "turn-4",
+      "type": "tool.completed",
+      "label": "Load tool contract completed",
+      "provider": "TrueForge",
+      "tool": "get_tool_info",
+      "status": "complete"
+    },
+    {
+      "sequence": 261,
+      "at": "2026-08-29T23:00:51.609Z",
+      "turn": "turn-4",
+      "type": "tool.requested",
+      "label": "Request proposal promotion",
+      "provider": "Gaggle Lab MCP",
+      "tool": "promote_experimental_proposal",
+      "status": "requested"
+    },
+    {
+      "sequence": 262,
+      "at": "2026-08-29T23:00:51.613Z",
+      "turn": "turn-4",
+      "type": "approval.required",
+      "label": "Waiting for exact scientist approval",
+      "provider": "Gaggle Lab MCP",
+      "tool": "promote_experimental_proposal",
+      "status": "waiting",
+      "proposal": {
+        "proposalId": "gaggle-proposal-0042",
+        "proposalHash": "sha256:fa33575d844316a3df6ab77ad8814ae1fdd11eab99291db1a1799ae70d525a8b"
+      }
+    },
+    {
+      "sequence": 263,
+      "at": "2026-08-29T23:00:51.620Z",
+      "turn": "turn-4",
+      "type": "turn.waiting",
+      "label": "turn-4 paused for a required human action",
+      "status": "waiting"
+    },
+    {
+      "sequence": 264,
+      "at": "2026-08-29T23:03:14.770Z",
+      "turn": "turn-5",
+      "type": "turn.resumed",
+      "label": "turn-5 resumed from turn-4",
+      "status": "running"
+    },
+    {
+      "sequence": 265,
+      "at": "2026-08-29T23:03:14.770Z",
+      "turn": "turn-5",
+      "type": "approval.denied",
+      "label": "Scientist rejected the pending tool call",
+      "provider": "Gaggle Lab MCP",
+      "tool": "promote_experimental_proposal",
+      "status": "denied"
+    },
+    {
+      "sequence": 266,
+      "at": "2026-08-29T23:03:15.214Z",
+      "turn": "turn-5",
+      "type": "connector.ready",
+      "label": "Gaggle Lab MCP connector initialized",
+      "provider": "Gaggle Lab MCP",
+      "status": "ready"
+    },
+    {
+      "sequence": 267,
+      "at": "2026-08-29T23:03:15.219Z",
+      "turn": "turn-5",
+      "type": "tool.denied",
+      "label": "Proposal promotion remained unexecuted after rejection",
+      "provider": "Gaggle Lab MCP",
+      "tool": "promote_experimental_proposal",
+      "status": "denied"
+    },
+    {
+      "sequence": 268,
+      "at": "2026-08-29T23:03:18.119Z",
+      "turn": "turn-5",
+      "type": "turn.completed",
+      "label": "turn-5 completed",
+      "status": "done"
+    },
+    {
+      "sequence": 269,
+      "at": "2026-08-29T23:03:43.561Z",
+      "turn": "turn-6",
+      "type": "turn.resumed",
+      "label": "turn-6 resumed from turn-5",
+      "status": "running"
+    },
+    {
+      "sequence": 270,
+      "at": "2026-08-29T23:03:44.000Z",
+      "turn": "turn-6",
+      "type": "connector.ready",
+      "label": "Gaggle Lab MCP connector initialized",
+      "provider": "Gaggle Lab MCP",
+      "status": "ready"
+    },
+    {
+      "sequence": 271,
+      "at": "2026-08-29T23:03:48.373Z",
+      "turn": "turn-6",
+      "type": "tool.requested",
+      "label": "Request proposal promotion",
+      "provider": "Gaggle Lab MCP",
+      "tool": "promote_experimental_proposal",
+      "status": "requested"
+    },
+    {
+      "sequence": 272,
+      "at": "2026-08-29T23:03:48.391Z",
+      "turn": "turn-6",
+      "type": "approval.required",
+      "label": "Waiting for exact scientist approval",
+      "provider": "Gaggle Lab MCP",
+      "tool": "promote_experimental_proposal",
+      "status": "waiting",
+      "proposal": {
+        "proposalId": "gaggle-proposal-0042",
+        "proposalHash": "sha256:fa33575d844316a3df6ab77ad8814ae1fdd11eab99291db1a1799ae70d525a8b"
+      }
+    },
+    {
+      "sequence": 273,
+      "at": "2026-08-29T23:03:48.394Z",
+      "turn": "turn-6",
+      "type": "turn.waiting",
+      "label": "turn-6 paused for a required human action",
+      "status": "waiting"
+    }
+  ],
+  "artifacts": {
+    "caseCrate": {
+      "name": "Scientific Evidence Case Crate",
+      "path": "case-crate.json",
+      "mediaType": "application/json"
+    }
+  }
+}
