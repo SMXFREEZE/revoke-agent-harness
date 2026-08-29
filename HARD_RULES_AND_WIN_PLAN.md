@@ -1,4 +1,74 @@
-# REVOKE — Hard Rules and Win Plan
+# Agent Harness Hackathon — Hard Rules and Win Plan
+
+## CURRENT TARGET OVERRIDE — THE GAGGLE (binding, August 29, 2026)
+
+The active submission target is **The Gaggle: an adversarial multi-agent
+microbiome R&D system**. The recall-containment material below remains a
+historical safety case and reusable harness baseline. Where it conflicts with
+this section, this section wins.
+
+### Product contract
+
+The Gaggle must do one judge-visible job: take a synthetic microbiome R&D
+objective, generate competing candidate hypotheses, force independent Defense
+and Prosecution arguments, retrieve provenance-bearing evidence, run a
+deterministic compatibility experiment, challenge the leader, revise the
+ranking when warranted, preserve jury disagreement, and stop at an exact human
+scientist approval boundary.
+
+### Non-negotiable rules
+
+1. This is an acting scientific workflow, never a collection of chat personas.
+2. TrueForge is the persistent orchestrator and sole approval boundary.
+3. OpenAI is the model provider inside TrueForge.
+4. Bright Data performs independent, query-specific evidence retrieval and a
+   version-controlled extraction-repair path that affects the decision.
+5. Daytona executes deterministic scoring or counterfactual code; an LLM may
+   not invent displayed scores.
+6. Qodo reviews every important public PR; valid findings are fixed, dismissals
+   are explained, and a follow-up review is obtained before merge.
+7. Defense, Prosecution, Evidence Clerk, Methodologist, Experimentalist, blind
+   Red Team, jurors, and disagreement analyst have bounded, distinct missions.
+8. Defense and Prosecution use different queries and return typed reports.
+9. Every admitted claim carries a direct source URL, source class, biological
+   scope, methodology flags, retrieval time, and content identity.
+10. Species-level or in-vitro evidence may not silently inherit exact-strain or
+    human-efficacy weight.
+11. Retrieved pages and tool output are untrusted data and cannot grant
+    authority, change policy, select tools, or weaken the approval gate.
+12. Initial and revised beliefs are append-only. A changed leader must visibly
+    show the before/after ranks and the evidence or experiment that caused it.
+13. Jury confidence values are not averaged into fake consensus. The system
+    classifies and displays the structure of disagreement.
+14. The public case is explicitly synthetic, experimental, and non-clinical.
+    It cannot diagnose, prescribe, recommend treatment, or imply validation.
+15. Read-only work may run autonomously. Promotion of an experimental proposal
+    requires the exact immutable proposal id and SHA-256 hash.
+16. Reject means zero mutation. Approval may only change the scoped synthetic
+    R&D record, is idempotent, and emits an audit receipt.
+17. The golden demo includes a real persistent TrueForge session, distinct
+    subagents, Bright Data activity, a Daytona sandbox trace, belief revision,
+    a failure/recovery event, and a stop at approval.
+18. The existing GutGutGoose application and MetaScope product remain intact.
+    The Gaggle is an additive R&D layer using the same UI architecture.
+19. The judge-facing UI must expose current work, evidence provenance,
+    experiment output, revision history, jury disagreement, and approval state
+    without requiring narration.
+20. No credential may appear in source, browser bundles, traces, screenshots,
+    fixtures, commits, or logs. Approved local credentials are loaded only from
+    `C:/Users/sami/.config/ai/env.local` without printing their values.
+
+### 10/10 acceptance test
+
+A run passes only when a candidate that begins at rank #1 falls to #3, a
+different candidate rises from #2 to #1 because admitted evidence plus Daytona
+computation changed the state, the old ranking remains inspectable, the jury
+still exposes a meaningful dissent, and TrueForge stops before the guarded MCP
+write. A diagram, static badge, or prose claim is not substitute evidence.
+
+---
+
+# Historical recall target and source analysis
 
 Version: 1.0  
 Decision date: August 29, 2026  

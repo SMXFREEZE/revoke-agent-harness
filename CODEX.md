@@ -1,8 +1,14 @@
-# REVOKE implementation contract
+# The Gaggle implementation contract
 
 Read HARD_RULES_AND_WIN_PLAN.md before changing this project. Its organizer ledger and team rules are binding acceptance criteria.
 
-## Mission
+## Current mission
+
+The target override at the top of HARD_RULES_AND_WIN_PLAN.md is binding. Build
+The Gaggle while retaining the imported GutGutGoose/MetaScope product. The
+recall workflow below is historical context, not the active product brief.
+
+## Historical mission
 
 Build one undeniable workflow:
 

@@ -1,0 +1,606 @@
+/* =============================================================================
+   X MOVEMENT — "Playground" design language
+   Childish but designer-crafted: joyful color + springy motion + soft toy
+   tactility, impeccably finished. Loaded last so its accents win.
+   ========================================================================== */
+
+:root {
+  --spring-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --radius-toy: 28px;
+  --toy-shadow: 0 26px 50px -26px rgba(20, 8, 46, 0.45);
+  --sky: #2bb3ff;
+  --pink: #ff4db5;
+  --teal: #00c2a8;
+}
+
+/* ---- Sticker wobble: like a sticker stuck on a fridge ---- */
+.sticker {
+  transition: transform 0.35s var(--spring-bounce), box-shadow 0.35s var(--spring-bounce);
+}
+.sticker:hover {
+  transform: rotate(-2.2deg) scale(1.035);
+}
+
+/* ---- Soft floating "playground" blobs (organic, gently drifting) ---- */
+.pg-blob {
+  position: absolute;
+  border-radius: 46% 54% 60% 40% / 50% 42% 58% 50%;
+  pointer-events: none;
+  opacity: 0.85;
+  animation: pgFloat 9s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes pgFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-18px) rotate(9deg); }
+}
+
+/* ---- Confetti piece (spawned by the joy button) ---- */
+.confetti-piece {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* ---- Crayon underline word ---- */
+.crayon {
+  position: relative;
+  white-space: nowrap;
+  color: inherit;
+}
+.crayon__ink {
+  position: absolute;
+  left: -3%;
+  bottom: -0.16em;
+  width: 106%;
+  height: 0.46em;
+  overflow: visible;
+  pointer-events: none;
+}
+.hero__pop {
+  color: var(--violet);
+  display: inline-block;
+}
+
+/* ---- The signature "joy" CTA: pill with squish + magnetic pull ---- */
+.joybtn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0 1.7rem;
+  height: 58px;
+  border-radius: 999px;
+  background: var(--violet);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.02rem;
+  letter-spacing: -0.01em;
+  box-shadow: 0 14px 30px -12px rgba(105, 1, 255, 0.7), inset 0 -3px 0 rgba(0, 0, 0, 0.16);
+  cursor: pointer;
+  overflow: visible;
+  isolation: isolate;
+}
+.joybtn::after {
+  /* glossy toy highlight */
+  content: "";
+  position: absolute;
+  inset: 3px 3px auto 3px;
+  height: 40%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4), transparent);
+  pointer-events: none;
+}
+.joybtn--sun {
+  background: var(--sun);
+  color: #2a1a00;
+  box-shadow: 0 14px 30px -12px rgba(255, 200, 0, 0.7), inset 0 -3px 0 rgba(0, 0, 0, 0.12);
+}
+
+/* ---- Decorative spinning pinwheels (section accents) ---- */
+.how__spark {
+  position: absolute;
+  top: 9%;
+  right: 7%;
+  z-index: 0;
+  opacity: 0.9;
+  pointer-events: none;
+  filter: drop-shadow(0 12px 24px rgba(105, 1, 255, 0.18));
+}
+.calendar__spark {
+  position: absolute;
+  top: 8%;
+  right: 5%;
+  z-index: 1;
+  opacity: 0.95;
+  pointer-events: none;
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.28));
+}
+@media (max-width: 760px) {
+  .how__spark,
+  .calendar__spark { display: none; }
+}
+
+/* ---- Scroll-reactive marquee ---- */
+.marquee--reactive .marquee__track {
+  animation: none;
+  min-width: auto;
+  width: max-content;
+  will-change: transform;
+}
+.marquee__block {
+  display: inline-flex;
+}
+
+/* ---- Pinned horizontal-scroll gallery ---- */
+.pinrow {
+  position: relative;
+  min-height: 78vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.pinrow__track {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: clamp(1rem, 2vw, 1.6rem);
+  width: max-content;
+  padding-inline: var(--gutter);
+  will-change: transform;
+}
+.pinrow__track > * {
+  flex: 0 0 clamp(280px, 24vw, 360px);
+}
+.pinrow .programs__tilt,
+.pinrow .programs__card {
+  height: 100%;
+}
+@media (max-width: 980px) {
+  .pinrow {
+    min-height: 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-block: 0.5rem 1rem;
+  }
+  .pinrow__track > * {
+    flex: 0 0 80vw;
+    scroll-snap-align: start;
+  }
+}
+
+/* ---- Phone polish: full-width stacked hero CTAs ---- */
+@media (max-width: 560px) {
+  .hero__cta {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+  .hero__cta > * {
+    width: 100%;
+  }
+  .joybtn,
+  .hero__cta .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ---- Brand logo (animated pinwheel mark + gradient wordmark) ---- */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.logo__word {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  line-height: 1;
+  background: linear-gradient(92deg, #6901ff 0%, #7c3cff 42%, #2bb3ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.logo--dark .logo__word {
+  background: linear-gradient(92deg, #c9b8ff 0%, #ffffff 60%, #bfe6ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---- Sticker-wobble on cards: a gentle tilt + lift on hover ---- */
+.programs__tilt {
+  height: 100%;
+}
+.plan {
+  transition: transform 0.35s var(--spring-bounce), box-shadow 0.35s var(--spring-bounce);
+}
+.plan:hover {
+  transform: translateY(-6px) rotate(-1deg);
+}
+
+/* =============================================================================
+   The Movement Machine — playable hero toy
+   ========================================================================== */
+.machine {
+  position: relative;
+  width: 100%;
+  max-width: 540px;
+  margin-inline: auto;
+  aspect-ratio: 4 / 5;
+  isolation: isolate;
+}
+.machine__screen {
+  position: absolute;
+  inset: 9% 5% 6% 5%;
+  border-radius: 30px;
+  overflow: hidden;
+  border: 7px solid #fff;
+  background: #e9e4ff;
+  box-shadow: 0 40px 90px -40px rgba(20, 8, 46, 0.6), 0 0 0 1px rgba(20, 8, 46, 0.05);
+}
+.machine__screen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.machine__badge {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--violet);
+  font-weight: 700;
+  font-size: 0.78rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  box-shadow: 0 8px 20px rgba(20, 8, 46, 0.18);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.machine__badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--sun);
+  box-shadow: 0 0 0 0 rgba(255, 223, 43, 0.7);
+  animation: badgePulse 1.6s ease-out infinite;
+}
+
+/* pinwheel mascot */
+.machine__pinwheel {
+  position: absolute;
+  top: -3%;
+  left: -7%;
+  width: 30%;
+  z-index: 3;
+  filter: drop-shadow(0 14px 26px rgba(105, 1, 255, 0.32));
+}
+.machine__pinwheel svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* sun */
+.machine__sun {
+  position: absolute;
+  top: -4%;
+  right: 4%;
+  width: 86px;
+  height: 86px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+}
+.machine__sun-core {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 34%, #fff3b0, #ffdf2b 55%, #ffba08);
+  box-shadow: 0 0 0 6px rgba(255, 223, 43, 0.28);
+}
+.machine__sun-glow {
+  position: absolute;
+  inset: -30%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 223, 43, 0.6), transparent 62%);
+}
+
+/* gears / machine bits */
+.machine__gear {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  z-index: 1;
+}
+.machine__gear--a {
+  bottom: 9%;
+  left: 1%;
+  background: var(--teal);
+  box-shadow: 0 8px 18px rgba(0, 194, 168, 0.35);
+}
+.machine__gear--b {
+  bottom: 2%;
+  right: 12%;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  background: var(--pink);
+  box-shadow: 0 8px 18px rgba(255, 77, 181, 0.35);
+}
+
+/* press / pause control */
+.machine__btn {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0 1.5rem;
+  height: 58px;
+  border-radius: 999px;
+  background: var(--sun);
+  color: #2a1a00;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.05rem;
+  cursor: pointer;
+  box-shadow: 0 16px 34px -12px rgba(255, 200, 0, 0.75), inset 0 -3px 0 rgba(0, 0, 0, 0.14);
+  transition: transform 0.3s var(--spring-bounce), background 0.3s, box-shadow 0.3s;
+}
+.machine__btn:hover {
+  transform: translate(-50%, -50%) scale(1.06);
+}
+.machine__btn-ico {
+  font-size: 0.9em;
+  line-height: 1;
+}
+.machine__btn.is-small {
+  top: auto;
+  left: auto;
+  right: 8%;
+  bottom: 11%;
+  transform: none;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  justify-content: center;
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--violet);
+}
+.machine__btn.is-small:hover {
+  transform: scale(1.08);
+}
+
+.machine__confetti {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  z-index: 6;
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .machine { max-width: 420px; }
+}
+
+/* =============================================================================
+   Hero showcase — premium framed photo (replaces the cartoon "machine")
+   ========================================================================== */
+.showcase {
+  position: relative;
+  width: 100%;
+  max-width: 540px;
+  margin-inline: auto;
+  aspect-ratio: 4 / 5;
+}
+.showcase__glow {
+  position: absolute;
+  inset: -14% -10% -10% -10%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(55% 45% at 72% 16%, rgba(255, 223, 43, 0.4), transparent 62%),
+    radial-gradient(70% 60% at 18% 92%, rgba(105, 1, 255, 0.2), transparent 62%);
+  filter: blur(10px);
+}
+.showcase__frame {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow:
+    0 60px 120px -50px rgba(20, 8, 46, 0.55),
+    0 0 0 1px rgba(20, 8, 46, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+.showcase__frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.showcase__badge {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--violet);
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  box-shadow: 0 10px 24px rgba(20, 8, 46, 0.2);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.showcase__badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--sun);
+  animation: badgePulse 1.8s ease-out infinite;
+}
+.showcase__pinwheel {
+  position: absolute;
+  top: -5%;
+  left: -7%;
+  z-index: 3;
+  filter: drop-shadow(0 14px 26px rgba(105, 1, 255, 0.3));
+}
+.showcase__sun {
+  position: absolute;
+  top: -4%;
+  right: 2%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 70px;
+  height: 70px;
+}
+.showcase__sun::before {
+  content: "";
+  position: absolute;
+  inset: -36%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 223, 43, 0.55), transparent 62%);
+}
+.showcase__sun-core {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 34%, #fff3b0, #ffdf2b 55%, #ffba08);
+  box-shadow: 0 0 0 6px rgba(255, 223, 43, 0.26);
+}
+@media (max-width: 900px) {
+  .showcase { max-width: 440px; }
+  .showcase__pinwheel { width: 64px; height: 64px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .showcase__badge-dot,
+  .showcase__glow { animation: none; }
+}
+
+/* =============================================================================
+   Intro curtain — playful front-door that irises away into the home
+   ========================================================================== */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 4000;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(70% 60% at 50% 18%, rgba(255, 223, 43, 0.32), transparent 60%),
+    radial-gradient(80% 70% at 80% 100%, rgba(105, 1, 255, 0.16), transparent 60%),
+    linear-gradient(180deg, #fbf9ff 0%, #f1ecff 60%, #efe7ff 100%);
+}
+.intro__stage {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.4rem;
+  padding: 1.5rem;
+}
+.intro__mark {
+  filter: drop-shadow(0 20px 40px rgba(105, 1, 255, 0.3));
+  margin-bottom: 0.8rem;
+}
+.intro__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(0.4rem, 1vw, 0.7rem);
+  margin-bottom: 1.2rem;
+  filter: drop-shadow(0 16px 34px rgba(105, 1, 255, 0.26));
+}
+.intro__logo img { height: clamp(38px, 6vw, 58px); width: auto; }
+.intro__logo .logo__word { font-size: clamp(23px, 3.6vw, 36px); }
+.intro__word {
+  font-size: clamp(2.6rem, 8vw, 5rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  background: linear-gradient(92deg, #6901ff 0%, #7c3cff 45%, #2bb3ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.intro__tag {
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  color: var(--muted);
+  font-weight: 600;
+}
+.intro__go {
+  margin-top: 1.4rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 1.7rem;
+  height: 56px;
+  border-radius: 999px;
+  background: var(--sun);
+  color: #2a1a00;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.05rem;
+  cursor: pointer;
+  box-shadow: 0 16px 34px -12px rgba(255, 200, 0, 0.75), inset 0 -3px 0 rgba(0, 0, 0, 0.14);
+}
+.intro__skip {
+  position: absolute;
+  top: 1.4rem;
+  right: 1.5rem;
+  z-index: 2;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--muted);
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+.intro__skip:hover {
+  color: var(--violet);
+  background: rgba(105, 1, 255, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro__mark g { animation: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pg-blob { animation: none; }
+  .plan:hover { transform: none; }
+  .machine__sun-glow,
+  .machine__badge-dot { animation: none; }
+}

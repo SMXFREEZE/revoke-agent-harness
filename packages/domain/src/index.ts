@@ -373,3 +373,222 @@ export function computeExposure(
   });
 }
 
+// The Gaggle uses these values only as transparent prototype R&D heuristics.
+// They are deterministic workflow inputs, never clinical probabilities.
+const UnitIntervalSchema = z.number().min(0).max(1);
+
+export const GaggleCandidateSchema = z.object({
+  id: z.string().min(1),
+  label: z.string().min(1),
+  strain: z.string().min(1),
+  proposedRole: z.string().min(1),
+  pathwayComplementarity: UnitIntervalSchema,
+  crossFeedingPotential: UnitIntervalSchema,
+  ecosystemCompatibility: UnitIntervalSchema,
+  evidenceStrength: UnitIntervalSchema,
+  substrateCompetition: UnitIntervalSchema,
+  uncertaintyPenalty: UnitIntervalSchema,
+});
+
+export const GaggleCandidateScoreSchema = z.object({
+  candidateId: z.string().min(1),
+  score: z.number().min(0).max(100),
+  rank: z.number().int().positive(),
+  model: z.literal("experimental-rd-compatibility-v1"),
+});
+
+export const EvidenceClassSchema = z.enum([
+  "direct_human_strain",
+  "human_species",
+  "animal_strain",
+  "in_vitro_strain",
+  "mechanistic_inference",
+  "commercial_claim",
+]);
+
+export const GaggleEvidenceSchema = z.object({
+  id: z.string().min(1),
+  claim: z.string().min(1),
+  candidateId: z.string().min(1),
+  sourceUrl: z.url(),
+  sourceType: EvidenceClassSchema,
+  scope: z.enum(["strain_specific", "species_level", "mechanistic"]),
+  direction: z.enum(["supports", "contradicts"]),
+  methodologyFlags: z.array(z.string().min(1)).default([]),
+  retrievedAt: DateTimeSchema,
+});
+
+export const JuryVoteSchema = z.object({
+  judge: z.string().min(1),
+  priority: z.string().min(1),
+  verdict: z.enum(["promising", "uncertain", "reject"]),
+  confidence: UnitIntervalSchema,
+  supportingFactor: z.string().min(1),
+  uncertainty: z.string().min(1),
+  disagreementClass: z.enum([
+    "factual",
+    "source",
+    "methodological",
+    "uncertainty_weighting",
+    "evidence_standard",
+    "model_assumption",
+  ]),
+});
+
+export const ExperimentalApprovalRequestSchema = z.object({
+  proposalId: z.string().min(1),
+  proposalHash: z.string().regex(/^sha256:[a-f0-9]{64}$/),
+  candidateIds: z.array(z.string().min(1)).min(1),
+  status: z.literal("scientist_approval_required"),
+});
+
+export type GaggleCandidate = z.infer<typeof GaggleCandidateSchema>;
+export type GaggleCandidateScore = z.infer<typeof GaggleCandidateScoreSchema>;
+export type GaggleEvidence = z.infer<typeof GaggleEvidenceSchema>;
+export type JuryVote = z.infer<typeof JuryVoteSchema>;
+export type ExperimentalApprovalRequest = z.infer<
+  typeof ExperimentalApprovalRequestSchema
+>;
+
+const EVIDENCE_WEIGHTS: Record<z.infer<typeof EvidenceClassSchema>, number> = {
+  direct_human_strain: 1,
+  human_species: 0.62,
+  animal_strain: 0.5,
+  in_vitro_strain: 0.45,
+  mechanistic_inference: 0.35,
+  commercial_claim: 0.1,
+};
+
+export function prototypeEvidenceWeight(evidenceInput: GaggleEvidence): number {
+  const evidence = GaggleEvidenceSchema.parse(evidenceInput);
+  const scopeMultiplier =
+    evidence.scope === "strain_specific"
+      ? 1
+      : evidence.scope === "species_level"
+        ? 0.72
+        : 0.58;
+  const methodologyMultiplier = Math.max(
+    0.35,
+    1 - evidence.methodologyFlags.length * 0.12,
+  );
+  const direction = evidence.direction === "supports" ? 1 : -1;
+  return Number(
+    (
+      EVIDENCE_WEIGHTS[evidence.sourceType] *
+      scopeMultiplier *
+      methodologyMultiplier *
+      direction
+    ).toFixed(4),
+  );
+}
+
+export function scoreGaggleCandidate(candidateInput: GaggleCandidate): number {
+  const candidate = GaggleCandidateSchema.parse(candidateInput);
+  const positive =
+    candidate.pathwayComplementarity * 0.28 +
+    candidate.crossFeedingPotential * 0.22 +
+    candidate.ecosystemCompatibility * 0.18 +
+    candidate.evidenceStrength * 0.17;
+  const penalty =
+    candidate.substrateCompetition * 0.22 +
+    candidate.uncertaintyPenalty * 0.13;
+  return Number((Math.max(0, Math.min(1, positive - penalty)) * 100).toFixed(1));
+}
+
+export function rankGaggleCandidates(
+  candidatesInput: GaggleCandidate[],
+): GaggleCandidateScore[] {
+  const candidates = z.array(GaggleCandidateSchema).min(1).parse(candidatesInput);
+  const ranked = candidates
+    .map((candidate) => ({
+      candidateId: candidate.id,
+      score: scoreGaggleCandidate(candidate),
+    }))
+    .sort((left, right) => right.score - left.score || left.candidateId.localeCompare(right.candidateId));
+
+  return ranked.map((candidate, index) =>
+    GaggleCandidateScoreSchema.parse({
+      ...candidate,
+      rank: index + 1,
+      model: "experimental-rd-compatibility-v1",
+    }),
+  );
+}
+
+export function buildBeliefRevision(
+  previousInput: GaggleCandidate[],
+  currentInput: GaggleCandidate[],
+  reason: string,
+) {
+  if (!reason.trim()) {
+    throw new Error("Belief revision requires an explicit evidence or experiment reason.");
+  }
+  const previous = rankGaggleCandidates(previousInput);
+  const current = rankGaggleCandidates(currentInput);
+  const currentById = new Map(current.map((entry) => [entry.candidateId, entry]));
+  const changes = previous.map((entry) => {
+    const next = currentById.get(entry.candidateId);
+    if (!next) {
+      throw new Error(`Candidate disappeared during belief revision: ${entry.candidateId}`);
+    }
+    return {
+      candidateId: entry.candidateId,
+      previousRank: entry.rank,
+      currentRank: next.rank,
+      previousScore: entry.score,
+      currentScore: next.score,
+    };
+  });
+  return {
+    reason: reason.trim(),
+    changedLeader: previous[0]?.candidateId !== current[0]?.candidateId,
+    previousLeader: previous[0]?.candidateId,
+    currentLeader: current[0]?.candidateId,
+    changes,
+  };
+}
+
+export function analyzeJuryDisagreement(votesInput: JuryVote[]) {
+  const votes = z.array(JuryVoteSchema).min(3).max(5).parse(votesInput);
+  const counts = { promising: 0, uncertain: 0, reject: 0 };
+  const disagreementClasses = new Map<string, number>();
+
+  for (const vote of votes) {
+    counts[vote.verdict] += 1;
+    disagreementClasses.set(
+      vote.disagreementClass,
+      (disagreementClasses.get(vote.disagreementClass) ?? 0) + 1,
+    );
+  }
+
+  const dominantCount = Math.max(...Object.values(counts));
+  const dominantShare = dominantCount / votes.length;
+  const verdictKinds = Object.values(counts).filter((count) => count > 0).length;
+  const level =
+    verdictKinds >= 3 || dominantShare < 0.6
+      ? "high"
+      : verdictKinds === 2 && dominantShare < 0.8
+        ? "medium"
+        : "low";
+  const primaryClass = [...disagreementClasses.entries()].sort(
+    (left, right) => right[1] - left[1] || left[0].localeCompare(right[0]),
+  )[0]?.[0];
+
+  return { counts, level, primaryClass, dominantShare: Number(dominantShare.toFixed(2)) };
+}
+
+export function approveExperimentalProposal(
+  requestInput: ExperimentalApprovalRequest,
+  typedPhrase: string,
+) {
+  const request = ExperimentalApprovalRequestSchema.parse(requestInput);
+  const expectedPhrase = `APPROVE ${request.proposalId} ${request.proposalHash}`;
+  if (typedPhrase.trim() !== expectedPhrase) {
+    throw new Error("Approval phrase does not match the exact immutable proposal.");
+  }
+  return {
+    proposalId: request.proposalId,
+    proposalHash: request.proposalHash,
+    status: "approved_for_experimental_validation" as const,
+  };
+}

@@ -13,6 +13,7 @@ function fixtureHtml(fixture: Awaited<ReturnType<typeof loadRecallFixture>>): st
     <p>${fixture.publicationDate === "2026-07-02" ? "July 2, 2026" : "August 27, 2026"}</p>
     <p>${fixture.units.toLocaleString("en-US")} Cuisinart wire bristle units</p>
     <p>Wire bristle ingestion hazard. Consumers can receive a refund.</p>
+    <p>Related recall: ${fixture.relatedRecallNumbers.join(" ")}</p>
     <p>${fixture.identifiers.map((item) => item.value).join(" ")}</p>
     <p>${family}</p>
     <p>${"Public recall verification content. ".repeat(40)}</p>
@@ -47,5 +48,34 @@ describe("live recall verification", () => {
         () => Promise.resolve(new Response(incomplete, { status: 200 })),
       ),
     ).rejects.toThrow("identifier:FBH-51");
+  });
+
+  it("builds the live snapshot from parsed document fields", async () => {
+    const fixture = await loadRecallFixture("26-717");
+    const result = await fetchVerifiedRecall(
+      fixture,
+      () => Promise.resolve(new Response(fixtureHtml(fixture), { status: 200 })),
+    );
+
+    expect(result.snapshot).not.toBe(fixture);
+    expect(result.snapshot.evidence[0]).toMatchObject({
+      mode: "live",
+      extractor: "revoke-cpsc-live-parser/v2",
+    });
+    expect(result.snapshot.identifiers).toEqual(
+      [...fixture.identifiers].sort((left, right) => left.value.localeCompare(right.value)),
+    );
+  });
+
+  it("fails closed when the live document adds an unknown model", async () => {
+    const fixture = await loadRecallFixture("26-717");
+    const changed = fixtureHtml(fixture).replace("</body>", "<p>QQQ-999</p></body>");
+
+    await expect(
+      fetchVerifiedRecall(
+        fixture,
+        () => Promise.resolve(new Response(changed, { status: 200 })),
+      ),
+    ).rejects.toThrow("noUnknownIdentifiers");
   });
 });

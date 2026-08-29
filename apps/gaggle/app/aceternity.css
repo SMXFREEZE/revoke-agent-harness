@@ -1,0 +1,137 @@
+/* =============================================================================
+   Premium component patterns (Aceternity / Codrops style), implemented in the
+   project's own CSS. Replaces the generic "glow-halo" buttons + flat cards.
+   ========================================================================== */
+
+/* ---- Moving-border button -------------------------------------------------*/
+.mvb-reset {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+}
+.mvb {
+  position: relative;
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 2px;
+  overflow: hidden;
+  isolation: isolate;
+}
+.mvb__border {
+  position: absolute;
+  inset: -150%;
+  z-index: 0;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg 190deg,
+    #6901ff 250deg,
+    #ff4db5 300deg,
+    #ffdf2b 340deg,
+    transparent 360deg
+  );
+  animation: mvb-spin 4s linear infinite;
+}
+.mvb__inner {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border-radius: 999px;
+  background: var(--violet);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transition: background var(--dur) var(--ease-out), transform var(--dur) var(--ease-spring);
+}
+.mvb--sm .mvb__inner { padding: 0.6rem 1.2rem; font-size: 0.9rem; }
+.mvb--md .mvb__inner { padding: 0.9rem 1.7rem; font-size: 1rem; }
+.mvb--lg .mvb__inner { padding: 1.05rem 2.1rem; font-size: 1.1rem; }
+.mvb:hover .mvb__inner { background: var(--violet-600); transform: scale(1.015); }
+.mvb:hover .mvb__border { animation-duration: 1.6s; }
+@keyframes mvb-spin { to { transform: rotate(360deg); } }
+
+/* ---- Shimmer button -------------------------------------------------------*/
+.shb {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  overflow: hidden;
+  isolation: isolate;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform var(--dur) var(--ease-spring), filter var(--dur) var(--ease-out);
+}
+.shb--sm { padding: 0.6rem 1.2rem; font-size: 0.9rem; }
+.shb--md { padding: 0.95rem 1.8rem; font-size: 1rem; }
+.shb--lg { padding: 1.1rem 2.1rem; font-size: 1.1rem; }
+.shb--sun { background: var(--sun); color: var(--violet-900); border-color: rgba(154, 110, 0, 0.18); }
+.shb--violet { background: var(--violet); color: #fff; }
+.shb--ink { background: var(--indigo-ink); color: #fff; }
+.shb:hover { transform: translateY(-2px); filter: brightness(1.03); }
+.shb__label {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.shb__shine {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(110deg, transparent 32%, rgba(255, 255, 255, 0.55) 48%, transparent 64%);
+  transform: translateX(-120%);
+  animation: shb-shine 3.4s ease-in-out infinite;
+}
+.shb--violet .shb__shine,
+.shb--ink .shb__shine {
+  background: linear-gradient(110deg, transparent 32%, rgba(255, 255, 255, 0.32) 48%, transparent 64%);
+}
+.shb:hover .shb__shine { animation-duration: 1.4s; }
+@keyframes shb-shine {
+  0% { transform: translateX(-120%); }
+  55%, 100% { transform: translateX(120%); }
+}
+
+/* ---- Spotlight card -------------------------------------------------------*/
+.spotcard {
+  position: relative;
+  border-radius: var(--radius);
+  background: #fff;
+  border: 1px solid rgba(27, 20, 48, 0.07);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out),
+    transform var(--dur) var(--ease-out);
+}
+.spotcard:hover {
+  border-color: rgba(105, 1, 255, 0.35);
+  box-shadow: var(--shadow);
+}
+.spotcard__glow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), var(--spot), transparent 60%);
+}
+.spotcard:hover .spotcard__glow { opacity: 1; }
+.spotcard__content { position: relative; z-index: 1; height: 100%; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mvb__border { animation: none; background: conic-gradient(from 0deg, #6901ff, #ff4db5, #ffdf2b, #6901ff); }
+  .shb__shine { animation: none; opacity: 0; }
+}

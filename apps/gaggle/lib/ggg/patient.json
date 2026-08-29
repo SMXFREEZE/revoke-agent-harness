@@ -1,0 +1,35 @@
+{
+  "name": "Jordan Vale",
+  "age": 34,
+  "sex": "non-binary",
+  "sampleId": "GGG-JV34-0617",
+  "collected": "2026-06-17",
+  "goals": [
+    "Less bloating",
+    "More regular",
+    "Steady energy"
+  ],
+  "diet": "Flexitarian, moderate fibre, occasional late nights",
+  "notes": "Two courses of antibiotics in the last year.",
+  "truthNamed": {
+    "fprau": 3.16,
+    "rosin": 5.06,
+    "erect": 6.32,
+    "rbrom": 2.74,
+    "blaut": 6.85,
+    "lacto": 0.37,
+    "chris": 0.95,
+    "bunif": 11.59,
+    "bvulg": 8.95,
+    "pcopr": 1.37,
+    "alist": 4.21,
+    "blong": 0.95,
+    "badol": 0.63,
+    "akker": 0.63,
+    "ecoli": 3.16,
+    "klebs": 1.47
+  },
+  "otherPct": 41.6,
+  "shannonTruth": 3.13,
+  "richness": 30
+}

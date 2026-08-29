@@ -7,7 +7,14 @@ import { CommerceStore } from "../src/store.js";
 describe("commerce MCP HTTP service", () => {
   it("exposes a truthful health response", async () => {
     const fixtures = await loadDemoFixtures();
-    const app = createApp(new CommerceStore(fixtures.catalog, fixtures.orders));
+    const app = createApp(
+      new CommerceStore(
+        fixtures.catalog,
+        fixtures.orders,
+        fixtures.actionableTargetsByRecall,
+        "test-only-approval-secret-with-at-least-32-bytes",
+      ),
+    );
 
     const response = await request(app).get("/health").expect(200);
 
@@ -18,4 +25,3 @@ describe("commerce MCP HTTP service", () => {
     });
   });
 });
-

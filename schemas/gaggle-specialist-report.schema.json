@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gaggle.local/schemas/specialist-report.schema.json",
+  "title": "The Gaggle specialist report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["role", "caseId", "status", "claims", "blockers"],
+  "properties": {
+    "role": {
+      "enum": [
+        "defense",
+        "prosecution",
+        "evidence_clerk",
+        "methodologist",
+        "experimentalist",
+        "red_team",
+        "jury",
+        "disagreement_analyst"
+      ]
+    },
+    "caseId": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["complete", "blocked", "contradicted"] },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["claimId", "claim", "direction", "evidenceIds"],
+        "properties": {
+          "claimId": { "type": "string", "minLength": 1 },
+          "claim": { "type": "string", "minLength": 1 },
+          "direction": { "enum": ["supports", "contradicts", "uncertain"] },
+          "evidenceIds": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "falsifiableTest": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "experimentRequests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["hypothesis", "competingClaims", "requiredInputs", "expectedOutputs"],
+        "properties": {
+          "hypothesis": { "type": "string", "minLength": 1 },
+          "competingClaims": { "type": "array", "items": { "type": "string" }, "minItems": 2 },
+          "requiredInputs": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+          "expectedOutputs": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+        }
+      },
+      "default": []
+    },
+    "blockers": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+  }
+}

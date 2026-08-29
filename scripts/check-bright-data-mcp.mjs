@@ -77,6 +77,18 @@ if (!token) {
     };
     const searchText = resultText(searchResult);
     const scrapeText = resultText(scrapeResult);
+    const discoveryVerified =
+      searchText.toLowerCase().includes("cuisinart") &&
+      searchText.toLowerCase().includes("cpsc.gov");
+    const manufacturerPageVerified =
+      scrapeText.toLowerCase().includes("grill") &&
+      scrapeText.toLowerCase().includes("recall");
+
+    if (!discoveryVerified || !manufacturerPageVerified) {
+      throw new Error(
+        "Bright Data returned successfully, but required recall evidence was not verified.",
+      );
+    }
 
     console.log(
       JSON.stringify({
@@ -86,12 +98,8 @@ if (!token) {
         serverVersion: "2.11.1",
         requiredTools: [searchTool.name, scrapeTool.name],
         publishedToolCount: names.length,
-        discoveryVerified:
-          searchText.toLowerCase().includes("cuisinart") &&
-          searchText.toLowerCase().includes("cpsc.gov"),
-        manufacturerPageVerified:
-          scrapeText.toLowerCase().includes("grill") &&
-          scrapeText.toLowerCase().includes("recall"),
+        discoveryVerified,
+        manufacturerPageVerified,
         searchResponseCharacters: searchText.length,
         scrapeResponseCharacters: scrapeText.length,
       }),

@@ -1,0 +1,24 @@
+/* =============================================================================
+   Premium refinement layer — additive polish only.
+   Homepage surfaces are owned by home.css (Playground Atlas tokens); this file
+   no longer overrides them. Kept rules are token-based and non-conflicting.
+   ========================================================================== */
+
+/* ---- Confident, tighter display type ---- */
+.h-hero,
+.h-1,
+.h-2 {
+  letter-spacing: -0.025em;
+}
+
+/* ---- Generic card surface (used by inner pages) ---- */
+.card {
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--r-xl);
+}
+
+/* ---- Stats: editorial numerals ---- */
+.stats__num {
+  font-variant-numeric: tabular-nums;
+}

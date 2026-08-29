@@ -32,7 +32,14 @@ afterEach(async () => {
 describe("MCP contract", () => {
   it("publishes read/write annotations and returns labeled simulated data", async () => {
     const fixtures = await loadDemoFixtures();
-    const app = createApp(new CommerceStore(fixtures.catalog, fixtures.orders));
+    const app = createApp(
+      new CommerceStore(
+        fixtures.catalog,
+        fixtures.orders,
+        fixtures.actionableTargetsByRecall,
+        "test-only-approval-secret-with-at-least-32-bytes",
+      ),
+    );
     const httpServer = app.listen(0, "127.0.0.1");
     openServers.push(httpServer);
     await new Promise<void>((resolve) => httpServer.once("listening", resolve));

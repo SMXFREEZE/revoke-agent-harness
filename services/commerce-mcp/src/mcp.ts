@@ -1,5 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
+import { ApprovalArtifactSchema } from "./approval.js";
 import type { CommerceStore } from "./store.js";
 
 const READ_ONLY = {
@@ -91,7 +92,7 @@ export function buildMcpServer(store: CommerceStore): McpServer {
       inputSchema: {
         proposalId: z.string().min(1),
         idempotencyKey: z.string().min(1),
-        approvedBy: z.string().min(1),
+        approval: ApprovalArtifactSchema,
       },
       annotations: CONTROLLED_WRITE,
     },
@@ -113,7 +114,7 @@ export function buildMcpServer(store: CommerceStore): McpServer {
       inputSchema: {
         receiptId: z.string().uuid(),
         idempotencyKey: z.string().min(1),
-        approvedBy: z.string().min(1),
+        approval: ApprovalArtifactSchema,
       },
       annotations: CONTROLLED_WRITE,
     },
@@ -135,7 +136,7 @@ export function buildMcpServer(store: CommerceStore): McpServer {
       inputSchema: {
         receiptId: z.string().uuid(),
         idempotencyKey: z.string().min(1),
-        approvedBy: z.string().min(1),
+        approval: ApprovalArtifactSchema,
       },
       annotations: CONTROLLED_WRITE,
     },
@@ -162,4 +163,3 @@ export function buildMcpServer(store: CommerceStore): McpServer {
 
   return server;
 }
-

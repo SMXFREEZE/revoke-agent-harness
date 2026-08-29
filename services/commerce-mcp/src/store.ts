@@ -6,6 +6,11 @@ import {
   type Order,
 } from "@revoke/domain";
 import { z } from "zod";
+import {
+  verifyApprovalArtifact,
+  type ApprovalArtifact,
+  type ApprovalOperation,
+} from "./approval.js";
 
 const ProposalSchema = z.object({
   proposalId: z.string().min(1),
@@ -61,15 +66,29 @@ function uniqueSorted(values: string[]): string[] {
 export class CommerceStore {
   readonly #catalog: Map<string, CatalogItem>;
   readonly #orders: Order[];
+  readonly #actionableTargetsByRecall: Map<string, Set<string>>;
+  readonly #approvalSecret: string;
   readonly #proposals = new Map<string, ContainmentProposal>();
   readonly #receiptsById = new Map<string, ActionReceipt>();
   readonly #receiptsByIdempotencyKey = new Map<string, ActionReceipt>();
   readonly #audit: AuditEvent[] = [];
 
-  constructor(catalogInput: CatalogItem[], ordersInput: Order[]) {
+  constructor(
+    catalogInput: CatalogItem[],
+    ordersInput: Order[],
+    actionableTargetsByRecallInput: Record<string, string[]>,
+    approvalSecret: string,
+  ) {
     const catalog = CatalogItemSchema.array().parse(catalogInput);
     this.#catalog = new Map(catalog.map((item) => [item.sku, structuredClone(item)]));
     this.#orders = structuredClone(OrderSchema.array().parse(ordersInput));
+    this.#actionableTargetsByRecall = new Map(
+      Object.entries(actionableTargetsByRecallInput).map(([recallNumber, skus]) => [
+        z.string().min(1).parse(recallNumber),
+        new Set(z.array(z.string().min(1)).parse(skus)),
+      ]),
+    );
+    this.#approvalSecret = approvalSecret;
   }
 
   listCatalog(): CatalogItem[] {
@@ -87,7 +106,14 @@ export class CommerceStore {
 
   previewContainment(recallNumber: string, skusInput: string[]): ContainmentProposal {
     const skus = uniqueSorted(z.array(z.string().min(1)).min(1).parse(skusInput));
+    const evidenceDerivedTargets = this.#actionableTargetsByRecall.get(recallNumber);
+    if (evidenceDerivedTargets === undefined) {
+      throw new Error("No trusted actionable-target artifact exists for recall " + recallNumber + ".");
+    }
     const changes = skus.map((sku) => {
+      if (!evidenceDerivedTargets.has(sku)) {
+        throw new Error("SKU is not an evidence-derived actionable target: " + sku);
+      }
       const item = this.#catalog.get(sku);
       if (item === undefined) {
         throw new Error("Unknown catalog SKU: " + sku);
@@ -129,19 +155,29 @@ export class CommerceStore {
   applyContainment(input: {
     proposalId: string;
     idempotencyKey: string;
-    approvedBy: string;
+    approval: ApprovalArtifact;
   }): { receipt: ActionReceipt; replayed: boolean } {
-    const existing = this.#receiptsByIdempotencyKey.get(input.idempotencyKey);
-    if (existing !== undefined) {
-      return { receipt: structuredClone(existing), replayed: true };
-    }
-
     const proposal = this.#proposals.get(input.proposalId);
     if (proposal === undefined) {
       throw new Error("Unknown or expired containment proposal.");
     }
     if (proposal.idempotencyKey !== input.idempotencyKey) {
       throw new Error("Idempotency key does not match the previewed proposal.");
+    }
+    const approval = this.#verifyApproval(
+      input.approval,
+      "apply_containment",
+      proposal.proposalId,
+      input.idempotencyKey,
+    );
+    const replay = this.#replayFor(
+      input.idempotencyKey,
+      "containment.applied",
+      proposal.recallNumber,
+      proposal.changes.map((change) => change.sku),
+    );
+    if (replay !== undefined) {
+      return replay;
     }
 
     for (const change of proposal.changes) {
@@ -170,7 +206,7 @@ export class CommerceStore {
       action: "containment.applied",
       recallNumber: proposal.recallNumber,
       executedAt: new Date().toISOString(),
-      approvedBy: input.approvedBy,
+      approvedBy: approval.approvedBy,
       idempotencyKey: input.idempotencyKey,
       targetSkus: proposal.changes.map((change) => change.sku),
       changes: proposal.changes,
@@ -181,7 +217,7 @@ export class CommerceStore {
     this.#record("containment.applied", {
       proposalId: proposal.proposalId,
       receiptId: receipt.receiptId,
-      approvedBy: input.approvedBy,
+      approvedBy: approval.approvedBy,
       targetSkus: receipt.targetSkus,
     });
     return { receipt: structuredClone(receipt), replayed: false };
@@ -190,13 +226,8 @@ export class CommerceStore {
   rollbackContainment(input: {
     receiptId: string;
     idempotencyKey: string;
-    approvedBy: string;
+    approval: ApprovalArtifact;
   }): { receipt: ActionReceipt; replayed: boolean } {
-    const existing = this.#receiptsByIdempotencyKey.get(input.idempotencyKey);
-    if (existing !== undefined) {
-      return { receipt: structuredClone(existing), replayed: true };
-    }
-
     const source = this.#receiptsById.get(input.receiptId);
     if (source === undefined || source.action !== "containment.applied") {
       throw new Error("A valid containment receipt is required for rollback.");
@@ -205,6 +236,21 @@ export class CommerceStore {
     const expectedKey = "rollback:" + source.receiptId;
     if (input.idempotencyKey !== expectedKey) {
       throw new Error("Rollback idempotency key must be " + expectedKey + ".");
+    }
+    const approval = this.#verifyApproval(
+      input.approval,
+      "rollback_containment",
+      source.receiptId,
+      input.idempotencyKey,
+    );
+    const replay = this.#replayFor(
+      input.idempotencyKey,
+      "containment.rolled_back",
+      source.recallNumber,
+      source.targetSkus,
+    );
+    if (replay !== undefined) {
+      return replay;
     }
 
     const rollbackChanges: Array<Record<string, unknown>> = [];
@@ -239,7 +285,7 @@ export class CommerceStore {
       action: "containment.rolled_back",
       recallNumber: source.recallNumber,
       executedAt: new Date().toISOString(),
-      approvedBy: input.approvedBy,
+      approvedBy: approval.approvedBy,
       idempotencyKey: input.idempotencyKey,
       targetSkus: source.targetSkus,
       changes: rollbackChanges,
@@ -249,7 +295,7 @@ export class CommerceStore {
     this.#record("containment.rolled_back", {
       sourceReceiptId: source.receiptId,
       receiptId: receipt.receiptId,
-      approvedBy: input.approvedBy,
+      approvedBy: approval.approvedBy,
       targetSkus: receipt.targetSkus,
     });
     return { receipt: structuredClone(receipt), replayed: false };
@@ -258,13 +304,8 @@ export class CommerceStore {
   createNoticeDrafts(input: {
     receiptId: string;
     idempotencyKey: string;
-    approvedBy: string;
+    approval: ApprovalArtifact;
   }): { receipt: ActionReceipt; replayed: boolean } {
-    const existing = this.#receiptsByIdempotencyKey.get(input.idempotencyKey);
-    if (existing !== undefined) {
-      return { receipt: structuredClone(existing), replayed: true };
-    }
-
     const source = this.#receiptsById.get(input.receiptId);
     if (source === undefined || source.action !== "containment.applied") {
       throw new Error("Notices require a successful containment receipt.");
@@ -273,6 +314,21 @@ export class CommerceStore {
     const expectedKey = "draft-notices:" + source.receiptId;
     if (input.idempotencyKey !== expectedKey) {
       throw new Error("Notice idempotency key must be " + expectedKey + ".");
+    }
+    const approval = this.#verifyApproval(
+      input.approval,
+      "create_notice_drafts",
+      source.receiptId,
+      input.idempotencyKey,
+    );
+    const replay = this.#replayFor(
+      input.idempotencyKey,
+      "notices.drafted",
+      source.recallNumber,
+      source.targetSkus,
+    );
+    if (replay !== undefined) {
+      return replay;
     }
 
     const orders = this.getOrdersBySkus(source.targetSkus);
@@ -289,7 +345,7 @@ export class CommerceStore {
       action: "notices.drafted",
       recallNumber: source.recallNumber,
       executedAt: new Date().toISOString(),
-      approvedBy: input.approvedBy,
+      approvedBy: approval.approvedBy,
       idempotencyKey: input.idempotencyKey,
       targetSkus: source.targetSkus,
       changes,
@@ -299,7 +355,7 @@ export class CommerceStore {
     this.#record("notices.drafted", {
       sourceReceiptId: source.receiptId,
       receiptId: receipt.receiptId,
-      approvedBy: input.approvedBy,
+      approvedBy: approval.approvedBy,
       draftCount: changes.length,
       delivery: "test-sink",
     });
@@ -308,6 +364,40 @@ export class CommerceStore {
 
   auditLog(): AuditEvent[] {
     return structuredClone(this.#audit);
+  }
+
+  #verifyApproval(
+    artifact: ApprovalArtifact,
+    operation: ApprovalOperation,
+    resourceId: string,
+    idempotencyKey: string,
+  ): ApprovalArtifact {
+    return verifyApprovalArtifact(this.#approvalSecret, artifact, {
+      operation,
+      resourceId,
+      idempotencyKey,
+    });
+  }
+
+  #replayFor(
+    idempotencyKey: string,
+    expectedAction: ActionReceipt["action"],
+    expectedRecallNumber: string,
+    expectedTargetSkus: string[],
+  ): { receipt: ActionReceipt; replayed: true } | undefined {
+    const existing = this.#receiptsByIdempotencyKey.get(idempotencyKey);
+    if (existing === undefined) {
+      return undefined;
+    }
+    if (
+      existing.action !== expectedAction ||
+      existing.recallNumber !== expectedRecallNumber ||
+      JSON.stringify(uniqueSorted(existing.targetSkus)) !==
+        JSON.stringify(uniqueSorted(expectedTargetSkus))
+    ) {
+      throw new Error("Idempotency key is already bound to a different operation.");
+    }
+    return { receipt: structuredClone(existing), replayed: true };
   }
 
   #saveReceipt(receipt: ActionReceipt): void {
@@ -326,4 +416,3 @@ export class CommerceStore {
     );
   }
 }
-
