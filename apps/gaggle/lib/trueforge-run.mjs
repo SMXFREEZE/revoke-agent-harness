@@ -831,7 +831,8 @@ export function buildScientificEvidenceCaseCrate({ trace, fixture, fixtureHash }
     },
     case: {
       caseId,
-      fixturePath: "fixtures/gaggle/case-0042.json",
+      fixtureUrl:
+        "https://raw.githubusercontent.com/SMXFREEZE/revoke-agent-harness/main/fixtures/gaggle/case-0042.json",
       fixtureHash,
     },
     proposal: {
@@ -864,7 +865,7 @@ export function buildScientificEvidenceCaseCrate({ trace, fixture, fixtureHash }
       },
       {
         name: "Synthetic case fixture",
-        path: "fixtures/gaggle/case-0042.json",
+        url: "https://raw.githubusercontent.com/SMXFREEZE/revoke-agent-harness/main/fixtures/gaggle/case-0042.json",
         mediaType: "application/json",
         hash: fixtureHash,
       },

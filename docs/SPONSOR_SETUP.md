@@ -26,10 +26,10 @@ metadata and content hashes. See `docs/BRIGHT_DATA_GAGGLE_EVIDENCE.md` for the
 exact contract and evidence artifacts. The original recall probe remains
 unchanged.
 
-The remaining required secret is `QODO_API_KEY`. Qodo also needs its GitHub App
-authorized for the eventual public repository. Do not replace Qodo with a local
-LLM review; the submitted evidence must link to real Qodo review comments and
-the remediation round.
+The Qodo GitHub App is required on the public repository. `QODO_API_KEY` is
+optional and is used only for local semantic-rules lookup when available. Do
+not replace the GitHub App review with a local LLM review; submitted evidence
+must link to real Qodo review comments and the remediation round.
 
 TrueForge runs locally at `http://127.0.0.1:8790`. Configure:
 

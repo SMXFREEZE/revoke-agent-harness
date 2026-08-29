@@ -11,7 +11,8 @@ jury disagreement, and stop for exact scientist approval.
 The public site includes a verified TrueForge flight recorder: it replays the
 sanitized persisted event trace, agent lifecycles, sponsor tool activity,
 zero-mutation denial, and the exact pending approval boundary. The downloadable
-Scientific Evidence Case Crate carries its own integrity hash.
+Scientific Evidence Case Crate contains integrity hashes for its recorded
+artifacts.
 
 The complete GutGutGoose/MetaScope application imported from the owner's Vercel
 deployment is preserved under `apps/gaggle`. The Gaggle is an additive R&D
@@ -68,8 +69,7 @@ Prerequisites: Node.js 22.14 or newer and approved sponsor credentials.
 
 ```powershell
 npm install
-npm run build --workspace @revoke/console
-npm run preview --workspace @revoke/console
+npm run dev
 ```
 
 Sponsor-backed orchestration:
@@ -98,8 +98,9 @@ reads its token file privately and verifies every downloaded file hash.
 [Public implementation PR #1](https://github.com/SMXFREEZE/revoke-agent-harness/pull/1)
 is the representative review trail. The Qodo GitHub App is the mandatory merge
 gate: valid findings are fixed, every dismissal is publicly justified, and a
-follow-up review is required. Final dispositions will be recorded here after
-review; screenshots are not substitutes for the public PR.
+follow-up review is required. Merge is blocked until Qodo reports zero
+unresolved findings on the exact final commit; the public PR is the source of
+truth for review dispositions, not screenshots.
 
 ## License
 

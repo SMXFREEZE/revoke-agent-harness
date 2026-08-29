@@ -307,6 +307,10 @@ describe("TrueForge run export projection", () => {
     expect(crate.name).toBe("Scientific Evidence Case Crate");
     expect(crate.roCrateConformanceClaimed).toBe(false);
     expect(crate.case.fixtureHash).toBe(FIXTURE_HASH);
+    expect(crate.case.fixtureUrl).toBe(
+      "https://raw.githubusercontent.com/SMXFREEZE/revoke-agent-harness/main/fixtures/gaggle/case-0042.json",
+    );
+    expect(crate.artifacts[1].url).toBe(crate.case.fixtureUrl);
     expect(crate.proposal.proposalHash).toBe(PROPOSAL_HASH);
     expect(crate.provenance.sources[0].url).toBe("https://pubmed.ncbi.nlm.nih.gov/16672507/");
     expect(() => assertSanitizedArtifact(crate)).not.toThrow();

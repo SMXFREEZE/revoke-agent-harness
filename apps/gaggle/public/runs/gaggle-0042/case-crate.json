@@ -3,7 +3,7 @@
   "name": "Scientific Evidence Case Crate",
   "crateType": "scientific-evidence-case-crate",
   "roCrateConformanceClaimed": false,
-  "generatedAt": "2026-08-29T23:09:24.899Z",
+  "generatedAt": "2026-08-29T23:28:07.950Z",
   "safety": {
     "environment": "synthetic-rd-prototype",
     "clinicalValidation": false,
@@ -19,7 +19,7 @@
   },
   "case": {
     "caseId": "GGG-0042",
-    "fixturePath": "fixtures/gaggle/case-0042.json",
+    "fixtureUrl": "https://raw.githubusercontent.com/SMXFREEZE/revoke-agent-harness/main/fixtures/gaggle/case-0042.json",
     "fixtureHash": "sha256:3809143e368da5c8f4ce9086a91e303351609a3d0b05258f9cb0be24472ae3e4"
   },
   "proposal": {
@@ -103,7 +103,7 @@
     },
     {
       "name": "Synthetic case fixture",
-      "path": "fixtures/gaggle/case-0042.json",
+      "url": "https://raw.githubusercontent.com/SMXFREEZE/revoke-agent-harness/main/fixtures/gaggle/case-0042.json",
       "mediaType": "application/json",
       "hash": "sha256:3809143e368da5c8f4ce9086a91e303351609a3d0b05258f9cb0be24472ae3e4"
     }
