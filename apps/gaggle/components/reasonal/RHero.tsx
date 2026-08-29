@@ -33,8 +33,8 @@ export function RHero() {
             experiments, challenge the leader, revise their beliefs, and stop for a human scientist.
           </p>
           <div className="rz-hero__cta">
-            <Link href="/#agents" className="rz-hero__btn rz-hero__btn--go">
-              Watch the agents run
+            <Link href="/?run=1#agents" className="rz-hero__btn rz-hero__btn--go">
+              Watch the verified replay
               <span aria-hidden>&rarr;</span>
             </Link>
             <Link href="/#steps" className="rz-hero__btn rz-hero__btn--ghost">

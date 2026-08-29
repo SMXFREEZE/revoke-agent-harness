@@ -16,7 +16,7 @@ export function RGooseBand() {
               immutable proposal, evidence, dissent, rollback scope, and SHA-256 hash before any write. Drag to inspect it.
             </p>
             <div className="rz-band__cta">
-              <Link href="/#agents" className="rz-rep__btn rz-rep__btn--go" style={{ textDecoration: "none" }}>
+              <Link href="/?run=1#agents" className="rz-rep__btn rz-rep__btn--go" style={{ textDecoration: "none" }}>
                 Inspect the approval state
               </Link>
             </div>

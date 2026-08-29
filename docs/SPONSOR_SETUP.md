@@ -9,12 +9,22 @@ process to the official tool names.
 & .\scripts\import-sponsor-env.ps1
 npm run sponsor:check:daytona
 npm run sponsor:check:bright-data
+npm run sponsor:test:bright-data:gaggle
+npm run sponsor:check:bright-data:gaggle:remote
 ```
 
 Expected results are JSON with `status: ok`. The Daytona probe requires
 `write:sandboxes`, `delete:sandboxes`, `write:snapshots`, and
 `delete:snapshots`. The Bright Data probe uses the official pinned MCP and only
 publishes `search_engine` and `scrape_as_markdown`.
+
+The two Gaggle commands exercise the additive biotech evidence contract. The
+deterministic test proves schema-gated drift recovery and fail-closed handling;
+the live probe performs one Bright Data search and one Bright Data scrape
+against the configured public literature record. It emits only verification
+metadata and content hashes. See `docs/BRIGHT_DATA_GAGGLE_EVIDENCE.md` for the
+exact contract and evidence artifacts. The original recall probe remains
+unchanged.
 
 The remaining required secret is `QODO_API_KEY`. Qodo also needs its GitHub App
 authorized for the eventual public repository. Do not replace Qodo with a local

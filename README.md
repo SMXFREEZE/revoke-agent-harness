@@ -8,6 +8,11 @@ scientists argue opposing cases, retrieve provenance-bearing evidence, run a
 deterministic experiment, challenge the leader, revise their beliefs, preserve
 jury disagreement, and stop for exact scientist approval.
 
+The public site includes a verified TrueForge flight recorder: it replays the
+sanitized persisted event trace, agent lifecycles, sponsor tool activity,
+zero-mutation denial, and the exact pending approval boundary. The downloadable
+Scientific Evidence Case Crate carries its own integrity hash.
+
 The complete GutGutGoose/MetaScope application imported from the owner's Vercel
 deployment is preserved under `apps/gaggle`. The Gaggle is an additive R&D
 layer using the same visual architecture, not a replacement for the existing
@@ -31,7 +36,8 @@ Case GGG-0042 asks how to increase predicted support for butyrate-producing
 pathways in a synthetic community. Candidate A begins at rank #1 and falls to
 #3; Candidate B rises from #2 to #1 after methodology review and Daytona
 competition analysis. The initial ranking remains inspectable, jury dissent is
-preserved, and the run stops before the guarded write.
+preserved, one guarded write attempt is denied with zero mutation, and a second
+attempt remains paused at TrueForge's native human-approval checkpoint.
 
 This is synthetic experimental R&D. Published records are used only as scoped
 evidence with direct provenance. The prototype does not diagnose, prescribe,
@@ -40,8 +46,9 @@ system.
 
 ## Repository map
 
-- `apps/console` — judge-facing scientific courtroom deployed to GitHub Pages.
-- `apps/gaggle` — complete imported GutGutGoose/MetaScope Next.js product.
+- `apps/gaggle` — deployed imported GutGutGoose UI plus the judge-facing
+  TrueForge flight recorder and existing MetaScope product.
+- `apps/console` — retained legacy courtroom prototype; not the public runtime.
 - `services/gaggle-lab-mcp` — read tools plus exact-id-and-hash guarded,
   idempotent synthetic proposal promotion.
 - `packages/domain` — typed scoring, belief revision, disagreement, and
@@ -71,6 +78,8 @@ Sponsor-backed orchestration:
 npm run dev:gaggle-lab
 npm run trueforge:start
 npm run trueforge:configure:gaggle
+npm run gaggle:export-run
+npm run gaggle:verify-run
 ```
 
 Run `npm run check` for lint, type checks, tests, and production builds.

@@ -8,7 +8,7 @@
     "build": "next build",
     "test": "vitest run",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint components/reasonal/RAgents.tsx components/reasonal/RHero.tsx components/reasonal/RConsoleTeaser.tsx components/reasonal/RNav.tsx components/reasonal/RGooseBand.tsx lib/data/site.ts",
     "photos": "node --env-file=.env.local scripts/fetch-photos.mjs"
   },
   "dependencies": {

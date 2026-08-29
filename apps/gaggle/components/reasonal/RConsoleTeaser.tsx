@@ -21,9 +21,9 @@ export function RConsoleTeaser() {
               <p>Resume one synthetic microbiome case and watch distinct specialists retrieve evidence, run a deterministic Daytona experiment, challenge the leader, preserve jury dissent, and stop before promotion.</p>
               <div className="rz-teaser__cta">
                 <NoiseBackground containerClassName="rz-nb">
-                  <Link href="/#agents" className="nb-btn">
+                  <Link href="/?run=1#agents" className="nb-btn">
                     <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden><path d="M8 5v14l11-7z" /></svg>
-                    Open the agent courtroom
+                    Watch the verified replay
                   </Link>
                 </NoiseBackground>
                 <span className="rz-teaser__note">verified golden-run replay &middot; synthetic case</span>

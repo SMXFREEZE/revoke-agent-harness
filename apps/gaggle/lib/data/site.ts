@@ -35,9 +35,9 @@ export const NAV_LINKS: NavLink[] = [
 ];
 
 export const APP_LINKS = {
-  watch: { label: "Watch the agents", href: "/#agents" },
-  login: { label: "Inspect the run", href: "/#agents" },
-  signup: { label: "Inspect the run", href: "/#agents" },
+  watch: { label: "Watch the agents", href: "/?run=1#agents" },
+  login: { label: "Inspect the run", href: "/?run=1#agents" },
+  signup: { label: "Inspect the run", href: "/?run=1#agents" },
   community: { label: "Evidence", href: "/#disciplines" },
   teachers: { label: "How it works", href: "/#steps" },
 };
@@ -53,9 +53,9 @@ export const HIGHLIGHTS = [
 
 export type Stat = { value: number; suffix: string; label: string; blurb: string };
 export const STATS: Stat[] = [
-  { value: 8, suffix: "", label: "Bounded specialists", blurb: "Defense, Prosecution, Evidence Clerk, Methodologist, Experimentalist, Red Team, jurors, and a disagreement analyst each have a distinct mission." },
-  { value: 39, suffix: "", label: "Audit events", blurb: "The verified golden run preserves evidence, scores, revisions, dissent, tool provenance, and the exact proposal hash." },
-  { value: 1, suffix: "", label: "Human boundary", blurb: "Read-only work runs autonomously. Promotion stops until a scientist approves the exact immutable proposal ID and SHA-256 hash." },
+  { value: 12, suffix: "", label: "Independent agents", blurb: "Defense, Prosecution, Evidence Clerk, Methodologist, Experimentalist, Red Team, five jurors, and a disagreement analyst each ran in a bounded TrueForge thread." },
+  { value: 247, suffix: "", label: "Persisted events", blurb: "The verified six-turn run preserves evidence retrieval, sandbox computation, agent lifecycles, denial, and the exact pending proposal payload." },
+  { value: 2, suffix: "", label: "Approval checkpoints", blurb: "A real denial produced zero mutation. A second exact ID-and-hash promotion attempt remains paused for a human scientist in TrueForge." },
 ];
 
 // "Generic probiotics are a $58 billion guess." — the problem, 3 points.

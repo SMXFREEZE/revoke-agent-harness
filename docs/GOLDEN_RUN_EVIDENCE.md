@@ -11,6 +11,9 @@ human authority. It contains no credentials and makes no clinical claim.
 - Session: `01m17kj6cy2prqvxret528beb4`
 - Initial turn: `01m17kj6n3gc07zeb64pr1zq7t.local`
 - Persistent continuation: `01m17mdwmm8anerg9sjf6bkp85.local`
+- Approval-gate test: `01m17w1vbhhjjrkvwzkgrtkb6w.local`
+- Denial resume: `01m17w6khmppqk9w6cfvwv77wx.local`
+- Pending human checkpoint: `01m17w7fnhh8meqvxz5pawxswq.local`
 - Model provider: OpenAI through TrueForge
 - Sandbox provider: Daytona
 - MCP connectors: Bright Data and `gaggle-lab`
@@ -25,7 +28,11 @@ pretending the timeout was success or restarting the investigation.
 
 The continuation completed the deterministic revision, blind Red Team, five
 independent jurors, disagreement analysis, and immutable proposal preview. It
-recorded 39 append-only investigation events with ledger hash:
+recorded 71 persisted TrueForge events. Across all six chained turns, the
+verified session contains 247 events: 12 created-and-completed subagent
+threads, 112 tool responses, one Daytona sandbox, two native approval
+checkpoints, and the timeout-to-resume history. The lab's append-only
+investigation ledger has hash:
 
 `sha256:ecbfa5b3abafeb71ee140d35a08d6a552e6ff5f9c4c3b64384227fc4c6cbb906`
 
@@ -54,8 +61,13 @@ probabilities or biological validation.
 - status: `scientist_approval_required`
 - mutation performed: `false`
 
-No scientist approval was supplied and `promote_experimental_proposal` was not
-executed. The TrueForge agent manifest independently lists that controlled
-write under `require_approval_for_tools`. A judge can therefore inspect the
-exact proposal and policy without this evidence record falsely claiming that a
-human approved it.
+TrueForge intercepted one exact promotion attempt as
+`tool.approval_required` before the tool executed. That checkpoint was denied;
+a direct read of the lab audit still contained only `proposal_previewed`,
+proving the denial produced zero promotion mutation. A second exact promotion
+attempt is now paused as a native TrueForge required action for a human
+scientist. No scientist approval was supplied and
+`promote_experimental_proposal` has not executed. The agent manifest also
+lists the controlled write under `require_approval_for_tools`, so the runtime
+event, policy, immutable payload, denial, and pending boundary are independently
+inspectable without claiming approval.

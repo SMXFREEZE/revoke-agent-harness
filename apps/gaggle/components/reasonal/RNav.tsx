@@ -79,7 +79,7 @@ export function RNav() {
 
         <div className="rz-nav__actions">
           <Link
-            href="/#agents"
+            href="/?run=1#agents"
             className="rz-nav__cta"
             onMouseEnter={() => (hoverRef.current = true)}
             onMouseLeave={() => (hoverRef.current = false)}
@@ -105,7 +105,7 @@ export function RNav() {
               {l.label}
             </Link>
           ))}
-          <Link href="/#agents" className="rz-nav__mlink rz-nav__mlink--cta" onClick={() => setOpen(false)}>
+          <Link href="/?run=1#agents" className="rz-nav__mlink rz-nav__mlink--cta" onClick={() => setOpen(false)}>
             Watch the agents run
           </Link>
         </nav>

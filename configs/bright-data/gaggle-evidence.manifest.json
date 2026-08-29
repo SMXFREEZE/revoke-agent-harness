@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "1.0",
+  "pipelineId": "gaggle-biotech-evidence-v1",
+  "provider": "Bright Data",
+  "integration": "@brightdata/mcp@2.11.1",
+  "mode": "least-privilege-biotech-evidence",
+  "tools": ["search_engine", "scrape_as_markdown"],
+  "rateLimit": "20/1h",
+  "recordSchema": "../../schemas/gaggle-evidence-record.schema.json",
+  "goldenCase": {
+    "caseId": "GGG-0042",
+    "candidateId": "candidate-b",
+    "sourceUrl": "https://cir.nii.ac.jp/crid/1360023720926180864",
+    "canonicalUrl": "https://enviromicro-journals.onlinelibrary.wiley.com/doi/10.1111/1462-2920.15269",
+    "publisher": "CiNii Research",
+    "taxa": ["Anaerobutyricum spp.", "Anaerostipes spp."],
+    "taxonomicLevel": "species",
+    "safeClaim": "The retrieved source contains mechanistic evidence about lactate and acetate conversion to butyrate in named bacterial species; it does not validate the exact synthetic candidate strain.",
+    "direction": "supports",
+    "studyType": "mechanistic_comparative",
+    "methodologyFlags": [
+      "not_exact_candidate_strain",
+      "species_to_strain_extrapolation",
+      "mechanistic_only",
+      "metadata_index_source"
+    ]
+  },
+  "queries": [
+    {
+      "id": "defense_cross_feeding",
+      "role": "defense",
+      "text": "Bifidobacterium adolescentis acetate cross-feeding butyrate coculture PMID 16672507"
+    },
+    {
+      "id": "prosecution_strain_specificity",
+      "role": "prosecution",
+      "text": "probiotic efficacy strain specificity species extrapolation systematic review PMID 29868585"
+    },
+    {
+      "id": "methodologist_lactate_pathway",
+      "role": "methodologist",
+      "text": "10.1111/1462-2920.15269 Anaerobutyricum Anaerostipes lactate acetate butyrate"
+    }
+  ],
+  "liveCheck": {
+    "queryId": "methodologist_lactate_pathway",
+    "sourceUrl": "https://cir.nii.ac.jp/crid/1360023720926180864",
+    "searchSignalGroups": [
+      {
+        "id": "source_identity",
+        "anyOf": ["10.1111/1462-2920.15269", "onlinelibrary.wiley.com"]
+      },
+      {
+        "id": "biotech_topic",
+        "anyOf": ["anaerobutyricum", "anaerostipes", "butyrate"]
+      }
+    ],
+    "scrapeSignalGroups": [
+      {
+        "id": "taxon",
+        "anyOf": ["anaerobutyricum", "anaerostipes"]
+      },
+      {
+        "id": "substrate_lactate",
+        "anyOf": ["lactate", "lactic acid"]
+      },
+      {
+        "id": "substrate_acetate",
+        "anyOf": ["acetate", "acetic acid"]
+      },
+      {
+        "id": "metabolic_endpoint",
+        "anyOf": ["butyrate", "butyric acid"]
+      },
+      {
+        "id": "source_identity",
+        "anyOf": ["10.1111/1462-2920.15269", "1360023720926180864"]
+      }
+    ]
+  },
+  "extractors": {
+    "primary": {
+      "version": "pubmed-abstract-heading-v1",
+      "strategy": "required_heading_then_signals",
+      "requiredHeadingPattern": "^#{1,3}\\s+Abstract\\s*$"
+    },
+    "recovery": {
+      "version": "semantic-signal-window-v2",
+      "strategy": "semantic_required_signals"
+    }
+  },
+  "sourcePolicy": {
+    "allowedProtocols": ["https:"],
+    "allowedHosts": ["cir.nii.ac.jp"],
+    "rawTextTrust": "untrusted-data-only",
+    "admissionRule": "Every required signal group and the canonical JSON schema must validate before evidence is admitted."
+  },
+  "provenance": [
+    "canonicalUrl",
+    "publisher",
+    "retrievedAt",
+    "queryId",
+    "queryRole",
+    "extractorVersion",
+    "extractorStrategy",
+    "contentHash",
+    "liveOrFixture"
+  ],
+  "driftPolicy": {
+    "primaryFailure": "quarantine the primary extraction with a structured failure code",
+    "recovery": "retry with semantic required-signal matching over the same hashed source text",
+    "schemaFailure": "fail closed; retain only failure metadata and do not admit a partial evidence record",
+    "sessionPolicy": "continue the same investigation session; never restart or erase the failed attempt"
+  },
+  "safety": {
+    "exactCandidateStrainInferenceAllowed": false,
+    "scrapedInstructionsExecutable": false,
+    "writeToolsAllowed": false,
+    "clinicalUseAllowed": false
+  }
+}
