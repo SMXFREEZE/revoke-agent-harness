@@ -12,6 +12,7 @@ import { RGutEvidence } from "./RGutEvidence";
 import { RTraceback } from "./RTraceback";
 import { RSeqIntel } from "./RSeqIntel";
 import { phylumLegend, dominantPhylum } from "@/lib/ggg/phylum";
+import { assessReportEvidence } from "@/lib/ggg/report-evidence";
 import { withBasePath } from "@/lib/utils/base-path";
 import patient from "@/lib/ggg/patient.json";
 
@@ -271,7 +272,6 @@ export function RReport() {
       const retained = result?.quality?.reads ?? cleanReads.length;
       // longest reads make the best BLAST queries for the live identify agent
       const sampleReads = [...cleanReads].sort((a: any, b: any) => (b.seq?.length || 0) - (a.seq?.length || 0)).slice(0, 12).map((r: any) => r.seq).filter(Boolean);
-      const idPctNum = retained ? (100 * result.classified) / retained : 0;
       // Plausibility guard. A real gut community is spread across many taxa; the
       // demo reference is small, so an arbitrary real sample can funnel most reads
       // onto a single marker (a small-reference artifact, e.g. 70%+ one species).
@@ -283,17 +283,24 @@ export function RReport() {
       const topShare = result?.classified ? (sortedAb[0]?.reads || 0) / result.classified : 0;
       const distinctTaxa = (result?.abundance || []).filter((a: any) => a.pct >= 2).length;
       const plausible = topShare <= 0.45 && distinctTaxa >= 4;
-      // need a real, well-spread fraction matched for the full local report;
-      // otherwise route to the live-BLAST taxonomic profile
-      if (result && result.reportEligible !== false && result.classified >= 20 && idPctNum >= 5 && plausible) {
-        const BACT = new Set(["Firmicutes", "Bacteroidetes", "Actinobacteria", "Proteobacteria", "Verrucomicrobia", "Fusobacteria", "Euryarchaeota"]);
-        const phy = result.phylum || {};
-        const bact = Object.entries(phy).reduce((s: number, [k, v]: any) => s + (BACT.has(k) ? (v as number) : 0), 0);
+      const BACT = new Set(["Firmicutes", "Bacteroidetes", "Actinobacteria", "Proteobacteria", "Verrucomicrobia", "Fusobacteria", "Euryarchaeota"]);
+      const phy = result?.phylum || {};
+      const bacterialShareOfClassified = Object.entries(phy).reduce((s: number, [k, v]: any) => s + (BACT.has(k) ? (v as number) : 0), 0);
+      const evidence = assessReportEvidence({
+        retainedReads: retained,
+        classifiedReads: result?.classified,
+        bacterialReads: result?.classified * bacterialShareOfClassified / 100,
+      });
+      // A full local profile requires a representative share of every QC-passed
+      // read. Minority matches remain on sequence intelligence + live NCBI BLAST,
+      // even when every match belongs to a bacterial taxon.
+      if (result && result.reportEligible !== false && evidence.representative && plausible) {
         result.parsedReads = parsed;
         result.qcReads = retained;
-        result.idPct = +(100 * result.classified / retained).toFixed(1);
-        result.bacterialPct = Math.round(bact);
-        result.kingdom = bact >= 55 ? "Bacterial gut community" : "Eukaryotic / mixed community";
+        result.idPct = +evidence.classifiedPct.toFixed(1);
+        result.bacterialReads = evidence.bacterialReads;
+        result.bacterialPct = Math.round(evidence.bacterialPct);
+        result.kingdom = evidence.bacterialDominant ? "Bacterial gut community" : "Eukaryotic / mixed community";
         result.quality = result.quality || w.MetaScope.qc(reads);
         result.sampleReads = sampleReads;
         pendingRef.current = result; setPending(result); return;
@@ -413,8 +420,13 @@ export function RReport() {
   // findings, plan and coach only when the sample is bacterial-dominant, so a
   // eukaryotic sample is not given a misleading gut score. seqOnly: too few reads
   // matched, show the sequence-intelligence readout + live BLAST instead.
-  const showViz = !!profile && !profile.seqOnly;
-  const bacterial = (profile?.bacterialPct ?? 100) >= 55;
+  const reportEvidence = assessReportEvidence({
+    retainedReads: profile?.qcReads ?? profile?.quality?.reads,
+    classifiedReads: profile?.classified,
+    bacterialReads: profile?.bacterialReads,
+  });
+  const showViz = !!profile && !profile.seqOnly && reportEvidence.representative;
+  const bacterial = reportEvidence.bacterialDominant;
   const showGut = showViz && bacterial;
   const pipe = pending ? buildPipeline(pending, isUpload ? (uploaded as string) : "jordan.fastq") : null;
 
