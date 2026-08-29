@@ -12,7 +12,7 @@ import { RGutEvidence } from "./RGutEvidence";
 import { RTraceback } from "./RTraceback";
 import { RSeqIntel } from "./RSeqIntel";
 import { phylumLegend, dominantPhylum } from "@/lib/ggg/phylum";
-import { assessReportEvidence } from "@/lib/ggg/report-evidence";
+import { assessReportEvidence, bacterialShareOfClassified } from "@/lib/ggg/report-evidence";
 import { withBasePath } from "@/lib/utils/base-path";
 import patient from "@/lib/ggg/patient.json";
 
@@ -283,13 +283,12 @@ export function RReport() {
       const topShare = result?.classified ? (sortedAb[0]?.reads || 0) / result.classified : 0;
       const distinctTaxa = (result?.abundance || []).filter((a: any) => a.pct >= 2).length;
       const plausible = topShare <= 0.45 && distinctTaxa >= 4;
-      const BACT = new Set(["Firmicutes", "Bacteroidetes", "Actinobacteria", "Proteobacteria", "Verrucomicrobia", "Fusobacteria", "Euryarchaeota"]);
       const phy = result?.phylum || {};
-      const bacterialShareOfClassified = Object.entries(phy).reduce((s: number, [k, v]: any) => s + (BACT.has(k) ? (v as number) : 0), 0);
+      const bacterialShare = bacterialShareOfClassified(phy);
       const evidence = assessReportEvidence({
         retainedReads: retained,
         classifiedReads: result?.classified,
-        bacterialReads: result?.classified * bacterialShareOfClassified / 100,
+        bacterialReads: result?.classified * bacterialShare / 100,
       });
       // A full local profile requires a representative share of every QC-passed
       // read. Minority matches remain on sequence intelligence + live NCBI BLAST,

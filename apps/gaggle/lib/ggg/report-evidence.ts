@@ -2,6 +2,15 @@ export const MIN_REPRESENTATIVE_CLASSIFIED_READS = 20;
 export const MIN_REPRESENTATIVE_CLASSIFIED_PCT = 50;
 export const MIN_BACTERIAL_DOMINANCE_PCT = 55;
 
+const BACTERIAL_PHYLA = new Set([
+  "Firmicutes",
+  "Bacteroidetes",
+  "Actinobacteria",
+  "Proteobacteria",
+  "Verrucomicrobia",
+  "Fusobacteria",
+]);
+
 type ReportEvidenceInput = {
   retainedReads: unknown;
   classifiedReads: unknown;
@@ -10,6 +19,20 @@ type ReportEvidenceInput = {
 
 function finiteCount(value: unknown): number {
   return typeof value === "number" && Number.isFinite(value) && value > 0 ? value : 0;
+}
+
+export function isBacterialPhylum(phylum: unknown): boolean {
+  return typeof phylum === "string" && BACTERIAL_PHYLA.has(phylum);
+}
+
+/** Returns the bacterial percentage within the classified-read composition. */
+export function bacterialShareOfClassified(phylumComposition: unknown): number {
+  if (!phylumComposition || typeof phylumComposition !== "object") return 0;
+
+  return Object.entries(phylumComposition).reduce((share, [phylum, value]) => {
+    if (!isBacterialPhylum(phylum)) return share;
+    return share + finiteCount(value);
+  }, 0);
 }
 
 /**

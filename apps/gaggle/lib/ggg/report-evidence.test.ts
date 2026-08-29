@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { assessReportEvidence } from "./report-evidence";
+import {
+  assessReportEvidence,
+  bacterialShareOfClassified,
+  isBacterialPhylum,
+} from "./report-evidence";
 
 describe("full report evidence gate", () => {
   it("routes a bacterial minority match to sequence intelligence", () => {
@@ -36,6 +40,23 @@ describe("full report evidence gate", () => {
 
     expect(evidence.representative).toBe(true);
     expect(evidence.bacterialPct).toBe(48);
+    expect(evidence.bacterialDominant).toBe(false);
+  });
+
+  it("does not count Euryarchaeota or Methanobrevibacter matches as bacteria", () => {
+    const bacterialShare = bacterialShareOfClassified({
+      Euryarchaeota: 60,
+      Firmicutes: 40,
+    });
+    const evidence = assessReportEvidence({
+      retainedReads: 100,
+      classifiedReads: 100,
+      bacterialReads: bacterialShare,
+    });
+
+    expect(isBacterialPhylum("Euryarchaeota")).toBe(false);
+    expect(isBacterialPhylum("Firmicutes")).toBe(true);
+    expect(bacterialShare).toBe(40);
     expect(evidence.bacterialDominant).toBe(false);
   });
 
