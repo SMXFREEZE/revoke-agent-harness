@@ -43,7 +43,7 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://gutgutgoose.com"),
+  metadataBase: new URL("https://smxfreeze.github.io/revoke-agent-harness/"),
   title: {
     default: `${BRAND.full}, ${BRAND.tagline}`,
     template: `%s · ${BRAND.full}`,
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#04100c",
+  themeColor: "#eaf6ff",
   width: "device-width",
   initialScale: 1,
 };

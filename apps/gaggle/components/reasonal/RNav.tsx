@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const LINKS = [
   { label: "How it works", href: "/#steps" },
-  { label: "The Report", href: "/console" },
+  { label: "The agents", href: "/#agents" },
   { label: "FAQ", href: "/#faq" },
 ];
 
@@ -64,9 +64,8 @@ export function RNav() {
   return (
     <header className="rz-nav">
       <div className="rz-nav__inner">
-        <Link href="/" className="rz-nav__logo" aria-label="GutGutGoose, home">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/ggg-logo-wide.png" alt="GutGutGoose" draggable={false} />
+        <Link href="/" className="rz-nav__logo" aria-label="The Gaggle, home">
+          <span className="rz-gaggle-logo" aria-hidden><b>THE</b><strong>GAGGLE</strong></span>
         </Link>
 
         <nav className="rz-nav__links" aria-label="Primary">
@@ -79,13 +78,13 @@ export function RNav() {
 
         <div className="rz-nav__actions">
           <Link
-            href="/console"
+            href="/#agents"
             className="rz-nav__cta"
             onMouseEnter={() => (hoverRef.current = true)}
             onMouseLeave={() => (hoverRef.current = false)}
           >
             <canvas ref={canvasRef} aria-hidden />
-            <span>See your gut read</span>
+            <span>Watch the agents</span>
           </Link>
           <button
             className={`rz-nav__burger${open ? " is-open" : ""}`}
@@ -105,8 +104,8 @@ export function RNav() {
               {l.label}
             </Link>
           ))}
-          <Link href="/console" className="rz-nav__mlink rz-nav__mlink--cta" onClick={() => setOpen(false)}>
-            Open the live report
+          <Link href="/#agents" className="rz-nav__mlink rz-nav__mlink--cta" onClick={() => setOpen(false)}>
+            Watch the agents run
           </Link>
         </nav>
       )}

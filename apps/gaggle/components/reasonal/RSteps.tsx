@@ -8,7 +8,7 @@ export function RSteps() {
         <div className="rz-steps">
           <header className="rz-steps__head">
             <span className="rz-eyebrow">How it works</span>
-            <RWordReveal as="h2" className="rz-h2" text="From stool sample to matched formula." />
+            <RWordReveal as="h2" className="rz-h2" text="From research objective to scientist-gated proposal." />
           </header>
           <div className="rz-steps__grid">
             {STEPS.map((s) => (

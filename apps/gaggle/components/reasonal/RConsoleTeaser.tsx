@@ -16,30 +16,30 @@ export function RConsoleTeaser() {
           <VantaBackground effect="fog" className="rz-cc-vanta" options={SKY} />
           <div className="rz-cc-in rz-teaser__grid">
             <div className="rz-teaser__copy">
-              <span className="kick">MetaScope &middot; live engine</span>
-              <RWordReveal as="h2" className="rz-cc-h2" text="See your gut read, live." />
-              <p>A real shotgun-metagenomics pipeline that runs in your browser. Load Jordan&rsquo;s sample or drop your own FASTQ and watch raw DNA reads become a plain-English gut report: taxa classified, diversity scored, dysbiosis flagged. Nothing leaves your device.</p>
+              <span className="kick">TrueForge &middot; persistent golden run</span>
+              <RWordReveal as="h2" className="rz-cc-h2" text="Watch a belief change, with receipts." />
+              <p>Resume one synthetic microbiome case and watch distinct specialists retrieve evidence, run a deterministic Daytona experiment, challenge the leader, preserve jury dissent, and stop before promotion.</p>
               <div className="rz-teaser__cta">
                 <NoiseBackground containerClassName="rz-nb">
-                  <Link href="/console" className="nb-btn">
+                  <Link href="/#agents" className="nb-btn">
                     <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden><path d="M8 5v14l11-7z" /></svg>
-                    Open the live console
+                    Open the agent courtroom
                   </Link>
                 </NoiseBackground>
-                <span className="rz-teaser__note">runs in your browser &middot; synthetic demo</span>
+                <span className="rz-teaser__note">verified golden-run replay &middot; synthetic case</span>
               </div>
             </div>
 
             <div className="rz-teaser__term" aria-hidden>
               <div className="term">
-                <div className="term__bar"><span className="term__dot term__dot--r" /><span className="term__dot term__dot--y" /><span className="term__dot term__dot--g" /><span className="term__title">metascope</span></div>
+                <div className="term__bar"><span className="term__dot term__dot--r" /><span className="term__dot term__dot--y" /><span className="term__dot term__dot--g" /><span className="term__title">trueforge · gaggle-0042</span></div>
                 <div className="term__body">
-                  <div className="term__line"><span className="term__prompt">$</span> <span className="term__cmd">metascope run --sample jordan.fastq</span></div>
-                  <div className="term__line term__outline"><span className="term__ok">&#10003; 6 000 reads pass QC</span></div>
-                  <div className="term__line term__outline"><span className="term__ok">&#10003; 16 taxa across 5 phyla</span></div>
-                  <div className="term__line term__outline"><span className="term__ok">&#10003; Shannon 3.15 &middot; Bacteroides enterotype</span></div>
-                  <div className="term__line term__outline"><span className="term__ok">&#10003; 5 strains selected &middot; report ready</span></div>
-                  <div className="term__line term__outline" style={{ color: "#7df0c0" }}>&rarr; open the console for your full report</div>
+                  <div className="term__line"><span className="term__prompt">$</span> <span className="term__cmd">trueforge resume gaggle-golden-0042</span></div>
+                  <div className="term__line term__outline"><span className="term__ok">&#10003; Defense + Prosecution reports admitted</span></div>
+                  <div className="term__line term__outline"><span className="term__ok">&#10003; Bright Data provenance locked</span></div>
+                  <div className="term__line term__outline"><span className="term__ok">&#10003; Daytona score moves B from #2 to #1</span></div>
+                  <div className="term__line term__outline"><span className="term__ok">&#10003; Jury dissent preserved</span></div>
+                  <div className="term__line term__outline" style={{ color: "#7df0c0" }}>&rarr; waiting for exact scientist approval</div>
                 </div>
               </div>
             </div>

@@ -10,17 +10,17 @@ export function RWhy() {
 
           <div className="rz-why__inner">
             <span className="rz-eyebrow" style={{ color: "#00a35a" }}>
-              Meet GutGutGoose
+              Meet The Gaggle
             </span>
             <RCharReveal
               className="rz-why__manifesto"
-              text="Generic probiotics are a 58 billion dollar guess."
+              text="A confident first answer is not a scientific verdict."
             />
             <RCharReveal
               className="rz-why__manifesto"
-              text="We sequence your gut first, then build a probiotic matched to your DNA, not a one-size formula sold to a billion different guts."
+              text="Defense must make the strongest case. Prosecution must break it. Evidence and experiments decide what survives, not eloquence."
             />
-            <RCharReveal className="rz-why__manifesto" text="Read your gut, then feed it exactly what it is missing. Real science, in plain English." />
+            <RCharReveal className="rz-why__manifesto" text="When the leader changes, the old belief, the dissent, and every reason stay visible." />
           </div>
         </div>
       </div>

@@ -12,7 +12,7 @@ export function RVinylLazy() {
       <BandTokenBoundary
         fallback={
           // eslint-disable-next-line @next/next/no-img-element
-          <img className="rz-band__token-fallback" src="/brand/ggg-logo-wide.png" alt="" aria-hidden />
+          <img className="rz-band__token-fallback" src="/favicon.svg" alt="" aria-hidden />
         }
       >
         <RVinyl />

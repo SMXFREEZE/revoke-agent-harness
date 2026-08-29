@@ -11,7 +11,7 @@ export function RTestimonials() {
             <RWordReveal as="h2" className="rz-h2" text="Built in a lab, led by a goose." />
             <p className="rz-body-text" style={{ marginTop: "0.8rem", maxWidth: "52ch" }}>
               Real shotgun-metagenomic science that refuses to take itself too seriously.
-              Here is how GutGutGoose came to be.
+              Here is how one persistent scientific case changed its mind.
             </p>
           </header>
 

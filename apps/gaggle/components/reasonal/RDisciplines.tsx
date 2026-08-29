@@ -7,10 +7,10 @@ export function RDisciplines() {
       <div className="rz-card-w">
         <div className="rz-disc">
           <header className="rz-disc__head">
-            <span className="rz-eyebrow">Reading your results</span>
-            <RWordReveal as="h2" className="rz-h2" text="What every part of your report means." />
+            <span className="rz-eyebrow">Independent roles</span>
+            <RWordReveal as="h2" className="rz-h2" text="Every scientist gets one bounded job." />
             <p className="rz-body-text">
-              No jargon. A plain-English guide to the six things the live report measures, so you can read your own gut with confidence.
+              Different missions, different queries, typed outputs, and visible provenance. No agent can quietly grade its own argument.
             </p>
           </header>
           <RDiscGrid />

@@ -21,19 +21,19 @@ export function RHero() {
         <VantaBackground effect="clouds" className="rz-hero__vanta" options={SKY} />
 
         <div className="rz-hero__inner">
-          <span className="rz-hero__eyebrow">Sequenced first, then built for your gut</span>
+          <span className="rz-hero__eyebrow">Adversarial microbiome R&amp;D, built to disagree</span>
           <h1 className="rz-hero__title">
-            Most probiotics die before they help.
+            One AI can convince itself.
             <br />
-            <em className="rz-serif">Yours start with your DNA.</em>
+            <em className="rz-serif">Ours has to survive the Gaggle.</em>
           </h1>
           <p className="rz-hero__sub">
-            We sequence your gut first, then build a probiotic matched to your DNA, chosen to
-            take root where generic strains wash out.
+            Independent AI scientists argue, retrieve live evidence, run deterministic
+            experiments, challenge the leader, revise their beliefs, and stop for a human scientist.
           </p>
           <div className="rz-hero__cta">
-            <Link href="/console" className="rz-hero__btn rz-hero__btn--go">
-              Open the live report
+            <Link href="/#agents" className="rz-hero__btn rz-hero__btn--go">
+              Watch the agents run
               <span aria-hidden>&rarr;</span>
             </Link>
             <Link href="/#steps" className="rz-hero__btn rz-hero__btn--ghost">

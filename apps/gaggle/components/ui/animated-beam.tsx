@@ -147,7 +147,7 @@ export const Icons = {
   ),
   logo: () => (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src="/brand/goose-only.png" alt="GutGutGoose" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+    <img src="/favicon.svg" alt="The Gaggle" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
   ),
   vercel: () => (
     <svg viewBox="0 0 76 65" style={{ width: "100%", height: "100%" }} aria-hidden>

@@ -1,12 +1,10 @@
 import { RWordReveal } from "./reveal";
 
-// #science — what the MetaScope engine actually does, the same pipeline the live
-// report runs above. Reuses the Tulum steps-card pattern.
 const PIPELINE = [
-  { n: "01", title: "Quality control", body: "Raw DNA reads are trimmed and filtered, low-quality bases and adapters removed, so only clean signal moves forward." },
-  { n: "02", title: "Classify", body: "Each read is matched against a reference of gut microbes using canonical k-mers and lowest-common-ancestor calls, the same idea behind Kraken and MetaPhlAn." },
-  { n: "03", title: "Score", body: "We turn the community into numbers: Shannon and Simpson diversity, richness, Firmicutes-to-Bacteroidetes balance, enterotype and dysbiosis flags." },
-  { n: "04", title: "Match", body: "Your profile, diet and goals choose the probiotic strains most likely to take root, matched to exactly what your community is missing." },
+  { n: "01", title: "Compete", body: "Defense and Prosecution use different search plans and produce typed arguments for and against every candidate." },
+  { n: "02", title: "Admit", body: "The Evidence Clerk accepts only source-linked claims whose biological scope and methodology justify their weight." },
+  { n: "03", title: "Compute", body: "The Experimentalist sends deterministic compatibility and counterfactual calculations to an isolated Daytona sandbox." },
+  { n: "04", title: "Revise", body: "A blind Red Team and structured jury challenge the leader; the system records the new rank and preserves dissent." },
 ];
 
 export function RScience() {
@@ -15,11 +13,11 @@ export function RScience() {
       <div className="rz-card-w">
         <div className="rz-steps">
           <header className="rz-steps__head">
-            <span className="rz-eyebrow">The science</span>
-            <RWordReveal as="h2" className="rz-h2" text="Raw reads to a real plan, in four steps." />
+            <span className="rz-eyebrow">Belief revision</span>
+            <RWordReveal as="h2" className="rz-h2" text="A verdict that can show its work." />
             <p className="rz-body-text" style={{ marginTop: "0.8rem", maxWidth: "56ch" }}>
-              The report above is not a mockup. It runs this exact pipeline in your browser, the
-              same in-silico approach used to validate real metagenomic tools.
+              Candidate A starts at #1 and falls to #3. Candidate B rises from #2 to #1 because
+              admitted evidence plus deterministic computation changes the recorded state.
             </p>
           </header>
           <div className="rz-steps__grid">

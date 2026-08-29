@@ -106,9 +106,9 @@ export function RImageTrail() {
       <div className="rz-card-w">
         <div className="rz-trail" ref={wrapRef}>
           <div className="rz-trail__copy">
-            <span className="rz-eyebrow">Your gut, made visible</span>
-            <RWordReveal as="h2" className="rz-h2" text="Move your cursor. See the science." />
-            <p className="rz-body-text">From DNA to diet to daily life, the world inside you, mapped.</p>
+            <span className="rz-eyebrow">Evidence, made inspectable</span>
+            <RWordReveal as="h2" className="rz-h2" text="Move your cursor. Follow the provenance." />
+            <p className="rz-body-text">Sources, experiments, candidate revisions, and dissent remain attached to the verdict.</p>
           </div>
 
           {/* static fallback collage (shown when the trail can't run) */}

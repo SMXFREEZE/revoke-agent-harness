@@ -152,6 +152,11 @@
 .rz-nav__logo { display: inline-flex; align-items: center; gap: 0.55rem; font-family: var(--font-display); font-weight: 700; font-size: 20px; color: var(--ink); }
 .rz-nav__logo img { height: 30px; width: auto; }
 .rz-nav__logo .logo__word { font-size: 19px; }
+.rz-gaggle-logo { display: inline-flex; align-items: center; gap: 9px; line-height: 1; color: #087347; }
+.rz-gaggle-logo b { display: inline-grid; place-items: center; min-width: 31px; height: 27px; padding: 0 7px; border-radius: 8px; background: #087347; color: #fff; font: 800 10px/1 var(--font-jakarta), sans-serif; letter-spacing: .04em; }
+.rz-gaggle-logo strong { font: 800 17px/1 var(--font-jakarta), sans-serif; letter-spacing: .1em; }
+.rz-gaggle-logo--footer { color: #fff; }
+.rz-gaggle-logo--footer b { background: #fff; color: #087347; }
 .rz-nav__links { display: flex; align-items: center; gap: 0.25rem; }
 .rz-nav__link {
   padding: 8px 20px;
@@ -763,6 +768,9 @@
   .rz-nav__inner { padding: 6px 6px 6px 12px; gap: 0.75rem; }
   .rz-nav__logo img { height: 22px; }
   .rz-nav__logo .logo__word { font-size: 14px; }
+  .rz-gaggle-logo { gap: 6px; }
+  .rz-gaggle-logo b { min-width: 28px; height: 24px; padding: 0 6px; font-size: 9px; }
+  .rz-gaggle-logo strong { font-size: 13px; letter-spacing: .08em; }
   .rz-nav__cta { padding: 8px 14px; font-size: 14px; }
 
   /* hero */

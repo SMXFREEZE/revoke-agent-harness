@@ -1,77 +1,85 @@
 "use client";
 
-import { createRef, useRef } from "react";
+import { useState } from "react";
 import { RWordReveal } from "./reveal";
-import { AnimatedBeam, Circle, Icons } from "@/components/ui/animated-beam";
-import { cn } from "@/lib/utils/cn";
 
-// "Built for agents": the magic-ui / ui-layouts multiple-output beam diagram.
-// The real toolchain we used feeds the central GutGutGoose hub, which streams the
-// answer out to you: live data (NCBI, PubMed), the viz libraries (Cytoscape,
-// ECharts) and the framework (Next.js, React). Real logos, not placeholders.
-const NODES: { key: keyof typeof Icons; pad?: string }[] = [
-  { key: "ncbi" }, { key: "pubmed" }, { key: "cytoscape", pad: "p-2.5" }, { key: "echarts", pad: "p-3" },
+type AgentKey = "defense" | "prosecution" | "evidence" | "method" | "experiment" | "red-team" | "jury" | "dissent";
+
+const AGENTS: ReadonlyArray<{
+  key: AgentKey;
+  name: string;
+  tool: string;
+  status: "complete" | "waiting";
+  detail: string;
+}> = [
+  { key: "defense", name: "Defense", tool: "OpenAI + Bright Data", status: "complete", detail: "Built the strongest typed case for all three candidate consortia using its own evidence queries." },
+  { key: "prosecution", name: "Prosecution", tool: "OpenAI + Bright Data", status: "complete", detail: "Found scope-transfer weaknesses and contradictory evidence that pushed Candidate A from #1 to #3." },
+  { key: "evidence", name: "Evidence Clerk", tool: "Bright Data", status: "complete", detail: "Locked direct URLs, retrieval times, source classes, biological scope, method flags, and content identities." },
+  { key: "method", name: "Methodologist", tool: "OpenAI", status: "complete", detail: "Down-weighted in-vitro and species-level claims that could not support exact-strain or human-efficacy conclusions." },
+  { key: "experiment", name: "Experimentalist", tool: "Daytona", status: "complete", detail: "Executed deterministic compatibility and counterfactual code; the model never authored the displayed scores." },
+  { key: "red-team", name: "Blind Red Team", tool: "OpenAI", status: "complete", detail: "Attacked the revised leader without seeing the preferred outcome and sent unresolved objections to the jury." },
+  { key: "jury", name: "Five jurors", tool: "TrueForge subagents", status: "complete", detail: "Returned five individual structured verdicts. Their confidence values remain separate rather than averaged." },
+  { key: "dissent", name: "Disagreement analyst", tool: "TrueForge", status: "waiting", detail: "Classified the remaining dissent and handed an immutable proposal to the human scientist approval boundary." },
 ];
-function AnimatedBeamMultipleOutput({ className }: { className?: string }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const hubRef = useRef<HTMLDivElement>(null);
-  const userRef = useRef<HTMLDivElement>(null);
-  const nodeRefs = useRef(NODES.map(() => createRef<HTMLDivElement>())).current;
-  return (
-    <div
-      className={cn(
-        "relative flex w-full max-w-[500px] mx-auto items-center justify-center overflow-hidden rounded-lg border bg-muted lg:p-10 sm:p-4 p-2 md:shadow-xl",
-        className
-      )}
-      ref={containerRef}
-    >
-      <div className="flex h-full w-full flex-row items-stretch justify-between gap-10">
-        <div className="flex flex-col justify-center">
-          <Circle ref={userRef}>
-            <Icons.user />
-          </Circle>
-        </div>
-        <div className="flex flex-col justify-center">
-          <Circle ref={hubRef} className="h-[88px] w-[88px] p-1">
-            <Icons.logo />
-          </Circle>
-        </div>
-        <div className="flex flex-col justify-center gap-2">
-          {NODES.map((n, i) => {
-            const Ico = Icons[n.key];
-            return (
-              <Circle key={n.key} ref={nodeRefs[i]} className={n.pad || ""}>
-                <Ico />
-              </Circle>
-            );
-          })}
-        </div>
-      </div>
-
-      {nodeRefs.map((ref, i) => (
-        <AnimatedBeam key={i} containerRef={containerRef} fromRef={ref} toRef={hubRef} duration={3} />
-      ))}
-      <AnimatedBeam containerRef={containerRef} fromRef={hubRef} toRef={userRef} duration={3} />
-    </div>
-  );
-}
 
 export function RAgents() {
+  const [selected, setSelected] = useState<AgentKey>("prosecution");
+  const active = AGENTS.find((agent) => agent.key === selected) ?? AGENTS[0];
+
   return (
     <section className="rz-sec" id="agents">
       <div className="rz-card-w">
         <div className="rz-agents">
           <div className="rz-agents__copy">
-            <span className="kick" style={{ color: "#0e8fd0" }}>Built for agents</span>
-            <RWordReveal as="h2" className="rz-agents__title" text="Your gut report, available to any AI." />
-            <p className="rz-agents__lead">The whole platform is a Model Context Protocol server, so Claude, Cursor or any MCP agent can analyse a sample, read the report, then reach into live <b>PubMed</b> and <b>ClinicalTrials.gov</b> to back a flagged microbe with real published research and active trials. Nothing is mocked: the classifier runs live and every citation is a real PubMed record or registered trial.</p>
+            <span className="kick" style={{ color: "#0e8fd0" }}>The agent courtroom</span>
+            <RWordReveal as="h2" className="rz-agents__title" text="Eight specialists. One belief that changed." />
+            <p className="rz-agents__lead">This verified golden run resumed a persistent <b>TrueForge</b> case, used independent <b>Bright Data</b> evidence, executed deterministic scoring in <b>Daytona</b>, and preserved every revision and dissent before stopping for a scientist.</p>
             <p className="rz-agents__note">
               <span className="rz-agents__notedot" aria-hidden />
-              Point any MCP client at <code>mcp/gutgutgoose-server.mjs</code>
+              Golden run <code>01m17kj6cy2prqvxret528beb4</code>
             </p>
           </div>
 
-          <AnimatedBeamMultipleOutput className="rz-agents__beamcard" />
+          <div className="gaggle-runtime rz-agents__beamcard">
+            <div className="gaggle-runtime__head">
+              <span><i aria-hidden /> Verified golden run</span>
+              <code>CASE GGG-0042</code>
+            </div>
+
+            <div className="gaggle-runtime__revision" aria-label="Belief revision">
+              <div><b>Candidate A</b><span>#1</span><em aria-hidden>&rarr;</em><strong>#3</strong></div>
+              <div className="is-leader"><b>Candidate B</b><span>#2</span><em aria-hidden>&rarr;</em><strong>#1</strong></div>
+            </div>
+
+            <div className="gaggle-runtime__grid">
+              <div className="gaggle-runtime__list" role="list" aria-label="Specialist agents">
+                {AGENTS.map((agent) => (
+                  <button
+                    type="button"
+                    className={agent.key === selected ? "is-active" : ""}
+                    onClick={() => setSelected(agent.key)}
+                    aria-pressed={agent.key === selected}
+                    key={agent.key}
+                  >
+                    <i className={`is-${agent.status}`} aria-hidden />
+                    <span>{agent.name}</span>
+                    <small>{agent.status === "complete" ? "done" : "waiting"}</small>
+                  </button>
+                ))}
+              </div>
+
+              <div className="gaggle-runtime__detail" aria-live="polite">
+                <span className="gaggle-runtime__tool">{active.tool}</span>
+                <h3>{active.name}</h3>
+                <p>{active.detail}</p>
+              </div>
+            </div>
+
+            <div className="gaggle-runtime__approval">
+              <span><i aria-hidden /> Waiting for scientist approval</span>
+              <code>sha256:fa33575d&hellip;525a8b</code>
+            </div>
+          </div>
         </div>
       </div>
     </section>

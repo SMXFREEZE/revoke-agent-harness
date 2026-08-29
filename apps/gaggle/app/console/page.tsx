@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { RReport } from "@/components/reasonal/RReport";
 
 export const metadata: Metadata = {
-  title: "Live console",
-  description: "Run the MetaScope engine on a shotgun-metagenomic sample and read your gut report, live.",
+  title: "MetaScope console",
+  description: "The preserved MetaScope microbiome analysis product inside The Gaggle project.",
 };
 
 // A dedicated, shareable full-page console for the live report, reusing the same

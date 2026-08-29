@@ -4,19 +4,20 @@ import { RFooterArt } from "./RFooterArt";
 
 const COLS = [
   {
-    title: "Product",
+    title: "The run",
     links: [
       { label: "How it works", href: "/#steps" },
-      { label: "The live report", href: "/console" },
-      { label: "Built for agents", href: "/#agents" },
-      { label: "Your report explained", href: "/#disciplines" },
+      { label: "Agent courtroom", href: "/#agents" },
+      { label: "Independent roles", href: "/#disciplines" },
+      { label: "Belief revision", href: "/#science" },
     ],
   },
   {
     title: "More",
     links: [
       { label: "FAQ", href: "/#faq" },
-      { label: CONTACT.email, href: `mailto:${CONTACT.email}` },
+      { label: "Public source", href: "https://github.com/SMXFREEZE/revoke-agent-harness" },
+      { label: "Qodo review", href: "https://github.com/SMXFREEZE/revoke-agent-harness/pull/1" },
     ],
   },
 ];
@@ -29,8 +30,7 @@ export function RFooter() {
         <div className="rz-footer__top">
           <div className="rz-footer__brand">
             <span className="rz-footer__logo">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/brand/ggg-logo-wide.png" alt="GutGutGoose" style={{ height: 40 }} />
+              <span className="rz-gaggle-logo rz-gaggle-logo--footer" aria-label="The Gaggle"><b>THE</b><strong>GAGGLE</strong></span>
             </span>
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "30ch", fontSize: 15 }}>
               {BRAND.blurb}
@@ -59,7 +59,7 @@ export function RFooter() {
 
         <div className="rz-footer__base">
           <span>© {BRAND.year} {BRAND.full}. {CONTACT.location}</span>
-          <span>Probiotics matched to your gut DNA.</span>
+          <span>Adversarial microbiome R&amp;D, with a human scientist in control.</span>
         </div>
       </div>
     </footer>

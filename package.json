@@ -12,7 +12,8 @@
   "scripts": {
     "postinstall": "patch-package",
     "build": "npm run build --workspaces --if-present",
-    "dev": "npm run dev --workspace @revoke/console",
+    "dev": "npm run dev --workspace gutgutgoose -- --webpack",
+    "dev:legacy-console": "npm run dev --workspace @revoke/console",
     "dev:commerce": "npm run dev --workspace @revoke/commerce-mcp",
     "dev:evidence": "npm run dev --workspace @revoke/evidence-mcp",
     "dev:gaggle-lab": "npm run dev --workspace @gaggle/lab-mcp",
