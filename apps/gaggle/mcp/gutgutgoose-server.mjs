@@ -23,6 +23,7 @@ import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { ListToolsRequestSchema, CallToolRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { createAnalysisStore } from "./analysis-store.mjs";
+import { MAX_MICROBE_NAME_LENGTH, parseMicrobeName } from "./tool-input.mjs";
 
 const require = createRequire(import.meta.url);
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -107,7 +108,7 @@ const TOOLS = [
   { name: "get_report", description: "Return one gut report by analysis ID. Analyses expire after 30 idle minutes and the server retains at most 32.",
     inputSchema: { type: "object", properties: { analysisId: analysisIdProperty }, required: ["analysisId"] } },
   { name: "explain_microbe", description: "Explain one microbe from a named analysis: its abundance and status plus clinical context (role, associated conditions, dietary levers, evidence).",
-    inputSchema: { type: "object", properties: { analysisId: analysisIdProperty, name: { type: "string", description: "Microbe name or genus, e.g. 'Akkermansia' or 'E. coli'." } }, required: ["analysisId", "name"] } },
+    inputSchema: { type: "object", properties: { analysisId: analysisIdProperty, name: { type: "string", minLength: 1, maxLength: MAX_MICROBE_NAME_LENGTH, pattern: "\\S", description: "Non-empty microbe name or genus, e.g. 'Akkermansia' or 'E. coli'." } }, required: ["analysisId", "name"] } },
   { name: "get_plan", description: "Return the personalised probiotic recommendations for one analysis ID.",
     inputSchema: { type: "object", properties: { analysisId: analysisIdProperty }, required: ["analysisId"] } },
   { name: "search_medical_evidence", description: "Search live PubMed (NCBI) for peer-reviewed research on a microbe, condition or topic. Returns real papers (title, year, journal, PMID, link). Use it to back a finding with literature.",
@@ -137,14 +138,16 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
       return report ? ok({ analysisId: args.analysisId, plan: summarise(report).plan }) : ok("Unknown or expired analysisId. Call analyze_gut_sample first.");
     }
     if (name === "explain_microbe") {
+      const microbeName = parseMicrobeName(args.name);
+      if (!microbeName) return ok(`Invalid microbe name. Provide 1-${MAX_MICROBE_NAME_LENGTH} non-whitespace characters.`);
       const report = reportFor(args.analysisId);
       if (!report) return ok("Unknown or expired analysisId. Call analyze_gut_sample first.");
-      const q = (args.name || "").toLowerCase();
+      const q = microbeName.toLowerCase();
       const hit = (report.abundance || []).find((a) => a.species.toLowerCase().includes(q) || a.species.toLowerCase().split(" ").some((w) => w.length > 3 && q.includes(w)) || q.includes(a.species.toLowerCase().split(" ")[0]));
-      const kb = kbFor(hit ? hit.species : args.name);
+      const kb = kbFor(hit ? hit.species : microbeName);
       return ok({
         analysisId: args.analysisId,
-        microbe: hit ? hit.species : args.name,
+        microbe: hit ? hit.species : microbeName,
         found: !!hit,
         abundance: hit ? { percent: Number(hit.pct?.toFixed?.(2)), status: hit.status, phylum: hit.phylum, healthyRange: `${hit.healthyLo}-${hit.healthyHi}%` } : null,
         clinical: kb || "No curated medical context for this microbe.",
