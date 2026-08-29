@@ -28,5 +28,9 @@ Do not replace a sponsor tool with a custom imitation on the golden path.
 
 ## Credential policy
 
-Use the canonical local credential loader defined by C:/Users/sami/AGENTS.md. Never print, copy, commit, or place real credentials in browser code. Only example variable names may exist in this repository.
+For this project, use C:/Users/sami/.config/ai/env.local as explicitly directed by
+the project owner. Load it only into the current process with
+scripts/import-sponsor-env.ps1. Never print, copy, commit, or place real
+credentials in browser code. Only example variable names may exist in this
+repository.
 

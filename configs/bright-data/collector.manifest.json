@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0",
+  "provider": "Bright Data",
+  "integration": "@brightdata/mcp@2.11.1",
+  "mode": "rapid-least-privilege",
+  "tools": ["search_engine", "scrape_as_markdown"],
+  "rateLimit": "20/1h",
+  "goldenCase": {
+    "query": "Cuisinart grill brush recall 26-717 August 27 2026",
+    "manufacturerUrl": "https://www.cuisinart.com/support/safety-recalls.html",
+    "authoritativeUrl": "https://www.cpsc.gov/Recalls/2026/Conair-Expands-Recall-of-Cuisinart-Grill-Brushes-Due-to-Ingestion-Hazard-Over-3-6-Million-Brushes-Now-Recalled"
+  },
+  "sourcePolicy": {
+    "governmentDomains": "authoritative connector only",
+    "brightDataDomains": "public non-government manufacturer and retailer pages",
+    "reason": "Bright Data classifies cpsc.gov as a blocked government domain; REVOKE does not bypass provider policy."
+  },
+  "requiredSignals": {
+    "search": ["cuisinart", "cpsc.gov"],
+    "manufacturerPage": ["grill", "recall"]
+  },
+  "provenance": [
+    "canonicalUrl",
+    "publisher",
+    "retrievedAt",
+    "extractorVersion",
+    "sha256",
+    "liveOrFixture"
+  ],
+  "driftPolicy": {
+    "emptyResponse": "fail closed and surface connector degradation",
+    "missingRequiredSignal": "quarantine extraction and retain last known fixture as visibly labeled demo fallback",
+    "schemaFailure": "store raw hash only; do not match or preview",
+    "retry": { "attempts": 2, "backoffMs": [1000, 3000] }
+  }
+}

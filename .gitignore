@@ -3,6 +3,7 @@ dist/
 coverage/
 .vite/
 .turbo/
+.vercel/
 *.log
 *.sqlite
 *.sqlite-shm
@@ -18,4 +19,3 @@ Thumbs.db
 data/runtime/
 artifacts/runtime/
 tmp/
-

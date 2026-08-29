@@ -1,0 +1,34 @@
+{
+  "recallNumber": "26-601",
+  "relatedRecallNumbers": ["26-717"],
+  "title": "Conair Recalls Over One Million Cuisinart Grill Brushes Due to Ingestion Hazard",
+  "publicationDate": "2026-07-02",
+  "jurisdiction": "US-CPSC",
+  "manufacturer": "Cuisinart",
+  "productCategory": "wire-bristle-grill-brush",
+  "hazard": "Small metal wire bristles can detach and pose an ingestion hazard.",
+  "remedy": "Refund",
+  "units": 1719995,
+  "identifiers": [
+    { "type": "model", "value": "CCB-100" },
+    { "type": "model", "value": "CCB-4125" },
+    { "type": "model", "value": "CCB-5014" },
+    { "type": "model", "value": "CCB-6450" },
+    { "type": "model", "value": "CCB-8012" },
+    { "type": "model", "value": "CCB-4114" },
+    { "type": "model", "value": "CCB-W2" },
+    { "type": "model", "value": "CSBS-777" }
+  ],
+  "familyScope": null,
+  "evidence": [
+    {
+      "sourceUrl": "https://www.cpsc.gov/Recalls/2026/Conair-Recalls-Over-One-Million-Cuisinart-Grill-Brushes-Due-to-Ingestion-Hazard",
+      "publisher": "U.S. Consumer Product Safety Commission",
+      "retrievedAt": "2026-08-29T17:00:00Z",
+      "extractor": "captured-cpsc-fixture/v1",
+      "contentHash": "fixture-cpsc-26-601-2026-07-02",
+      "mode": "fixture"
+    }
+  ]
+}
+

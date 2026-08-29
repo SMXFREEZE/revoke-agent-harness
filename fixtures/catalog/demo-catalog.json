@@ -1,0 +1,90 @@
+[
+  {
+    "sku": "SKU-CUIS-CGWM024",
+    "brand": "Cuisinart",
+    "model": "CGWM-024",
+    "upc": "817096018798",
+    "title": "Dual Grip Grill Brush",
+    "category": "wire-bristle-grill-brush",
+    "firstSoldAt": "2021-01-15",
+    "status": "active",
+    "inventoryUnits": 86,
+    "unitPriceCents": 1499,
+    "inventoryHeld": false
+  },
+  {
+    "sku": "SKU-CUIS-CGWM059",
+    "brand": "Cuisinart",
+    "model": "CGWM-059",
+    "upc": "817096018804",
+    "title": "18 Inch Bamboo Cleaning Grill Brush",
+    "category": "wire-bristle-grill-brush",
+    "firstSoldAt": "2020-05-12",
+    "status": "active",
+    "inventoryUnits": 42,
+    "unitPriceCents": 1899,
+    "inventoryHeld": false
+  },
+  {
+    "sku": "SKU-CUIS-FCB501",
+    "brand": "Cuisinart",
+    "model": "FCB-501",
+    "upc": "817096018811",
+    "title": "Grill Dozer Steam Cleaning Tool",
+    "category": "wire-bristle-grill-brush",
+    "firstSoldAt": "2019-03-09",
+    "status": "active",
+    "inventoryUnits": 110,
+    "unitPriceCents": 1599,
+    "inventoryHeld": false
+  },
+  {
+    "sku": "SKU-CUIS-LEGACY18",
+    "brand": "Cuisinart",
+    "model": "CWBR-2018",
+    "title": "Legacy Wire Bristle Grill Brush",
+    "category": "wire-bristle-grill-brush",
+    "firstSoldAt": "2018-06-01",
+    "status": "active",
+    "inventoryUnits": 74,
+    "unitPriceCents": 1299,
+    "inventoryHeld": false
+  },
+  {
+    "sku": "SKU-CUIS-CCB395-REVIEW",
+    "brand": "Cuisinart",
+    "model": "CCB-395",
+    "title": "Cross Action Grill Scraper",
+    "category": "grill-scraper",
+    "firstSoldAt": "2022-04-11",
+    "status": "active",
+    "inventoryUnits": 24,
+    "unitPriceCents": 1699,
+    "inventoryHeld": false
+  },
+  {
+    "sku": "SKU-CUIS-CCB100",
+    "brand": "Cuisinart",
+    "model": "CCB-100",
+    "title": "Triple Bristle Grill Cleaning Brush",
+    "category": "wire-bristle-grill-brush",
+    "firstSoldAt": "2023-07-10",
+    "status": "quarantined",
+    "inventoryUnits": 0,
+    "unitPriceCents": 1499,
+    "inventoryHeld": true
+  },
+  {
+    "sku": "SKU-OTHER-CGR221",
+    "brand": "Northstar",
+    "model": "CGR-221",
+    "title": "Bristle-Free Grill Scraper",
+    "category": "grill-scraper",
+    "firstSoldAt": "2025-01-20",
+    "status": "active",
+    "inventoryUnits": 50,
+    "unitPriceCents": 2099,
+    "inventoryHeld": false
+  }
+]
+

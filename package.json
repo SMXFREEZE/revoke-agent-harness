@@ -10,18 +10,40 @@
     "services/*"
   ],
   "scripts": {
+    "postinstall": "patch-package",
     "build": "npm run build --workspaces --if-present",
     "dev": "npm run dev --workspace @revoke/console",
     "dev:commerce": "npm run dev --workspace @revoke/commerce-mcp",
-    "lint": "npm run lint --workspaces --if-present",
+    "dev:evidence": "npm run dev --workspace @revoke/evidence-mcp",
+    "trueforge:start": "trueforge --port 8790",
+    "trueforge:configure": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/configure-trueforge.ps1",
+    "lint": "eslint eslint.config.js scripts && npm run lint --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "test:coverage": "npm run test:coverage --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
+    "sponsor:check:bright-data": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"& './scripts/import-sponsor-env.ps1'; node './scripts/check-bright-data-mcp.mjs'\"",
+    "sponsor:check:bright-data-remote": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"& './scripts/import-sponsor-env.ps1'; node './scripts/check-bright-data-mcp.mjs' --remote-header\"",
+    "sponsor:check:cpsc": "npm run check:live --workspace @revoke/evidence-mcp",
+    "sponsor:check:daytona": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/check-daytona-api.ps1",
     "check": "npm run lint && npm run typecheck && npm run test && npm run build"
   },
   "engines": {
     "node": ">=22.14"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@truefoundry/trueforge": "0.1.4",
+    "@types/express": "5.0.6",
+    "@types/node": "24.10.13",
+    "@types/supertest": "7.2.1",
+    "@vitest/coverage-v8": "4.1.11",
+    "eslint": "10.9.1",
+    "patch-package": "8.0.1",
+    "supertest": "7.2.2",
+    "tsx": "4.23.12",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.68.0",
+    "vitest": "4.1.11"
+  }
 }
-

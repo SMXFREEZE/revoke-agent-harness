@@ -47,6 +47,12 @@ built on a feature branch and will remain unmerged until Qodo review is active.
 
 Never commit credentials. Use .env.local only for local services; configure
 model, MCP, and sandbox credentials in TrueForge connectors whenever possible.
+On the owner's machine, scripts/import-sponsor-env.ps1 loads the approved
+C:/Users/sami/.config/ai/env.local file into the current process without
+printing values. It maps the existing DAYTONA_API name to DAYTONA_API_KEY for
+tools that expect the latter, and BRIGHT_DATA_API to BRIGHTDATA_API_KEY for the
+official Bright Data CLI. Both aliases exist only in the current process.
+
 
 ## Qodo Code Review Evidence
 
@@ -58,4 +64,3 @@ substitute for the public PR.
 ## License
 
 MIT. See LICENSE and ATTRIBUTIONS.md.
-
