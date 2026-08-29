@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { withBasePath } from "@/lib/utils/base-path";
 
 // Pulls REAL research into the report: for each flagged microbe, fetches live
 // PubMed papers and ClinicalTrials.gov studies (via /api/evidence) and shows
@@ -18,7 +19,7 @@ export function RGutEvidence({ profile }: { profile: any }) {
     if (!active) return;
     let live = true;
     setLoading(true); setData(null);
-    fetch(`/api/evidence?q=${encodeURIComponent(active + " gut microbiome")}`)
+    fetch(withBasePath(`/api/evidence?q=${encodeURIComponent(active + " gut microbiome")}`))
       .then((r) => r.json())
       .then((d) => { if (live) { setData(d); setLoading(false); } })
       .catch(() => { if (live) setLoading(false); });

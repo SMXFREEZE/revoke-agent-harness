@@ -3,18 +3,19 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { withBasePath } from "@/lib/utils/base-path";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
 /** Floating discipline photos around the manifesto. `depth` drives the scroll
  *  parallax speed; `dur` the gentle idle float. */
 const THUMBS = [
-  { src: "/img/gut-veg.jpg", depth: 0.9, dur: 6.5, style: { left: "4%", top: "12%", width: "150px", height: "150px" } },
-  { src: "/img/gut-fruit.jpg", depth: 0.45, dur: 7.5, style: { right: "5%", top: "9%", width: "130px", height: "180px" } },
-  { src: "/img/gut-culture.jpg", depth: 1, dur: 8, style: { left: "10%", bottom: "10%", width: "140px", height: "120px" } },
-  { src: "/img/gut-lab.jpg", depth: 0.7, dur: 6, style: { right: "8%", bottom: "12%", width: "150px", height: "150px" } },
-  { src: "/img/gut-fermented.jpg", depth: 0.4, dur: 9, style: { left: "1%", top: "46%", width: "110px", height: "110px" } },
-  { src: "/images/tulum/feat-community.jpg", depth: 0.85, dur: 7, style: { right: "1%", top: "44%", width: "120px", height: "150px" } },
+  { src: withBasePath("/img/gut-veg.jpg"), depth: 0.9, dur: 6.5, style: { left: "4%", top: "12%", width: "150px", height: "150px" } },
+  { src: withBasePath("/img/gut-fruit.jpg"), depth: 0.45, dur: 7.5, style: { right: "5%", top: "9%", width: "130px", height: "180px" } },
+  { src: withBasePath("/img/gut-culture.jpg"), depth: 1, dur: 8, style: { left: "10%", bottom: "10%", width: "140px", height: "120px" } },
+  { src: withBasePath("/img/gut-lab.jpg"), depth: 0.7, dur: 6, style: { right: "8%", bottom: "12%", width: "150px", height: "150px" } },
+  { src: withBasePath("/img/gut-fermented.jpg"), depth: 0.4, dur: 9, style: { left: "1%", top: "46%", width: "110px", height: "110px" } },
+  { src: withBasePath("/images/tulum/feat-community.jpg"), depth: 0.85, dur: 7, style: { right: "1%", top: "44%", width: "120px", height: "150px" } },
 ];
 
 export function RWhyThumbs() {

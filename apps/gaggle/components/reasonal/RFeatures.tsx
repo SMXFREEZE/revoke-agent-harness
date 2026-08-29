@@ -1,6 +1,7 @@
 import { RWordReveal } from "./reveal";
 import { Counter } from "@/components/ui/Counter";
 import { STATS } from "@/lib/data/site";
+import { withBasePath } from "@/lib/utils/base-path";
 
 export function RFeatures() {
   return (
@@ -20,7 +21,7 @@ export function RFeatures() {
             </p>
             <div className="rz-feat__media rz-feat__media--fade" data-reveal>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/tulum/feat-mentor.jpg" alt="A scientist reviewing microbiome evidence" loading="lazy" />
+              <img src={withBasePath("/images/tulum/feat-mentor.jpg")} alt="A scientist reviewing microbiome evidence" loading="lazy" />
             </div>
           </article>
 
@@ -36,7 +37,7 @@ export function RFeatures() {
             </p>
             <div className="rz-feat__media rz-feat__media--fade" data-reveal>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/tulum/feat-community.jpg" alt="A research team reviewing experimental results" loading="lazy" />
+              <img src={withBasePath("/images/tulum/feat-community.jpg")} alt="A research team reviewing experimental results" loading="lazy" />
             </div>
           </article>
         </div>

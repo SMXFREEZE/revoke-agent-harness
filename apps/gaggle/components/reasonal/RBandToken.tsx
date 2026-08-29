@@ -4,10 +4,11 @@ import { Suspense, useEffect, useMemo, useRef } from "react";
 import { Canvas, useThree, useFrame } from "@react-three/fiber";
 import { Clone, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
+import { withBasePath } from "@/lib/utils/base-path";
 
 type Props = { url?: string };
 
-const DEFAULT_URL = "/models/x-movement-logo-3d.glb?v=2";
+const DEFAULT_URL = withBasePath("/models/x-movement-logo-3d.glb?v=2");
 
 /**
  * The logo is a flat-ish extruded mark, so a full 360 spin shows an ugly

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { HIGHLIGHTS } from "@/lib/data/site";
 import { VantaBackground } from "@/components/layout/VantaBackground";
+import { withBasePath } from "@/lib/utils/base-path";
 
 const TAGS = [...HIGHLIGHTS];
 
@@ -52,7 +53,7 @@ export function RHero() {
           <div className="rz-phone">
             <span className="rz-phone__notch" aria-hidden />
             <div className="rz-phone__screen">
-              <video className="rz-phone__media" src="/hero/microbiome.mp4" poster="/hero/ai-microbiome.webp" autoPlay loop muted playsInline aria-hidden />
+              <video className="rz-phone__media" src={withBasePath("/hero/microbiome.mp4")} poster={withBasePath("/hero/ai-microbiome.webp")} autoPlay loop muted playsInline aria-hidden />
               <span className="rz-phone__glare" aria-hidden />
             </div>
           </div>

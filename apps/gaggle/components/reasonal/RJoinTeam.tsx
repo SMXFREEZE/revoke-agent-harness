@@ -1,5 +1,6 @@
 import { RWordReveal } from "./reveal";
 import { CONTACT } from "@/lib/data/site";
+import { withBasePath } from "@/lib/utils/base-path";
 
 export function RJoinTeam() {
   return (
@@ -20,7 +21,7 @@ export function RJoinTeam() {
           </div>
           <div className="rz-join__media">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/tulum/feat-community.jpg" alt="People living well with a gut they understand" loading="lazy" />
+            <img src={withBasePath("/images/tulum/feat-community.jpg")} alt="People living well with a gut they understand" loading="lazy" />
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@
 import { forwardRef, ReactNode, RefObject, useEffect, useId, useLayoutEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils/cn";
+import { withBasePath } from "@/lib/utils/base-path";
 
 // run the measurement before paint to avoid a one-frame flash, but fall back to
 // useEffect during SSR (useLayoutEffect warns on the server)
@@ -147,7 +148,7 @@ export const Icons = {
   ),
   logo: () => (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src="/favicon.svg" alt="The Gaggle" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+    <img src={withBasePath("/favicon.svg")} alt="The Gaggle" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
   ),
   vercel: () => (
     <svg viewBox="0 0 76 65" style={{ width: "100%", height: "100%" }} aria-hidden>

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "test": "vitest run",
     "start": "next start",
     "lint": "next lint",
     "photos": "node --env-file=.env.local scripts/fetch-photos.mjs"

@@ -5,6 +5,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Clone, useGLTF, Environment, Lightformer } from "@react-three/drei";
 import * as THREE from "three";
 import type { Group } from "three";
+import { withBasePath } from "@/lib/utils/base-path";
 
 // The intro's signature: four DIFFERENT glassy figures drifting on a bright sky
 // (square star token, hexagon star token, ring, and a star-in-glass orb). They
@@ -19,10 +20,10 @@ type ItemDef = {
   phase: number;
 };
 
-const SQUARE_URL = "/models/tokens/token-05-rounded-star.glb";
-const HEX_URL = "/models/tokens/token-06-hex-star.glb";
-const RING_URL = "/models/tokens/token-08-ring.glb";
-const ORB_URL = "/models/glass-spheres/glass-orb-with-star.glb";
+const SQUARE_URL = withBasePath("/models/tokens/token-05-rounded-star.glb");
+const HEX_URL = withBasePath("/models/tokens/token-06-hex-star.glb");
+const RING_URL = withBasePath("/models/tokens/token-08-ring.glb");
+const ORB_URL = withBasePath("/models/glass-spheres/glass-orb-with-star.glb");
 const ITEMS: ItemDef[] = [
   // square star token, upper-left
   { url: SQUARE_URL, kind: "token", pos: [-2.5, 1.6, -0.3], size: 1.15, spin: 0, bob: 0.5, phase: 0 },

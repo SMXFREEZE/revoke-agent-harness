@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
+// next/link adds the conditional next.config basePath to these internal routes.
 const LINKS = [
   { label: "How it works", href: "/#steps" },
   { label: "The agents", href: "/#agents" },

@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { BandTokenBoundary } from "./BandTokenBoundary";
+import { withBasePath } from "@/lib/utils/base-path";
 
 // ssr:false keeps the WebGL canvas out of the server render + hydration pass,
 // so it can never throw during SSR or mismatch on hydrate.
@@ -15,7 +16,7 @@ export function RBandTokenLazy({ url }: Props) {
       <BandTokenBoundary
         fallback={
           // eslint-disable-next-line @next/next/no-img-element
-          <img className="rz-band__token-fallback" src="/band/glass-ball-7.png" alt="" aria-hidden />
+          <img className="rz-band__token-fallback" src={withBasePath("/band/glass-ball-7.png")} alt="" aria-hidden />
         }
       >
         <RBandToken url={url} />
