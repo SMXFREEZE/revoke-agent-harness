@@ -60,7 +60,42 @@ describe("MetaScope quality control and evidence guards", () => {
     expect(result.quality.reads).toBe(1);
     expect(result.classified).toBe(1);
     expect(result.reportEligible).toBe(false);
+    expect(result.classificationEvidence.sufficient).toBe(false);
+    expect(result.scores).toBeNull();
     expect(Array.from(result.recommendations)).toEqual([]);
+  });
+
+  it("withholds abundance scores and recommendations when classifications are zero or sparse despite passing QC", async () => {
+    const matched = "ACGTTGCATGTCAGTACGATCGTAGCTAGTCGATCGGATCC";
+    const unmatched = "A".repeat(matched.length);
+    const reference = {
+      k: 5,
+      readLen: matched.length,
+      taxa: [{
+        id: "only", species: "Example taxon", phylum: "Firmicutes", genome: matched,
+        named: true, concern: "none", healthyLo: 0, healthyHi: 100,
+      }],
+    };
+    const asFastq = (sequences) => sequences.flatMap((seq, index) => [
+      `@read-${index}`, seq, "+", high(seq.length),
+    ]).join("\n");
+
+    const [zero, sparse] = await Promise.all([
+      MetaScope.run(asFastq(Array(20).fill(unmatched)), { reference }),
+      MetaScope.run(asFastq([matched, matched, ...Array(18).fill(unmatched)]), { reference }),
+    ]);
+
+    expect(zero.quality.qualityGatePassed).toBe(true);
+    expect(zero.classified).toBe(0);
+    expect(sparse.quality.qualityGatePassed).toBe(true);
+    expect(sparse.classified).toBe(2);
+    for (const result of [zero, sparse]) {
+      expect(result.classificationEvidence.sufficient).toBe(false);
+      expect(result.classificationEvidence.minClassifiedPct).toBe(50);
+      expect(result.reportEligible).toBe(false);
+      expect(result.scores).toBeNull();
+      expect(Array.from(result.recommendations)).toEqual([]);
+    }
   });
 
   it("bases recommendation rationale on measured abundance, not invented history", () => {

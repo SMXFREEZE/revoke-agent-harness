@@ -424,16 +424,36 @@
     // diversity over ALL species (named + filler) by read counts
     const div = diversity(byId);
 
-    onStage('recommend', 'Matching probiotic strains to your gut');
+    // Passing read-level QC is necessary but not sufficient for an abundance-
+    // based report. Require both a useful classified-read count and fraction so
+    // zero/sparse matches cannot produce probiotic advice or health scores.
+    const minClassifiedReads = 20;
+    const minClassifiedPct = 50;
+    const classifiedPct = total ? (100 * classified) / total : 0;
+    const taxonomicEvidenceSufficient = classified >= minClassifiedReads
+      && classifiedPct >= minClassifiedPct;
+    const reportEligible = quality.qualityGatePassed && taxonomicEvidenceSufficient;
+    const classificationEvidence = {
+      sufficient: taxonomicEvidenceSufficient,
+      classifiedReads: classified,
+      retainedReads: total,
+      classifiedPct,
+      minClassifiedReads,
+      minClassifiedPct,
+    };
+
+    onStage('recommend', reportEligible
+      ? 'Matching probiotic strains to your gut'
+      : 'Withholding scores and recommendations: insufficient classified evidence');
     await sleep(220);
     const byIdPct = {};
     for (const a of abundance) byIdPct[a.id] = a.pct;
-    const recs = quality.qualityGatePassed ? recommend(byIdPct, taxaById, div, phylum) : [];
-    const idx = scores(byIdPct, phylum, div, taxaById);
+    const recs = reportEligible ? recommend(byIdPct, taxaById, div, phylum) : [];
+    const idx = reportEligible ? scores(byIdPct, phylum, div, taxaById) : null;
 
     onStage('done', 'Report ready');
     return {
-      quality, reportEligible: quality.qualityGatePassed,
+      quality, reportEligible, classificationEvidence,
       index: { distinctKmers: index.distinctKmers, k: index.k, minHits },
       classified, unclassifiedPct: total ? (100 * (total - classified)) / total : 0,
       abundance, otherPct, phylum, fbRatio, enterotype, enterotypeEvidence, diversity: div,
