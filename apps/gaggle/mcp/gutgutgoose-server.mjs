@@ -23,8 +23,9 @@ import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { ListToolsRequestSchema, CallToolRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { createAnalysisStore } from "./analysis-store.mjs";
+import { buildMicrobeResult } from "./microbe-result.mjs";
 import { guardReport, insufficientEvidenceResponse, summarisePlan, summariseReport } from "./report-summary.mjs";
-import { MAX_MICROBE_NAME_LENGTH, findMicrobeMatch, parseMicrobeName } from "./tool-input.mjs";
+import { MAX_MICROBE_NAME_LENGTH, parseMicrobeName } from "./tool-input.mjs";
 
 const require = createRequire(import.meta.url);
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -130,17 +131,10 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
       if (!report) return ok("Unknown or expired analysisId. Call analyze_gut_sample first.");
       const blocked = guardReport(report, { analysisId: args.analysisId, operation: name });
       if (blocked) return ok(blocked);
-      const hit = findMicrobeMatch(report.abundance, microbeName);
-      const kb = kbFor(hit ? hit.species : microbeName);
-      return ok({
+      return ok(buildMicrobeResult(report, microbeName, {
         analysisId: args.analysisId,
-        status: "report_ready",
-        reportEligible: true,
-        microbe: hit ? hit.species : microbeName,
-        found: !!hit,
-        abundance: hit ? { percent: Number(hit.pct?.toFixed?.(2)), status: hit.status, phylum: hit.phylum, healthyRange: `${hit.healthyLo}-${hit.healthyHi}%` } : null,
-        clinical: kb || "No curated medical context for this microbe.",
-      });
+        clinicalFor: kbFor,
+      }));
     }
     if (name === "search_medical_evidence") return ok({ query: args.query, source: "PubMed (NCBI)", papers: await pubmed(args.query || "", 5) });
     if (name === "find_clinical_trials") return ok({ query: args.query, source: "ClinicalTrials.gov", studies: await trials(args.query || "", 5) });

@@ -19,19 +19,27 @@ export function parseMicrobeName(value) {
   return name;
 }
 
-/** Resolve only exact species, exact genera, and explicit unambiguous aliases. */
-export function findMicrobeMatch(abundance, value) {
+/** Resolve exact species/aliases or every row belonging to an exact genus. */
+export function resolveMicrobeQuery(abundance, value) {
   const parsed = parseMicrobeName(value);
   if (!parsed || !Array.isArray(abundance)) return null;
 
   const requestedKey = normalizedMicrobeKey(parsed);
   const targetKey = MICROBE_ALIASES.get(requestedKey) ?? requestedKey;
   const targetIsGenus = !targetKey.includes(" ");
-
-  return abundance.find((entry) => {
+  const matches = abundance.filter((entry) => {
     const speciesKey = normalizedMicrobeKey(String(entry?.species ?? ""));
     if (!speciesKey) return false;
-    if (speciesKey === targetKey) return true;
-    return targetIsGenus && speciesKey.split(" ")[0] === targetKey;
-  }) ?? null;
+    return targetIsGenus
+      ? speciesKey.split(" ")[0] === targetKey
+      : speciesKey === targetKey;
+  });
+  if (!matches.length) return null;
+
+  if (!targetIsGenus) {
+    return { scope: "species", label: matches[0].species, taxa: [matches[0]] };
+  }
+
+  const genus = String(matches[0].species).trim().split(/\s+/)[0];
+  return { scope: "genus", label: genus, taxa: matches };
 }
