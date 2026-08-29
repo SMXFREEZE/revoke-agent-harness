@@ -12,6 +12,7 @@ import { RGutEvidence } from "./RGutEvidence";
 import { RTraceback } from "./RTraceback";
 import { RSeqIntel } from "./RSeqIntel";
 import { phylumLegend, dominantPhylum } from "@/lib/ggg/phylum";
+import { withBasePath } from "@/lib/utils/base-path";
 import patient from "@/lib/ggg/patient.json";
 
 // The report panel, rebuilt in the Lexie Console UI: sky Vanta + frosted liquid
@@ -85,7 +86,10 @@ function order0legend(profile: any): [string, string][] {
 function buildPipeline(p: any, label: string): { commands: string[]; outputs: Record<number, string[]> } {
   if (p.seqOnly) {
     const q = p.quality || {};
-    const reads = (q.reads ?? 0).toLocaleString();
+    const retainedReads = q.reads ?? 0;
+    const rawReads = q.rawReads ?? retainedReads;
+    const reads = retainedReads.toLocaleString();
+    const raw = rawReads.toLocaleString();
     const mbp = ((q.totalBases || 0) / 1e6).toFixed(1);
     const len = Math.round(q.meanLen || 0);
     const gc = Math.round(q.gcPct || 0);
@@ -98,19 +102,26 @@ function buildPipeline(p: any, label: string): { commands: string[]; outputs: Re
         "metascope classify --db ggg-ref",
       ],
       outputs: {
-        0: ["scanning reads, scoring base quality", `✔ ${reads} reads · ${mbp} Mbp · ~${len} bp · GC ${gc}% · Q${mq}`],
+        0: [
+          "trimming detected adapters and low-quality ends; rejecting unusable reads",
+          `${q.qualityGatePassed ? "✔" : "⚠"} ${reads} of ${raw} reads retained · ${mbp} Mbp · ~${len} bp · GC ${gc}% · Q${mq}${q.qualityGatePassed ? "" : " · full report blocked by QC gate"}`,
+        ],
         1: ["counting distinct canonical k-mers", `✔ ${uk} unique k-mers profiled`],
         2: ["matching against the gut-species reference", `✔ ${p.mapped || 0} reads mapped · sequence report ready`],
       },
     };
   }
   const reads = (p.classified ?? 0).toLocaleString();
+  const retainedReads = (p.quality?.reads ?? p.classified ?? 0).toLocaleString();
+  const rawReads = (p.quality?.rawReads ?? p.quality?.reads ?? p.classified ?? 0).toLocaleString();
   const taxa = p.abundance?.length ?? 0;
   const phyla = new Set((p.abundance || []).map((a: any) => a.phylum)).size;
   const sh = p.diversity?.shannon?.toFixed(2);
   const rich = p.diversity?.richness;
   const fb = p.fbRatio?.toFixed(2);
-  const ent = (p.enterotype || "").split(/[\s-]/)[0];
+  const ent = p.enterotype === "Unclassified"
+    ? "enterotype unclassified (insufficient or balanced genus evidence)"
+    : `${(p.enterotype || "Unclassified").split(/[\s-]/)[0]} enterotype`;
   const n = Math.min(5, p.recommendations?.length ?? 0);
   return {
     commands: [
@@ -120,9 +131,9 @@ function buildPipeline(p: any, label: string): { commands: string[]; outputs: Re
       "metascope match --goals bloating,regularity,energy",
     ],
     outputs: {
-      0: ["trimming adapters, filtering low-quality bases", `✔ ${reads} reads pass QC`],
+      0: ["trimming detected adapters and low-quality ends; rejecting unusable reads", `✔ ${retainedReads} of ${rawReads} reads retained for classification`],
       1: ["canonical k-mers, lowest-common-ancestor calls", `✔ ${taxa} taxa across ${phyla} phyla`],
-      2: [`✔ Shannon ${sh}, richness ${rich}, F/B ${fb}, ${ent} enterotype`],
+      2: [`✔ ${reads} reads classified · Shannon ${sh}, richness ${rich}, F/B ${fb}, ${ent}`],
       3: ["choosing strains most likely to colonise", `✔ ${n} strains selected, report ready`],
     },
   };
@@ -132,7 +143,7 @@ function loadEngine(): Promise<void> {
   return new Promise((resolve, reject) => {
     const w = window as any;
     if (w.MetaScope && w.GGG_REFERENCE && w.GGG_REFERENCE_REAL && w.GGG_SAMPLE_FASTQ) return resolve();
-    const files = ["/engine/reference-db.js", "/engine/reference-real.js", "/engine/sample-fastq.js", "/engine/metascope.js"];
+    const files = ["/engine/reference-db.js", "/engine/reference-real.js", "/engine/sample-fastq.js", "/engine/metascope.js"].map((file) => withBasePath(file));
     let done = 0;
     const finish = () => { if (++done === files.length) resolve(); };
     files.forEach((src) => {
@@ -253,11 +264,14 @@ export function RReport() {
       // upload is routed through the REAL marker-gene reference (16S bacteria +
       // 18S eukaryotes) so it always gets a real, measured answer, never a refusal.
       const reference = useReal ? w.GGG_REFERENCE_REAL : w.GGG_REFERENCE;
+      const filtered = w.MetaScope.filterReads(reads, { minLength: Math.max(30, reference.k || 21) });
+      const cleanReads = filtered.reads || [];
       const result = await w.MetaScope.run(text, { reference, onStage: () => {}, onProgress: () => {} });
       const parsed = reads.length;
+      const retained = result?.quality?.reads ?? cleanReads.length;
       // longest reads make the best BLAST queries for the live identify agent
-      const sampleReads = [...reads].sort((a: any, b: any) => (b.seq?.length || 0) - (a.seq?.length || 0)).slice(0, 12).map((r: any) => r.seq).filter(Boolean);
-      const idPctNum = parsed ? (100 * result.classified) / parsed : 0;
+      const sampleReads = [...cleanReads].sort((a: any, b: any) => (b.seq?.length || 0) - (a.seq?.length || 0)).slice(0, 12).map((r: any) => r.seq).filter(Boolean);
+      const idPctNum = retained ? (100 * result.classified) / retained : 0;
       // Plausibility guard. A real gut community is spread across many taxa; the
       // demo reference is small, so an arbitrary real sample can funnel most reads
       // onto a single marker (a small-reference artifact, e.g. 70%+ one species).
@@ -271,20 +285,21 @@ export function RReport() {
       const plausible = topShare <= 0.45 && distinctTaxa >= 4;
       // need a real, well-spread fraction matched for the full local report;
       // otherwise route to the live-BLAST taxonomic profile
-      if (result && result.classified >= 20 && idPctNum >= 5 && plausible) {
+      if (result && result.reportEligible !== false && result.classified >= 20 && idPctNum >= 5 && plausible) {
         const BACT = new Set(["Firmicutes", "Bacteroidetes", "Actinobacteria", "Proteobacteria", "Verrucomicrobia", "Fusobacteria", "Euryarchaeota"]);
         const phy = result.phylum || {};
         const bact = Object.entries(phy).reduce((s: number, [k, v]: any) => s + (BACT.has(k) ? (v as number) : 0), 0);
         result.parsedReads = parsed;
-        result.idPct = +(100 * result.classified / parsed).toFixed(1);
+        result.qcReads = retained;
+        result.idPct = +(100 * result.classified / retained).toFixed(1);
         result.bacterialPct = Math.round(bact);
         result.kingdom = bact >= 55 ? "Bacterial gut community" : "Eukaryotic / mixed community";
         result.quality = result.quality || w.MetaScope.qc(reads);
         result.sampleReads = sampleReads;
         pendingRef.current = result; setPending(result); return;
       }
-      // few reads matched the reference (a sample of organisms outside our panel,
-      // or heavy sequencing error): show the REAL sequence-intelligence readout
+      // few QC-passed reads matched the reference (a sample of organisms outside
+      // our panel, or heavy sequencing error): show sequence intelligence only
       // plus whatever organisms we COULD identify. Still a real result.
       const quality = result?.quality || w.MetaScope.qc(reads);
       // When a single marker absorbs most of the matched reads (a small-reference
@@ -294,7 +309,7 @@ export function RReport() {
         .map((a: any) => ({ species: a.species, reads: a.reads, pct: a.pct }));
       const seq = {
         seqOnly: true, quality, mapped: result ? result.classified : 0, parsedReads: parsed,
-        uniqueKmers: uniqueKmerRichness(reads), assay: inferAssay(quality), identified, sampleReads,
+        uniqueKmers: uniqueKmerRichness(cleanReads), assay: inferAssay(quality), identified, sampleReads,
       };
       pendingRef.current = seq; setPending(seq);
     } catch {
@@ -316,7 +331,7 @@ export function RReport() {
   const loadSample = useCallback(async (file: string, name: string, kind: string) => {
     setError(null); setUploaded(name); setRunning(true); setProfile(null); setPending(null); pendingRef.current = null;
     try {
-      const text = await fetch(`/samples/${file}`).then((r) => r.text());
+      const text = await fetch(withBasePath(`/samples/${file}`)).then((r) => r.text());
       await runFastq(text, name, kind !== "shotgun");
     } catch {
       setError("Could not load that sample. Please try again."); setRunning(false);
@@ -488,7 +503,7 @@ export function RReport() {
               <Glass className="rz-rep__overview">
                 <div>
                   <div className="rz-rep__name">{isUpload ? "Your sample" : `${patient.name}, ${patient.age}`}</div>
-                  <div className="rz-rep__meta">{isUpload ? `${uploaded} · ${profile.classified.toLocaleString()} of ${(profile.parsedReads || profile.classified).toLocaleString()} reads identified` : `Sample ${patient.sampleId} · collected ${patient.collected} · ${profile.classified.toLocaleString()} DNA reads identified`}</div>
+                  <div className="rz-rep__meta">{isUpload ? `${uploaded} · ${profile.classified.toLocaleString()} of ${(profile.qcReads || profile.classified).toLocaleString()} QC-passed reads identified` : `Sample ${patient.sampleId} · collected ${patient.collected} · ${profile.classified.toLocaleString()} DNA reads identified`}</div>
                   {!isUpload && <div className="rz-rep__goals">{patient.goals.map((g: string) => <span key={g}>{g}</span>)}</div>}
                   {bacterial
                     ? <p className="rz-rep__verdict">{verdict}<span>Your community is mapped below, with {flags.length} thing{flags.length === 1 ? "" : "s"} flagged to work on and a plan to match.</span></p>
@@ -542,7 +557,9 @@ export function RReport() {
                       <div><b>{profile.fbRatio.toFixed(2)}</b><span>F / B balance</span><i>two main families</i></div>
                       <div><b>{sc.resilience}</b><span>Resilience</span><i>higher is better</i></div>
                     </div>
-                    <p className="rz-rep__note">More variety means a more resilient gut. You are a {profile.enterotype.split(/[\s-]/)[0]} enterotype, the gut pattern of a particular everyday diet. It is a description, not a grade.</p>
+                    <p className="rz-rep__note">More variety means a more resilient gut. {profile.enterotype === "Unclassified"
+                      ? "The Bacteroides/Prevotella evidence is too sparse or balanced to assign an enterotype."
+                      : `The genus-level evidence supports a ${profile.enterotype.split(/[\s-]/)[0]} enterotype.`} It is a description, not a grade.</p>
                   </Glass>
                 </div>
               </div>
