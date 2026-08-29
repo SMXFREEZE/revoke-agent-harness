@@ -24,7 +24,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { ListToolsRequestSchema, CallToolRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { createAnalysisStore } from "./analysis-store.mjs";
 import { guardReport, insufficientEvidenceResponse, summarisePlan, summariseReport } from "./report-summary.mjs";
-import { MAX_MICROBE_NAME_LENGTH, parseMicrobeName } from "./tool-input.mjs";
+import { MAX_MICROBE_NAME_LENGTH, findMicrobeMatch, parseMicrobeName } from "./tool-input.mjs";
 
 const require = createRequire(import.meta.url);
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -130,8 +130,7 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
       if (!report) return ok("Unknown or expired analysisId. Call analyze_gut_sample first.");
       const blocked = guardReport(report, { analysisId: args.analysisId, operation: name });
       if (blocked) return ok(blocked);
-      const q = microbeName.toLowerCase();
-      const hit = (report.abundance || []).find((a) => a.species.toLowerCase().includes(q) || a.species.toLowerCase().split(" ").some((w) => w.length > 3 && q.includes(w)) || q.includes(a.species.toLowerCase().split(" ")[0]));
+      const hit = findMicrobeMatch(report.abundance, microbeName);
       const kb = kbFor(hit ? hit.species : microbeName);
       return ok({
         analysisId: args.analysisId,
