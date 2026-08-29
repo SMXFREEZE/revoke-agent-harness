@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { withBasePath } from "@/lib/utils/base-path";
 import { RNetwork } from "./RNetwork";
 import { RSunburst } from "./RSunburst";
 
@@ -30,13 +31,26 @@ export function RLiveId({ reads }: { reads?: string[] }) {
     if (!reads?.length) return;
     setState("running"); setList([]); setAbundance(null); setMsg("Submitting your reads to NCBI BLAST…");
     try {
-      const sub = await fetch("/api/identify", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ reads }) }).then((r) => r.json());
+      const boundedReads = reads
+        .slice(0, 12)
+        .map((read) => String(read).trim().toUpperCase().slice(0, 1_000))
+        .filter((read) => read.length >= 20 && /^[ACGTRYSWKMBDHVN]+$/.test(read));
+      if (!boundedReads.length) {
+        setState("error"); setMsg("No valid DNA reads were available for the live search."); return;
+      }
+      const submitResponse = await fetch(withBasePath("/api/identify"), {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ reads: boundedReads }),
+      });
+      if (!submitResponse.ok) throw new Error("BLAST submission rejected");
+      const sub = await submitResponse.json();
       if (!sub.rid) { setState("error"); setMsg("Could not start the live search. Please try again."); return; }
       setMsg("Searching NCBI live against the whole database, this usually takes 30 to 90 seconds…");
       const start = Date.now();
       while (Date.now() - start < 180000) {
         await new Promise((r) => setTimeout(r, 5000));
-        const st = await fetch(`/api/identify?rid=${encodeURIComponent(sub.rid)}`).then((r) => r.json()).catch(() => ({ status: "WAITING" }));
+        const st = await fetch(withBasePath(`/api/identify?rid=${encodeURIComponent(sub.rid)}`)).then((r) => r.json()).catch(() => ({ status: "WAITING" }));
         if (st.status === "READY") {
           const hits = (st.results || []).filter((x: any) => x.organism);
           // group reads by organism into a real abundance profile
