@@ -117,7 +117,7 @@
 .gaggle-runtime__revision .is-leader { border-color: rgba(47,182,115,.3); background: #f2fbf6; }
 .gaggle-runtime__revision .is-leader strong { color: #087347; }
 .gaggle-runtime__grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); min-height: 265px; border-top: 1px solid rgba(3,123,181,.08); }
-.gaggle-runtime__list { padding: 8px; border-right: 1px solid rgba(3,123,181,.08); background: #f8fbfd; }
+.gaggle-runtime__list { margin: 0; padding: 8px; border-right: 1px solid rgba(3,123,181,.08); background: #f8fbfd; list-style: none; }
 .gaggle-runtime__list button { width: 100%; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px; padding: 8px 9px; border: 0; border-radius: 10px; background: transparent; color: #36566a; font: 700 11px/1.2 var(--font-jakarta), sans-serif; text-align: left; cursor: pointer; }
 .gaggle-runtime__list button:hover, .gaggle-runtime__list button.is-active { background: #fff; color: #0e2a3f; box-shadow: 0 5px 18px rgba(14,42,63,.07); }
 .gaggle-runtime__list button > i { width: 7px; height: 7px; border-radius: 50%; background: #2fb673; }

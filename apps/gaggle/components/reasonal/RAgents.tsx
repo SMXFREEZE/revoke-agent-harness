@@ -52,21 +52,22 @@ export function RAgents() {
             </div>
 
             <div className="gaggle-runtime__grid">
-              <div className="gaggle-runtime__list" role="list" aria-label="Specialist agents">
+              <ul className="gaggle-runtime__list" aria-label="Specialist agents">
                 {AGENTS.map((agent) => (
-                  <button
-                    type="button"
-                    className={agent.key === selected ? "is-active" : ""}
-                    onClick={() => setSelected(agent.key)}
-                    aria-pressed={agent.key === selected}
-                    key={agent.key}
-                  >
-                    <i className={`is-${agent.status}`} aria-hidden />
-                    <span>{agent.name}</span>
-                    <small>{agent.status === "complete" ? "done" : "waiting"}</small>
-                  </button>
+                  <li key={agent.key}>
+                    <button
+                      type="button"
+                      className={agent.key === selected ? "is-active" : ""}
+                      onClick={() => setSelected(agent.key)}
+                      aria-pressed={agent.key === selected}
+                    >
+                      <i className={`is-${agent.status}`} aria-hidden />
+                      <span>{agent.name}</span>
+                      <small>{agent.status === "complete" ? "done" : "waiting"}</small>
+                    </button>
+                  </li>
                 ))}
-              </div>
+              </ul>
 
               <div className="gaggle-runtime__detail" aria-live="polite">
                 <span className="gaggle-runtime__tool">{active.tool}</span>
