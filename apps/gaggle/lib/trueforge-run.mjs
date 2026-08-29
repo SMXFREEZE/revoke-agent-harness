@@ -734,15 +734,37 @@ export function validateGoldenRunProjection(projection) {
   return projection;
 }
 
-export function finalizeRunTrace(projection, { exportedAt, hash }) {
+function canonicalJson(value) {
+  if (value === null || typeof value !== "object") return JSON.stringify(value);
+  if (Array.isArray(value)) return `[${value.map((entry) => canonicalJson(entry)).join(",")}]`;
+  return `{${Object.keys(value)
+    .sort()
+    .map((key) => `${JSON.stringify(key)}:${canonicalJson(value[key])}`)
+    .join(",")}}`;
+}
+
+export function serializeTraceIntegrityPayload(trace) {
+  const payload = JSON.parse(JSON.stringify(trace));
+  const integrity = asRecord(asRecord(payload?.run)?.integrity);
+  if (!integrity) throw new Error("Trace integrity metadata is missing.");
+  delete integrity.value;
+  return canonicalJson(payload);
+}
+
+export function finalizeRunTrace(projection, { exportedAt, integrityHash }) {
   validateGoldenRunProjection(projection);
-  if (!HASH_PATTERN.test(hash)) throw new Error("Sanitized trace hash is invalid.");
+  if (!HASH_PATTERN.test(integrityHash)) throw new Error("Sanitized trace integrity hash is invalid.");
   return {
     ...projection,
     run: {
       ...projection.run,
       exportedAt: normalizeTimestamp(exportedAt, "export timestamp"),
-      hash,
+      integrity: {
+        algorithm: "sha256",
+        canonicalization: "sorted-json-v1",
+        scope: "entire-trace-with-run.integrity.value-omitted",
+        value: integrityHash,
+      },
     },
     artifacts: {
       caseCrate: {
@@ -827,7 +849,7 @@ export function buildScientificEvidenceCaseCrate({ trace, fixture, fixtureHash }
       orchestrator: "TrueForge",
       status: trace.run.status,
       sanitizedTracePath: "trace.json",
-      sanitizedTraceHash: trace.run.hash,
+      sanitizedTraceIntegrity: trace.run.integrity,
     },
     case: {
       caseId,
@@ -861,7 +883,7 @@ export function buildScientificEvidenceCaseCrate({ trace, fixture, fixtureHash }
         name: "Sanitized TrueForge run trace",
         path: "trace.json",
         mediaType: "application/json",
-        hash: trace.run.hash,
+        integrity: trace.run.integrity,
       },
       {
         name: "Synthetic case fixture",

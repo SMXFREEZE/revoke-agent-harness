@@ -38,7 +38,12 @@ type TracePayload = {
     startedAt: string;
     updatedAt: string;
     exportedAt: string;
-    hash: string;
+    integrity: {
+      algorithm: "sha256";
+      canonicalization: "sorted-json-v1";
+      scope: "entire-trace-with-run.integrity.value-omitted";
+      value: string;
+    };
   };
   summary: {
     eventCount: number;
@@ -108,13 +113,17 @@ function isTracePayload(value: unknown): value is TracePayload {
   if (!isRecord(value.artifacts) || !isRecord(value.artifacts.caseCrate)) return false;
   if (!Array.isArray(value.agents) || !Array.isArray(value.timeline)) return false;
 
-  const runStrings = ["id", "sessionId", "source", "status", "startedAt", "updatedAt", "exportedAt", "hash"] as const;
+  const runStrings = ["id", "sessionId", "source", "status", "startedAt", "updatedAt", "exportedAt"] as const;
   const summaryNumbers = ["eventCount", "turnCount", "continuationCount", "recoveryCount", "dynamicSubagentCount", "completedAgentCount", "erroredAgentCount", "toolCallCount", "toolResponseCount"] as const;
   const caseCrate = value.artifacts.caseCrate;
 
   return runStrings.every((field) => typeof run[field] === "string")
     && run.source === "TrueForge"
-    && /^sha256:[a-f0-9]{64}$/.test(String(run.hash))
+    && isRecord(run.integrity)
+    && run.integrity.algorithm === "sha256"
+    && run.integrity.canonicalization === "sorted-json-v1"
+    && run.integrity.scope === "entire-trace-with-run.integrity.value-omitted"
+    && /^sha256:[a-f0-9]{64}$/.test(String(run.integrity.value))
     && summaryNumbers.every((field) => isNumber(summary[field]))
     && hasNumberFields(summary.brightData, ["searchCount", "scrapeCount"])
     && hasNumberFields(summary.daytona, ["sandboxCount", "execCount"])
@@ -190,6 +199,7 @@ export function RAgents() {
   const [speed, setSpeed] = useState<(typeof SPEEDS)[number]>(8);
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [eventAnnouncement, setEventAnnouncement] = useState("");
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -243,6 +253,14 @@ export function RAgents() {
   const finalCursor = Math.max(0, timeline.length - 1);
   const currentEvent = timeline[cursor] ?? null;
   const currentSequence = currentEvent?.sequence ?? -1;
+
+  useEffect(() => {
+    if (playing || !currentEvent) return;
+    const replayState = cursor >= finalCursor ? "Replay complete" : "Replay paused";
+    setEventAnnouncement(
+      `${replayState}. Event ${cursor + 1} of ${timeline.length}: ${currentEvent.label}. ${currentEvent.turn}.`,
+    );
+  }, [currentEvent, cursor, finalCursor, playing, timeline.length]);
 
   useEffect(() => {
     if (!playing || timeline.length < 2) return;
@@ -350,7 +368,9 @@ export function RAgents() {
                   </div>
                   <div className="gaggle-replay__identity">
                     <code>{trace.run.sessionId}</code>
-                    <span title={trace.run.hash}>integrity {trace.run.hash.slice(0, 17)}&hellip;</span>
+                    <span title={trace.run.integrity.value}>
+                      integrity {trace.run.integrity.value.slice(0, 17)}&hellip;
+                    </span>
                   </div>
                 </div>
 
@@ -439,8 +459,9 @@ export function RAgents() {
 
                   <div className="gaggle-replay__events">
                     <div className="gaggle-replay__columnhead"><span>Current event + tool feed</span><small aria-live="polite">{playing ? "replaying" : "paused"}</small></div>
+                    <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">{eventAnnouncement}</p>
                     {currentEvent ? (
-                      <article className="gaggle-replay__current" aria-live="polite" aria-atomic="true">
+                      <article className="gaggle-replay__current">
                         <div className="gaggle-replay__eventmeta">
                           <span>{humanize(currentEvent.type)}</span>
                           <code>#{currentEvent.sequence}</code>

@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -8,8 +8,10 @@ import {
   fetchAllSessionEvents,
   finalizeRunTrace,
   projectTrueForgeRun,
+  serializeTraceIntegrityPayload,
   validateGoldenRunProjection,
 } from "../apps/gaggle/lib/trueforge-run.mjs";
+import { publishArtifactPair } from "./lib/atomic-artifact-pair.mjs";
 
 const DEFAULT_SESSION_ID = "01m17kj6cy2prqvxret528beb4";
 const DEFAULT_BASE_URL = "http://localhost:8790";
@@ -55,10 +57,14 @@ async function buildArtifacts(options) {
   const projection = validateGoldenRunProjection(
     projectTrueForgeRun(events, { sessionId: options.sessionId }),
   );
-  const projectionHash = sha256(JSON.stringify(projection));
+  const exportedAt = new Date().toISOString();
+  const traceDraft = finalizeRunTrace(projection, {
+    exportedAt,
+    integrityHash: sha256(""),
+  });
   const trace = finalizeRunTrace(projection, {
-    exportedAt: new Date().toISOString(),
-    hash: projectionHash,
+    exportedAt,
+    integrityHash: sha256(serializeTraceIntegrityPayload(traceDraft)),
   });
 
   const fixtureBytes = await readFile(fixturePath);
@@ -77,26 +83,20 @@ async function main() {
   const options = parseArguments(process.argv.slice(2));
   const artifacts = await buildArtifacts(options);
   if (!options.checkOnly) {
-    await mkdir(outputDirectory, { recursive: true });
-    await Promise.all([
-      writeFile(
-        resolve(outputDirectory, "trace.json"),
-        `${JSON.stringify(artifacts.trace, null, 2)}\n`,
-        "utf8",
-      ),
-      writeFile(
-        resolve(outputDirectory, "case-crate.json"),
-        `${JSON.stringify(artifacts.caseCrate, null, 2)}\n`,
-        "utf8",
-      ),
-    ]);
+    await publishArtifactPair({
+      outputDirectory,
+      artifacts: {
+        "trace.json": `${JSON.stringify(artifacts.trace, null, 2)}\n`,
+        "case-crate.json": `${JSON.stringify(artifacts.caseCrate, null, 2)}\n`,
+      },
+    });
   }
   console.log(
     JSON.stringify({
       status: options.checkOnly ? "verified" : "exported",
       sessionId: artifacts.trace.run.sessionId,
       runStatus: artifacts.trace.run.status,
-      runHash: artifacts.trace.run.hash,
+      traceIntegrity: artifacts.trace.run.integrity.value,
       turns: artifacts.trace.summary.turnCount,
       agents: artifacts.trace.summary.dynamicSubagentCount,
       output: options.checkOnly ? undefined : "apps/gaggle/public/runs/gaggle-0042",

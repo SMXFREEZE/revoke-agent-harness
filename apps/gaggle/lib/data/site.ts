@@ -1,7 +1,7 @@
 // The Gaggle copy, mapped into the original GutGutGoose UI without changing
 // its layout, section order, component shapes, or visual system.
 
-import { withBasePath } from "@/lib/utils/base-path";
+import { publicAssetPath } from "@/lib/utils/base-path";
 
 export const BRAND = {
   name: "The Gaggle",
@@ -70,12 +70,12 @@ export const PROBLEMS: Problem[] = [
 // live report shows above, so an average patient can read their own gut.
 export type Discipline = { id: string; group: string; name: string; blurb: string; art: string; accent: string; theme: string };
 export const DISCIPLINES: Discipline[] = [
-  { id: "defense", group: "Advocate", name: "Defense", blurb: "Builds the strongest evidence-backed case for each candidate without hiding methodology or biological-scope limits.", art: withBasePath("/img/gut-veg.jpg"), accent: "#15aeea", theme: "lime" },
-  { id: "prosecution", group: "Adversary", name: "Prosecution", blurb: "Uses independent queries to find contradictions, weak transfer assumptions, and evidence that should lower confidence.", art: withBasePath("/img/gut-culture.jpg"), accent: "#0e8fd0", theme: "lime" },
-  { id: "evidence", group: "Provenance", name: "Evidence Clerk", blurb: "Admits only source-linked claims with retrieval time, source class, biological scope, methodology flags, and content identity.", art: withBasePath("/img/gut-fermented.jpg"), accent: "#7c6cf0", theme: "coral" },
-  { id: "method", group: "Rigor", name: "Methodologist", blurb: "Checks whether a paper's design, population, endpoint, and strain specificity justify the weight assigned to it.", art: withBasePath("/img/gut-micro.jpg"), accent: "#f4b21a", theme: "sun" },
-  { id: "experiment", group: "Computation", name: "Experimentalist", blurb: "Runs deterministic compatibility and counterfactual calculations in Daytona so the language model cannot invent scores.", art: withBasePath("/img/gut-lab.jpg"), accent: "#15aeea", theme: "lime" },
-  { id: "red-team", group: "Challenge", name: "Blind Red Team", blurb: "Attacks the current leader without seeing the desired answer, then sends unresolved objections to jurors and the disagreement analyst.", art: withBasePath("/img/gut-greens.jpg"), accent: "#0570ad", theme: "coral" },
+  { id: "defense", group: "Advocate", name: "Defense", blurb: "Builds the strongest evidence-backed case for each candidate without hiding methodology or biological-scope limits.", art: publicAssetPath("img/gut-veg.jpg"), accent: "#15aeea", theme: "lime" },
+  { id: "prosecution", group: "Adversary", name: "Prosecution", blurb: "Uses independent queries to find contradictions, weak transfer assumptions, and evidence that should lower confidence.", art: publicAssetPath("img/gut-culture.jpg"), accent: "#0e8fd0", theme: "lime" },
+  { id: "evidence", group: "Provenance", name: "Evidence Clerk", blurb: "Admits only source-linked claims with retrieval time, source class, biological scope, methodology flags, and content identity.", art: publicAssetPath("img/gut-fermented.jpg"), accent: "#7c6cf0", theme: "coral" },
+  { id: "method", group: "Rigor", name: "Methodologist", blurb: "Checks whether a paper's design, population, endpoint, and strain specificity justify the weight assigned to it.", art: publicAssetPath("img/gut-micro.jpg"), accent: "#f4b21a", theme: "sun" },
+  { id: "experiment", group: "Computation", name: "Experimentalist", blurb: "Runs deterministic compatibility and counterfactual calculations in Daytona so the language model cannot invent scores.", art: publicAssetPath("img/gut-lab.jpg"), accent: "#15aeea", theme: "lime" },
+  { id: "red-team", group: "Challenge", name: "Blind Red Team", blurb: "Attacks the current leader without seeing the desired answer, then sends unresolved objections to jurors and the disagreement analyst.", art: publicAssetPath("img/gut-greens.jpg"), accent: "#0570ad", theme: "coral" },
 ];
 export const SERVICE_GROUPS = ["Advocate", "Adversary", "Provenance", "Rigor", "Computation", "Challenge"] as const;
 

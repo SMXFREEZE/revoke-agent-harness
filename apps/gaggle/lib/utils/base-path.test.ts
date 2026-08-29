@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { normalizeBasePath, resolveDeploymentBasePath, withBasePath } from "./base-path";
+import {
+  normalizeBasePath,
+  publicAssetPath,
+  resolveDeploymentBasePath,
+  withBasePath,
+} from "./base-path";
 
 describe("deployment base path", () => {
   it("stays at the origin root outside GitHub Actions", () => {
@@ -30,6 +35,13 @@ describe("deployment base path", () => {
     );
     expect(withBasePath("https://example.com/image.jpg", "/revoke-agent-harness")).toBe(
       "https://example.com/image.jpg",
+    );
+  });
+
+  it("resolves relative public assets for root and project deployments", () => {
+    expect(publicAssetPath("img/gut-veg.jpg", "")).toBe("/img/gut-veg.jpg");
+    expect(publicAssetPath("img/gut-veg.jpg", "/revoke-agent-harness")).toBe(
+      "/revoke-agent-harness/img/gut-veg.jpg",
     );
   });
 });

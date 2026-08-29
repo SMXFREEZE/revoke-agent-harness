@@ -1,6 +1,8 @@
 // Demo catalog for the Watch / Browse experience. Posters reuse the licensed
 // program photography; sample clips are the Pexels videos in /public/videos.
 
+import { publicAssetPath } from "@/lib/utils/base-path";
+
 export type Category = {
   id: string;
   name: string;
@@ -10,13 +12,13 @@ export type Category = {
 };
 
 export const CATEGORIES: Category[] = [
-  { id: "fitness", name: "Fitness", tagline: "Heart-pumping follow-alongs", poster: "/images/gen/disc-fitness.jpg", accent: "#6901ff" },
-  { id: "dance", name: "Dance", tagline: "Choreography that sparks joy", poster: "/images/gen/disc-dance.jpg", accent: "#ff4db5" },
-  { id: "yoga", name: "Yoga", tagline: "Focus, balance & strength", poster: "/images/gen/disc-yoga.jpg", accent: "#00c2a8" },
-  { id: "mindfulness", name: "Mindfulness", tagline: "Resets that centre the room", poster: "/images/gen/disc-mindfulness.jpg", accent: "#ffc400" },
-  { id: "meditation", name: "Meditation", tagline: "Calm for happier days", poster: "/images/gen/disc-meditation.jpg", accent: "#9b6bff" },
-  { id: "sports", name: "Sports", tagline: "Skill drills with game energy", poster: "/images/gen/disc-sports.jpg", accent: "#ff7a45" },
-  { id: "martial-arts", name: "Martial Arts", tagline: "Confidence, one move at a time", poster: "/images/gen/disc-martial-arts.jpg", accent: "#2bb3ff" },
+  { id: "fitness", name: "Fitness", tagline: "Heart-pumping follow-alongs", poster: publicAssetPath("images/gen/disc-fitness.jpg"), accent: "#6901ff" },
+  { id: "dance", name: "Dance", tagline: "Choreography that sparks joy", poster: publicAssetPath("images/gen/disc-dance.jpg"), accent: "#ff4db5" },
+  { id: "yoga", name: "Yoga", tagline: "Focus, balance & strength", poster: publicAssetPath("images/gen/disc-yoga.jpg"), accent: "#00c2a8" },
+  { id: "mindfulness", name: "Mindfulness", tagline: "Resets that centre the room", poster: publicAssetPath("images/gen/disc-mindfulness.jpg"), accent: "#ffc400" },
+  { id: "meditation", name: "Meditation", tagline: "Calm for happier days", poster: publicAssetPath("images/gen/disc-meditation.jpg"), accent: "#9b6bff" },
+  { id: "sports", name: "Sports", tagline: "Skill drills with game energy", poster: publicAssetPath("images/gen/disc-sports.jpg"), accent: "#ff7a45" },
+  { id: "martial-arts", name: "Martial Arts", tagline: "Confidence, one move at a time", poster: publicAssetPath("images/gen/disc-martial-arts.jpg"), accent: "#2bb3ff" },
 ];
 
 export type Program = {
@@ -34,7 +36,7 @@ export type Program = {
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 // Each program has its own distinct clip in /public/videos (filename = its slug),
 // fetched per-program via scripts/fetch-videos.mjs, no more shared/fallback video.
-const clip = (title: string) => `/videos/${slugify(title)}.mp4`;
+const clip = (title: string) => publicAssetPath(`videos/${slugify(title)}.mp4`);
 
 type Seed = [title: string, cat: string, dur: string, level: string, desc: string];
 
@@ -62,7 +64,7 @@ export const PROGRAMS: Program[] = SEEDS.map(([title, cat, dur, level, desc], i)
   id: slugify(title),
   title,
   category: cat,
-  poster: `/images/gen/prog-${slugify(title)}.jpg`,
+  poster: publicAssetPath(`images/gen/prog-${slugify(title)}.jpg`),
   video: clip(title),
   duration: dur,
   level,

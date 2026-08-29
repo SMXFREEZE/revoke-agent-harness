@@ -12,7 +12,8 @@ The public site includes a verified TrueForge flight recorder: it replays the
 sanitized persisted event trace, agent lifecycles, sponsor tool activity,
 zero-mutation denial, and the exact pending approval boundary. The downloadable
 Scientific Evidence Case Crate contains integrity hashes for its recorded
-artifacts.
+artifacts. The trace digest is independently reproducible: SHA-256 over
+`sorted-json-v1` canonical JSON with only `run.integrity.value` omitted.
 
 The complete GutGutGoose/MetaScope application imported from the owner's Vercel
 deployment is preserved under `apps/gaggle`. The Gaggle is an additive R&D

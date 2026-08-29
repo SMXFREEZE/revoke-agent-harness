@@ -3,15 +3,15 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { DISCIPLINES } from "@/lib/data/site";
-import { withBasePath } from "@/lib/utils/base-path";
+import { publicAssetPath } from "@/lib/utils/base-path";
 import { RWordReveal } from "./reveal";
 
 // pool of photos that trail the cursor (Codrops "Image Trail" technique)
 const IMAGES = [
-  withBasePath("/img/gut-water.jpg"),
+  publicAssetPath("img/gut-water.jpg"),
   ...DISCIPLINES.filter((d) => d.id !== "more").map((d) => d.art),
-  withBasePath("/images/tulum/feat-mentor.jpg"),
-  withBasePath("/images/tulum/feat-community.jpg"),
+  publicAssetPath("images/tulum/feat-mentor.jpg"),
+  publicAssetPath("images/tulum/feat-community.jpg"),
 ];
 
 const lerp = (a: number, b: number, n: number) => (1 - n) * a + n * b;

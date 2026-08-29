@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { describe, expect, it, vi } from "vitest";
 import {
   assertSanitizedArtifact,
@@ -6,6 +7,7 @@ import {
   finalizeRunTrace,
   orderAndDedupeSessionEvents,
   projectTrueForgeRun,
+  serializeTraceIntegrityPayload,
   validateGoldenRunProjection,
 } from "../lib/trueforge-run.mjs";
 
@@ -197,7 +199,7 @@ describe("TrueForge run export projection", () => {
     const projection = projectTrueForgeRun(goldenEvents(), { sessionId: SESSION_ID });
     const trace = finalizeRunTrace(projection, {
       exportedAt: "2026-08-29T21:00:00.000Z",
-      hash: TRACE_HASH,
+      integrityHash: TRACE_HASH,
     });
     expect(() => assertSanitizedArtifact(trace)).not.toThrow();
     const serialized = JSON.stringify(trace);
@@ -214,6 +216,12 @@ describe("TrueForge run export projection", () => {
     expect(serialized).toContain("gaggle-proposal-0042");
     expect(serialized).toContain(PROPOSAL_HASH);
     expect(trace.artifacts.caseCrate.path).toBe("case-crate.json");
+    expect(trace.run.integrity).toMatchObject({
+      algorithm: "sha256",
+      canonicalization: "sorted-json-v1",
+      scope: "entire-trace-with-run.integrity.value-omitted",
+      value: TRACE_HASH,
+    });
   });
 
   it("never infers approval from a promotion response", () => {
@@ -274,9 +282,17 @@ describe("TrueForge run export projection", () => {
 
   it("builds a factual non-RO-Crate evidence download from sanitized data", () => {
     const projection = projectTrueForgeRun(goldenEvents(), { sessionId: SESSION_ID });
+    const exportedAt = "2026-08-29T21:00:00.000Z";
+    const traceDraft = finalizeRunTrace(projection, {
+      exportedAt,
+      integrityHash: TRACE_HASH,
+    });
+    const computedIntegrity = `sha256:${createHash("sha256")
+      .update(serializeTraceIntegrityPayload(traceDraft))
+      .digest("hex")}`;
     const trace = finalizeRunTrace(projection, {
-      exportedAt: "2026-08-29T21:00:00.000Z",
-      hash: TRACE_HASH,
+      exportedAt,
+      integrityHash: computedIntegrity,
     });
     const fixture = {
       caseId: "GGG-0042",
@@ -311,6 +327,12 @@ describe("TrueForge run export projection", () => {
       "https://raw.githubusercontent.com/SMXFREEZE/revoke-agent-harness/main/fixtures/gaggle/case-0042.json",
     );
     expect(crate.artifacts[1].url).toBe(crate.case.fixtureUrl);
+    expect(crate.run.sanitizedTraceIntegrity).toEqual(trace.run.integrity);
+    expect(crate.artifacts[0].integrity).toEqual(trace.run.integrity);
+    const recomputedIntegrity = `sha256:${createHash("sha256")
+      .update(serializeTraceIntegrityPayload(trace))
+      .digest("hex")}`;
+    expect(recomputedIntegrity).toBe(trace.run.integrity.value);
     expect(crate.proposal.proposalHash).toBe(PROPOSAL_HASH);
     expect(crate.provenance.sources[0].url).toBe("https://pubmed.ncbi.nlm.nih.gov/16672507/");
     expect(() => assertSanitizedArtifact(crate)).not.toThrow();

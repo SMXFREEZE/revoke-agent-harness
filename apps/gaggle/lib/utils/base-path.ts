@@ -39,3 +39,10 @@ export function withBasePath(path: string, basePath = BASE_PATH): string {
 
   return `${normalized}${path}`;
 }
+
+/** Resolve a file from `public/` at the deployment root without requiring
+ * callers to embed a root-absolute URL in client bundles. */
+export function publicAssetPath(path: string, basePath = BASE_PATH): string {
+  const rootedPath = path.startsWith("/") ? path : `/${path}`;
+  return withBasePath(rootedPath, basePath);
+}
