@@ -1,0 +1,44 @@
+[
+  {
+    "id": "order-demo-001",
+    "customerId": "customer-demo-001",
+    "placedAt": "2026-03-02T16:22:00Z",
+    "items": [
+      { "sku": "SKU-CUIS-CGWM024", "quantity": 1 },
+      { "sku": "SKU-OTHER-CGR221", "quantity": 1 }
+    ]
+  },
+  {
+    "id": "order-demo-002",
+    "customerId": "customer-demo-002",
+    "placedAt": "2026-02-11T19:10:00Z",
+    "items": [
+      { "sku": "SKU-CUIS-CGWM059", "quantity": 2 }
+    ]
+  },
+  {
+    "id": "order-demo-003",
+    "customerId": "customer-demo-001",
+    "placedAt": "2026-01-08T12:05:00Z",
+    "items": [
+      { "sku": "SKU-CUIS-FCB501", "quantity": 1 }
+    ]
+  },
+  {
+    "id": "order-demo-004",
+    "customerId": "customer-demo-003",
+    "placedAt": "2025-12-19T09:40:00Z",
+    "items": [
+      { "sku": "SKU-CUIS-LEGACY18", "quantity": 1 }
+    ]
+  },
+  {
+    "id": "order-demo-005",
+    "customerId": "customer-demo-004",
+    "placedAt": "2026-03-14T14:33:00Z",
+    "items": [
+      { "sku": "SKU-CUIS-CCB395-REVIEW", "quantity": 1 }
+    ]
+  }
+]
+

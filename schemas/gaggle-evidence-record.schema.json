@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gaggle.local/schemas/evidence-record.schema.json",
+  "title": "The Gaggle normalized Bright Data evidence record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "evidenceId",
+    "caseId",
+    "candidateId",
+    "query",
+    "retrieval",
+    "biologicalScope",
+    "evidence",
+    "methodologyFlags",
+    "validation",
+    "safety"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0" },
+    "evidenceId": { "type": "string", "pattern": "^[A-Za-z0-9-]+$" },
+    "caseId": { "type": "string", "minLength": 1 },
+    "candidateId": { "type": "string", "minLength": 1 },
+    "query": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "role", "text"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "role": { "enum": ["defense", "prosecution", "methodologist"] },
+        "text": { "type": "string", "minLength": 1 }
+      }
+    },
+    "retrieval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceUrl",
+        "canonicalUrl",
+        "publisher",
+        "retrievedAt",
+        "provider",
+        "tool",
+        "extractorVersion",
+        "extractorStrategy",
+        "contentHash",
+        "liveOrFixture"
+      ],
+      "properties": {
+        "sourceUrl": { "type": "string", "format": "uri", "pattern": "^https://" },
+        "canonicalUrl": { "type": "string", "format": "uri", "pattern": "^https://" },
+        "publisher": { "type": "string", "minLength": 1 },
+        "retrievedAt": { "type": "string", "format": "date-time" },
+        "provider": { "const": "Bright Data" },
+        "tool": { "const": "scrape_as_markdown" },
+        "extractorVersion": { "type": "string", "minLength": 1 },
+        "extractorStrategy": {
+          "enum": ["required_heading_then_signals", "semantic_required_signals"]
+        },
+        "contentHash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "liveOrFixture": { "enum": ["live", "fixture"] }
+      }
+    },
+    "biologicalScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["taxa", "taxonomicLevel", "exactCandidateStrain"],
+      "properties": {
+        "taxa": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "taxonomicLevel": { "enum": ["strain", "species", "genus", "mixed"] },
+        "exactCandidateStrain": { "const": false }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim", "direction", "studyType"],
+      "properties": {
+        "claim": { "type": "string", "minLength": 1 },
+        "direction": { "enum": ["supports", "contradicts", "uncertain"] },
+        "studyType": {
+          "enum": [
+            "mechanistic_comparative",
+            "in_vitro_strain",
+            "human_species",
+            "systematic_review"
+          ]
+        }
+      }
+    },
+    "methodologyFlags": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaStatus", "requiredSignals"],
+      "properties": {
+        "schemaStatus": { "const": "valid" },
+        "requiredSignals": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "matchedTerm"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "matchedTerm": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
+    "safety": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "exactCandidateStrainSupported",
+        "untrustedTextExecuted",
+        "writeToolsUsed",
+        "clinicalUse"
+      ],
+      "properties": {
+        "exactCandidateStrainSupported": { "const": false },
+        "untrustedTextExecuted": { "const": false },
+        "writeToolsUsed": { "const": false },
+        "clinicalUse": { "const": false }
+      }
+    }
+  }
+}

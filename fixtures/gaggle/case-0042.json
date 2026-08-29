@@ -1,0 +1,208 @@
+{
+  "caseId": "GGG-0042",
+  "mode": "synthetic-rd-prototype",
+  "objective": "Increase predicted support for butyrate-producing metabolic pathways.",
+  "microbiomeState": [
+    "Reduced Bifidobacterium abundance",
+    "Reduced butyrate-associated metabolic capacity",
+    "High abundance of synthetic substrate competitors",
+    "Four candidate strains available in the GutGutGoose R&D library"
+  ],
+  "initialCandidates": [
+    {
+      "id": "candidate-a",
+      "label": "Candidate A",
+      "strain": "Synthetic B. adolescentis GGG-A17",
+      "proposedRole": "Acetate donor and carbohydrate degrader",
+      "pathwayComplementarity": 0.91,
+      "crossFeedingPotential": 0.93,
+      "ecosystemCompatibility": 0.82,
+      "evidenceStrength": 0.78,
+      "substrateCompetition": 0.18,
+      "uncertaintyPenalty": 0.22
+    },
+    {
+      "id": "candidate-b",
+      "label": "Candidate B",
+      "strain": "Synthetic A. hallii GGG-B42",
+      "proposedRole": "Lactate-plus-acetate to butyrate converter",
+      "pathwayComplementarity": 0.86,
+      "crossFeedingPotential": 0.8,
+      "ecosystemCompatibility": 0.9,
+      "evidenceStrength": 0.72,
+      "substrateCompetition": 0.24,
+      "uncertaintyPenalty": 0.2
+    },
+    {
+      "id": "candidate-c",
+      "label": "Candidate C",
+      "strain": "Synthetic F. prausnitzii GGG-C11",
+      "proposedRole": "Butyrate network support",
+      "pathwayComplementarity": 0.78,
+      "crossFeedingPotential": 0.71,
+      "ecosystemCompatibility": 0.86,
+      "evidenceStrength": 0.68,
+      "substrateCompetition": 0.2,
+      "uncertaintyPenalty": 0.25
+    }
+  ],
+  "revisedCandidates": [
+    {
+      "id": "candidate-a",
+      "label": "Candidate A",
+      "strain": "Synthetic B. adolescentis GGG-A17",
+      "proposedRole": "Acetate donor and carbohydrate degrader",
+      "pathwayComplementarity": 0.91,
+      "crossFeedingPotential": 0.93,
+      "ecosystemCompatibility": 0.82,
+      "evidenceStrength": 0.46,
+      "substrateCompetition": 0.88,
+      "uncertaintyPenalty": 0.52
+    },
+    {
+      "id": "candidate-b",
+      "label": "Candidate B",
+      "strain": "Synthetic A. hallii GGG-B42",
+      "proposedRole": "Lactate-plus-acetate to butyrate converter",
+      "pathwayComplementarity": 0.86,
+      "crossFeedingPotential": 0.8,
+      "ecosystemCompatibility": 0.9,
+      "evidenceStrength": 0.72,
+      "substrateCompetition": 0.24,
+      "uncertaintyPenalty": 0.2
+    },
+    {
+      "id": "candidate-c",
+      "label": "Candidate C",
+      "strain": "Synthetic F. prausnitzii GGG-C11",
+      "proposedRole": "Butyrate network support",
+      "pathwayComplementarity": 0.78,
+      "crossFeedingPotential": 0.71,
+      "ecosystemCompatibility": 0.86,
+      "evidenceStrength": 0.68,
+      "substrateCompetition": 0.2,
+      "uncertaintyPenalty": 0.25
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E-001",
+      "claim": "In-vitro cross-feeding was reported between identified B. adolescentis strains and butyrate-producing anaerobes.",
+      "candidateId": "candidate-a",
+      "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/16672507/",
+      "sourceType": "in_vitro_strain",
+      "scope": "strain_specific",
+      "direction": "supports",
+      "methodologyFlags": ["not_exact_candidate_strain", "in_vitro_only"],
+      "retrievedAt": "2026-08-29T12:00:00-04:00"
+    },
+    {
+      "id": "E-002",
+      "claim": "A coculture study reported enhanced butyrate formation for specified B. adolescentis and F. prausnitzii strain combinations.",
+      "candidateId": "candidate-c",
+      "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/26420851/",
+      "sourceType": "in_vitro_strain",
+      "scope": "strain_specific",
+      "direction": "supports",
+      "methodologyFlags": ["not_exact_candidate_strain", "in_vitro_only"],
+      "retrievedAt": "2026-08-29T12:00:00-04:00"
+    },
+    {
+      "id": "E-003",
+      "claim": "A systematic review found probiotic efficacy can be strain- and disease-specific, weakening species-to-strain extrapolation.",
+      "candidateId": "candidate-a",
+      "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/29868585/",
+      "sourceType": "human_species",
+      "scope": "species_level",
+      "direction": "contradicts",
+      "methodologyFlags": ["not_candidate_specific", "endpoint_mismatch"],
+      "retrievedAt": "2026-08-29T12:00:00-04:00"
+    },
+    {
+      "id": "E-004",
+      "claim": "Comparative work described lactate-plus-acetate conversion to butyrate in Anaerobutyricum and Anaerostipes species.",
+      "candidateId": "candidate-b",
+      "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/33001550/",
+      "sourceType": "mechanistic_inference",
+      "scope": "species_level",
+      "direction": "supports",
+      "methodologyFlags": ["not_exact_candidate_strain", "mechanistic_only"],
+      "retrievedAt": "2026-08-29T12:00:00-04:00"
+    }
+  ],
+  "queryProvenance": {
+    "defense": "Bifidobacterium adolescentis acetate cross-feeding butyrate coculture",
+    "prosecution": "probiotic strain specificity species extrapolation no effect evidence",
+    "methodologist": "probiotic evidence strain specificity systematic review"
+  },
+  "experiment": {
+    "id": "EXP-004",
+    "model": "experimental-rd-compatibility-v1",
+    "runtime": "Daytona sandbox through TrueForge",
+    "hypothesis": "Candidate A remains the best pathway-support hypothesis after substrate competition is modeled.",
+    "inputHash": "sha256:06de0327ef7ef7e90655ee94f0cd0ea95808217f04b537e87f788304d44c18e2",
+    "resultHash": "sha256:97860d580d6a9c5f342bf26124ac8b1f87a579dd6d1b24aa97b69daf7b18f86f",
+    "result": "Candidate A falls from rank 1 to rank 3 after the synthetic competition parameter and uncertainty penalty are applied.",
+    "clinicalValidation": false
+  },
+  "sourceRecovery": {
+    "mode": "controlled-demo-fixture",
+    "firstFailure": "required field strain_name missing",
+    "repair": "selector changed from .strain-name to [data-field=strain]",
+    "result": "schema validation passed",
+    "investigationRestarted": false
+  },
+  "jury": [
+    {
+      "judge": "Mechanism",
+      "priority": "mechanistic rigor",
+      "verdict": "promising",
+      "confidence": 0.78,
+      "supportingFactor": "Deterministic pathway complementarity",
+      "uncertainty": "Model assumptions remain synthetic",
+      "disagreementClass": "model_assumption"
+    },
+    {
+      "judge": "Human evidence",
+      "priority": "human evidence",
+      "verdict": "uncertain",
+      "confidence": 0.54,
+      "supportingFactor": "Published mechanistic support",
+      "uncertainty": "No direct human evidence for the exact synthetic strain",
+      "disagreementClass": "evidence_standard"
+    },
+    {
+      "judge": "Ecology",
+      "priority": "ecological compatibility",
+      "verdict": "promising",
+      "confidence": 0.75,
+      "supportingFactor": "Low modeled competition for Candidate B",
+      "uncertainty": "Community context is simplified",
+      "disagreementClass": "model_assumption"
+    },
+    {
+      "judge": "Methods",
+      "priority": "methodological conservatism",
+      "verdict": "reject",
+      "confidence": 0.61,
+      "supportingFactor": "Transparent evidence downgrades",
+      "uncertainty": "Species-level evidence cannot validate the exact strain",
+      "disagreementClass": "evidence_standard"
+    },
+    {
+      "judge": "Balance",
+      "priority": "balanced evidence",
+      "verdict": "promising",
+      "confidence": 0.71,
+      "supportingFactor": "Candidate B survives the adversarial round",
+      "uncertainty": "Anaerobic coculture validation is still required",
+      "disagreementClass": "uncertainty_weighting"
+    }
+  ],
+  "approval": {
+    "proposalId": "gaggle-proposal-0042",
+    "proposalHash": "sha256:fa33575d844316a3df6ab77ad8814ae1fdd11eab99291db1a1799ae70d525a8b",
+    "candidateIds": ["candidate-b", "candidate-c"],
+    "status": "scientist_approval_required"
+  }
+}

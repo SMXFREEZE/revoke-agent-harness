@@ -1,0 +1,52 @@
+{
+  "recallNumber": "26-717",
+  "relatedRecallNumbers": ["26-601"],
+  "title": "Conair Expands Recall of Cuisinart Grill Brushes Due to Ingestion Hazard; Over 3.6 Million Brushes Now Recalled",
+  "publicationDate": "2026-08-27",
+  "jurisdiction": "US-CPSC",
+  "manufacturer": "Cuisinart",
+  "productCategory": "wire-bristle-grill-brush",
+  "hazard": "Small metal wire bristles can detach and pose an ingestion hazard.",
+  "remedy": "Refund",
+  "units": 3625800,
+  "identifiers": [
+    { "type": "model", "value": "CCB-100" },
+    { "type": "model", "value": "CCB-4125" },
+    { "type": "model", "value": "CCB-5014" },
+    { "type": "model", "value": "CCB-6450" },
+    { "type": "model", "value": "CCB-8012" },
+    { "type": "model", "value": "CCB-4114" },
+    { "type": "model", "value": "CCB-W2" },
+    { "type": "model", "value": "CSBS-777" },
+    { "type": "model", "value": "CGWM-024" },
+    { "type": "model", "value": "CGWM-059" },
+    { "type": "model", "value": "FCB-501" },
+    { "type": "model", "value": "CGS-W18" },
+    { "type": "model", "value": "CCB-134" },
+    { "type": "model", "value": "CGWM-061" },
+    { "type": "model", "value": "CB-395" },
+    { "type": "model", "value": "CCB-3001" },
+    { "type": "model", "value": "CGWM-077" },
+    { "type": "model", "value": "CGWM-058" },
+    { "type": "model", "value": "CCB-012/021" },
+    { "type": "model", "value": "CGWM-060" },
+    { "type": "model", "value": "FBH-51" }
+  ],
+  "familyScope": {
+    "brand": "Cuisinart",
+    "category": "wire-bristle-grill-brush",
+    "includeAll": true,
+    "rationale": "The official expansion states that all Cuisinart wire bristle grill brushes are included."
+  },
+  "evidence": [
+    {
+      "sourceUrl": "https://www.cpsc.gov/Recalls/2026/Conair-Expands-Recall-of-Cuisinart-Grill-Brushes-Due-to-Ingestion-Hazard-Over-3-6-Million-Brushes-Now-Recalled",
+      "publisher": "U.S. Consumer Product Safety Commission",
+      "retrievedAt": "2026-08-29T17:00:00Z",
+      "extractor": "captured-cpsc-fixture/v1",
+      "contentHash": "fixture-cpsc-26-717-2026-08-27",
+      "mode": "fixture"
+    }
+  ]
+}
+

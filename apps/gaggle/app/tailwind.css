@@ -1,0 +1,53 @@
+/* =============================================================================
+   Tailwind entry — the ONLY file that emits @tailwind directives.
+   Preflight is disabled in tailwind.config.ts, so `@tailwind base` emits ONLY
+   the tokens declared in the @layer base block below (no global reset).
+   ========================================================================== */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* shadcn / ui-layouts semantic design tokens (HSL channels only: H S% L%) so
+   hsl(var(--x)) resolves and opacity modifiers like bg-background/80 work.
+   All names are NEW (absent from globals.css / reasonal.css) => no collision
+   with the existing --paper / --violet / --ink / --sun system. */
+@layer base {
+  :root {
+    /* surfaces — warm paper to match the site ground (#f6f1ea) */
+    --background: 36 41% 94%;
+    --foreground: 255 47% 14%;
+
+    --card: 40 43% 96%;
+    --card-foreground: 255 47% 14%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 255 47% 14%;
+
+    /* brand — electric violet (#6901ff) */
+    --primary: 265 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    /* secondary — soft lilac */
+    --secondary: 252 100% 96%;
+    --secondary-foreground: 258 80% 24%;
+
+    /* muted — warm grey copy */
+    --muted-bg: 39 30% 90%;
+    --muted-foreground: 258 11% 51%;
+
+    /* accent — subtle violet tint */
+    --accent-bg: 252 100% 94%;
+    --accent-foreground: 258 80% 24%;
+
+    /* feedback */
+    --destructive: 350 84% 56%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* lines / inputs / focus ring */
+    --border: 36 30% 86%;
+    --input: 36 30% 86%;
+    --ring: 265 100% 50%;
+
+    /* radius */
+    --radius: 0.75rem;
+  }
+}

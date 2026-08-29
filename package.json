@@ -2,7 +2,7 @@
   "name": "revoke",
   "version": "0.1.0",
   "private": true,
-  "description": "Human-approved product recall containment powered by TrueForge, OpenAI, Bright Data, and Qodo.",
+  "description": "Adversarial multi-agent microbiome R&D powered by TrueForge, OpenAI, Bright Data, Daytona, and Qodo.",
   "type": "module",
   "workspaces": [
     "apps/*",
@@ -10,18 +10,56 @@
     "services/*"
   ],
   "scripts": {
+    "postinstall": "patch-package",
     "build": "npm run build --workspaces --if-present",
-    "dev": "npm run dev --workspace @revoke/console",
+    "dev": "npm run dev --workspace gutgutgoose -- --webpack",
+    "dev:legacy-console": "npm run dev --workspace @revoke/console",
     "dev:commerce": "npm run dev --workspace @revoke/commerce-mcp",
-    "lint": "npm run lint --workspaces --if-present",
-    "test": "npm run test --workspaces --if-present",
+    "dev:evidence": "npm run dev --workspace @revoke/evidence-mcp",
+    "dev:gaggle-lab": "npm run dev --workspace @gaggle/lab-mcp",
+    "trueforge:start": "trueforge --port 8790",
+    "trueforge:configure": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/configure-trueforge.ps1",
+    "trueforge:configure:gaggle": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/configure-gaggle-trueforge.ps1",
+    "lint": "eslint eslint.config.js scripts && npm run lint --workspace gutgutgoose && npm run lint --workspace @revoke/console && npm run lint --workspace @revoke/domain && npm run lint --workspace @revoke/commerce-mcp && npm run lint --workspace @revoke/evidence-mcp && npm run lint --workspace @gaggle/lab-mcp",
+    "test": "npm run test --workspaces --if-present && npm run sponsor:test:bright-data:gaggle",
     "test:coverage": "npm run test:coverage --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
+    "sponsor:check:bright-data": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"& './scripts/import-sponsor-env.ps1'; node './scripts/check-bright-data-mcp.mjs'\"",
+    "sponsor:check:bright-data-remote": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"& './scripts/import-sponsor-env.ps1'; node './scripts/check-bright-data-mcp.mjs' --remote-header\"",
+    "sponsor:check:bright-data:gaggle": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"& './scripts/import-sponsor-env.ps1'; node './scripts/check-bright-data-gaggle.mjs'\"",
+    "sponsor:check:bright-data:gaggle:remote": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"& './scripts/import-sponsor-env.ps1'; node './scripts/check-bright-data-gaggle.mjs' --remote-header\"",
+    "sponsor:test:bright-data:gaggle": "node --test ./scripts/gaggle-evidence-contract.test.mjs",
+    "sponsor:check:cpsc": "npm run check:live --workspace @revoke/evidence-mcp",
+    "sponsor:check:daytona": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/check-daytona-api.ps1",
+    "gaggle:export-run": "node ./scripts/export-gaggle-run.mjs",
+    "gaggle:verify-run": "node ./scripts/export-gaggle-run.mjs --check",
     "check": "npm run lint && npm run typecheck && npm run test && npm run build"
   },
   "engines": {
     "node": ">=22.14"
   },
-  "license": "MIT"
+  "overrides": {
+    "postcss": "8.5.26",
+    "next": {
+      "postcss": "8.5.26"
+    }
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@truefoundry/trueforge": "0.1.4",
+    "@types/express": "5.0.6",
+    "@types/node": "24.10.13",
+    "@types/supertest": "7.2.1",
+    "@vitest/coverage-v8": "4.1.11",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "eslint": "10.9.1",
+    "patch-package": "8.0.1",
+    "supertest": "7.2.2",
+    "tsx": "4.23.12",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.68.0",
+    "vitest": "4.1.11"
+  }
 }
-

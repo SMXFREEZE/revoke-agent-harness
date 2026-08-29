@@ -2,11 +2,14 @@ node_modules/
 dist/
 coverage/
 .vite/
+.next/
 .turbo/
+.vercel/
 *.log
 *.sqlite
 *.sqlite-shm
 *.sqlite-wal
+*.tsbuildinfo
 .DS_Store
 Thumbs.db
 
@@ -18,4 +21,3 @@ Thumbs.db
 data/runtime/
 artifacts/runtime/
 tmp/
-

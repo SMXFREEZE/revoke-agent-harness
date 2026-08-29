@@ -1,0 +1,62 @@
+[
+  {
+    "id": "fitness",
+    "photographer": "Pavel Danilyuk",
+    "url": "https://www.pexels.com/photo/kids-exercising-in-school-8422104/",
+    "alt": "Group of diverse preschool children engaging in fun exercises indoors."
+  },
+  {
+    "id": "dance",
+    "photographer": "Gustavo Fring",
+    "url": "https://www.pexels.com/photo/children-in-dancing-clothes-5635604/",
+    "alt": "Three young ballet dancers in a dance class practicing poses, wearing tutus."
+  },
+  {
+    "id": "yoga",
+    "photographer": "RDNE Stock project",
+    "url": "https://www.pexels.com/photo/a-pair-of-women-in-a-child-s-pose-yoga-position-5837077/",
+    "alt": "Two women practicing yoga in child's pose on blue mats outdoors. Ideal for fitness and relaxation themes."
+  },
+  {
+    "id": "mindfulness",
+    "photographer": "Artem Podrez",
+    "url": "https://www.pexels.com/photo/children-raising-their-hands-8087861/",
+    "alt": "A lively preschool class with children participating in a learning activity guided by a cheerful teacher."
+  },
+  {
+    "id": "meditation",
+    "photographer": "Artem Podrez",
+    "url": "https://www.pexels.com/photo/a-woman-meditating-with-her-children-6951474/",
+    "alt": "Family practicing meditation together on a couch, promoting mindfulness and relaxation."
+  },
+  {
+    "id": "sports",
+    "photographer": "Lukas Blazek",
+    "url": "https://www.pexels.com/photo/toddler-playing-soccer-296302/",
+    "alt": "Kids having fun playing soccer outdoors on a sunny day in a park."
+  },
+  {
+    "id": "martial-arts",
+    "photographer": "Martin.que",
+    "url": "https://www.pexels.com/photo/karate-class-practicing-kicks-in-buenos-aires-30777340/",
+    "alt": "Group of karate students practicing high kicks outdoors in Buenos Aires."
+  },
+  {
+    "id": "more",
+    "photographer": "Guduru Ajay bhargav",
+    "url": "https://www.pexels.com/photo/boy-wearing-green-crew-neck-shirt-jumping-from-black-stone-on-seashore-939702/",
+    "alt": "Group of kids joyfully jumping on rocks by the seaside. Fun and playful moment captured outdoors."
+  },
+  {
+    "id": "feature-play",
+    "photographer": "Kamaji Ogino",
+    "url": "https://www.pexels.com/photo/ethnic-mother-and-cute-kid-practicing-yoga-together-at-home-5093584/",
+    "alt": "Full body positive mother teaching little kid to perform Tree Pose on mat in cozy living room at home"
+  },
+  {
+    "id": "teachers",
+    "photographer": "Katerina Holmes",
+    "url": "https://www.pexels.com/photo/anonymous-classmates-sitting-at-table-during-math-lesson-with-black-female-schoolteacher-5905488/",
+    "alt": "Happy black female teacher standing near whiteboard and explaining lesson to unrecognizable children sitting at wooden table with books and stationery"
+  }
+]
