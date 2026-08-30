@@ -2,6 +2,7 @@ export type LiveAction =
   | { action: "status" }
   | { action: "attach"; sessionId?: string }
   | { action: "start"; objective: string }
+  | { action: "stop"; sessionId: string }
   | { action: "poll"; sessionId: string }
   | {
       action: "decide";
@@ -107,6 +108,8 @@ export function parseLiveAction(value: unknown): LiveAction {
       return { action: "attach", sessionId: requiredString(value, "sessionId", SESSION_ID) };
     case "start":
       return { action: "start", objective: normalizeObjective(value.objective) };
+    case "stop":
+      return { action: "stop", sessionId: requiredString(value, "sessionId", SESSION_ID) };
     case "poll":
       return { action: "poll", sessionId: requiredString(value, "sessionId", SESSION_ID) };
     case "decide": {

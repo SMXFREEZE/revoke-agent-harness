@@ -48,7 +48,7 @@ export function RLiveAgents() {
   const [runtime, setRuntime] = useState<RuntimeStatus | null>(null);
   const [snapshot, setSnapshot] = useState<LiveSnapshot | null>(null);
   const [objective, setObjective] = useState(DEFAULT_OBJECTIVE);
-  const [busy, setBusy] = useState<"connect" | "start" | "decision" | null>(null);
+  const [busy, setBusy] = useState<"connect" | "start" | "stop" | "decision" | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [exactApprovalChecked, setExactApprovalChecked] = useState(false);
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
@@ -125,6 +125,19 @@ export function RLiveAgents() {
     }
   }
 
+  async function stop() {
+    if (!snapshot || snapshot.status !== "running") return;
+    setBusy("stop");
+    setError(null);
+    try {
+      applySnapshot(await callRuntime<LiveSnapshot>({ action: "stop", sessionId: snapshot.sessionId }));
+    } catch (stopError) {
+      setError(stopError instanceof Error ? stopError.message : "The investigation could not be stopped.");
+    } finally {
+      setBusy(null);
+    }
+  }
+
   async function decide(decision: "allow" | "deny") {
     const pending = snapshot?.pendingApproval;
     if (!snapshot || !pending || (decision === "allow" && !exactApprovalChecked)) return;
@@ -157,6 +170,9 @@ export function RLiveAgents() {
       ?? null;
   }, [selectedAgentId, snapshot]);
   const currentEvent = snapshot?.events.at(-1) ?? null;
+  const isRunning = snapshot?.status === "running";
+  const isWaitingForApproval = snapshot?.status === "waiting_approval";
+  const runLocked = isRunning || isWaitingForApproval;
 
   return (
     <section className="rz-sec gaggle-live-section" id="agents">
@@ -168,11 +184,16 @@ export function RLiveAgents() {
             <p className="rz-agents__lead">This is the real persistent agent—not a recording. Enter a synthetic R&amp;D objective, watch independent specialists and sponsor tools execute, refresh safely, then approve or reject the exact guarded proposal.</p>
             <label className="gaggle-live__objective">
               <span>Synthetic investigation objective</span>
-              <textarea value={objective} onChange={(event) => setObjective(event.target.value)} maxLength={600} rows={5} disabled={busy !== null} />
+              <textarea value={objective} onChange={(event) => setObjective(event.target.value)} maxLength={600} rows={5} disabled={busy !== null || runLocked} />
             </label>
             <div className="gaggle-live__actions">
-              <button type="button" className="gaggle-live__start" onClick={() => void start()} disabled={!runtime?.available || busy !== null || objective.trim().length < 20}>
-                {busy === "start" ? "Launching agents…" : "Run live investigation"}
+              <button
+                type="button"
+                className={isRunning ? "gaggle-live__stop" : "gaggle-live__start"}
+                onClick={() => void (isRunning ? stop() : start())}
+                disabled={!runtime?.available || busy !== null || isWaitingForApproval || (!isRunning && objective.trim().length < 20)}
+              >
+                {busy === "start" ? "Launching agents…" : busy === "stop" ? "Stopping agents…" : isRunning ? "Stop live investigation" : isWaitingForApproval ? "Review proposal below" : "Run live investigation"}
               </button>
               {runtime?.sessionId && !snapshot ? (
                 <button type="button" className="gaggle-live__connect" onClick={() => void connect(runtime.sessionId ?? undefined)} disabled={busy !== null}>Reconnect session</button>
@@ -182,6 +203,7 @@ export function RLiveAgents() {
               <span className={`rz-agents__notedot ${runtime?.available ? "" : "is-offline"}`} aria-hidden />
               {runtime === null ? "Locating TrueForge…" : runtime.available ? "TrueForge connected · credentials stay server-side" : "Live runtime unavailable"}
             </p>
+            {runLocked ? <p className="gaggle-live__lock" role="status">{isRunning ? "Run locked · one TrueForge session is active. Stop it before starting another." : "Run locked · approve or reject the pending proposal to finish this session."}</p> : null}
             {error ? <p className="gaggle-live__error" role="alert">{error}</p> : null}
           </div>
 

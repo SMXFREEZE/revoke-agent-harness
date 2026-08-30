@@ -9,6 +9,7 @@ const API_PREFIX = "/api/v1";
 const MAX_BODY_BYTES = 4096;
 const MAX_EVENT_PAGES = 6;
 const RUN_REUSE_WINDOW_MS = 45 * 60 * 1000;
+let startInFlight: Promise<LiveSnapshot> | null = null;
 const ALLOWED_CROSS_ORIGINS = new Set([
   "https://smxfreeze.github.io",
   "http://127.0.0.1:3010",
@@ -121,14 +122,21 @@ function buildGoldenPrompt(objective: string): string {
   ].join("\n\n");
 }
 
-async function startInvestigation(objective: string): Promise<LiveSnapshot> {
+async function findActiveInvestigation(sessions: Record<string, unknown>[]): Promise<LiveSnapshot | null> {
+  for (const session of sessions) {
+    const createdAt = typeof session.created_at === "string" ? Date.parse(session.created_at) : Number.NaN;
+    if (!Number.isFinite(createdAt) || Date.now() - createdAt >= RUN_REUSE_WINDOW_MS || typeof session.id !== "string") continue;
+    const snapshot = await getSnapshot(session.id);
+    if (snapshot.status === "running" || snapshot.status === "waiting_approval") return snapshot;
+  }
+  return null;
+}
+
+async function createInvestigation(objective: string): Promise<LiveSnapshot> {
   const agent = await findGaggleAgent();
   const sessions = await listGaggleSessions(String(agent.id));
-  const recent = sessions.find((session) => {
-    const createdAt = typeof session.created_at === "string" ? Date.parse(session.created_at) : Number.NaN;
-    return Number.isFinite(createdAt) && Date.now() - createdAt < RUN_REUSE_WINDOW_MS;
-  });
-  if (recent && typeof recent.id === "string") return getSnapshot(recent.id);
+  const active = await findActiveInvestigation(sessions);
+  if (active) return active;
   const sessionEnvelope = record(await trueForgeFetch("/sessions", {
     method: "POST",
     body: JSON.stringify({ agent: { name: "gaggle" } }),
@@ -144,6 +152,25 @@ async function startInvestigation(objective: string): Promise<LiveSnapshot> {
     }),
   });
   return getSnapshot(session.id);
+}
+
+async function startInvestigation(objective: string): Promise<LiveSnapshot> {
+  if (startInFlight) return startInFlight;
+  startInFlight = createInvestigation(objective);
+  try {
+    return await startInFlight;
+  } finally {
+    startInFlight = null;
+  }
+}
+
+async function stopInvestigation(sessionId: string): Promise<LiveSnapshot> {
+  await assertGaggleSession(sessionId);
+  const snapshot = await getSnapshot(sessionId);
+  if (snapshot.status === "running") {
+    await trueForgeFetch(`/sessions/${sessionId}/cancel`, { method: "POST", body: "{}" });
+  }
+  return getSnapshot(sessionId);
 }
 
 async function assertCurrentApproval(sessionId: string, supplied: PendingApproval): Promise<LiveSnapshot> {
@@ -219,6 +246,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       return json(request, await getSnapshot(sessionId));
     }
     if (action.action === "start") return json(request, await startInvestigation(action.objective), 201);
+    if (action.action === "stop") return json(request, await stopInvestigation(action.sessionId));
     if (action.action === "poll") return json(request, await getSnapshot(action.sessionId));
     return json(request, await decide(action));
   } catch (error) {

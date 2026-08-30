@@ -11,6 +11,11 @@ describe("live TrueForge contract", () => {
     expect(() => parseLiveAction({ action: "start", objective: "too short" })).toThrow("20 to 600");
   });
 
+  it("accepts stopping only an exact TrueForge session", () => {
+    expect(parseLiveAction({ action: "stop", sessionId })).toEqual({ action: "stop", sessionId });
+    expect(() => parseLiveAction({ action: "stop", sessionId: "../latest" })).toThrow("Invalid sessionId");
+  });
+
   it("projects sponsor activity and the exact native approval boundary without reasoning content", () => {
     const sourceEventId = "event-model";
     const toolCallId = "call_exact_123";
