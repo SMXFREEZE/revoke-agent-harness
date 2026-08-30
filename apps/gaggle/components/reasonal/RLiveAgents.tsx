@@ -64,7 +64,14 @@ export function RLiveAgents() {
   const connect = useCallback(async (preferredSessionId?: string) => {
     setBusy("connect");
     try {
-      const result = await callRuntime<LiveSnapshot | RuntimeStatus>({ action: "attach", sessionId: preferredSessionId });
+      let result: LiveSnapshot | RuntimeStatus;
+      try {
+        result = await callRuntime<LiveSnapshot | RuntimeStatus>({ action: "attach", sessionId: preferredSessionId });
+      } catch (preferredError) {
+        if (!preferredSessionId || !(preferredError instanceof Error) || !preferredError.message.includes("HTTP 404")) throw preferredError;
+        window.localStorage.removeItem(STORAGE_KEY);
+        result = await callRuntime<LiveSnapshot | RuntimeStatus>({ action: "attach" });
+      }
       if ("mode" in result && result.mode === "live") applySnapshot(result);
       else setRuntime(result);
     } catch (connectError) {

@@ -109,7 +109,7 @@ async function getSnapshot(sessionId: string): Promise<LiveSnapshot> {
 
 function newestUsableSession(sessions: Record<string, unknown>[]): string | null {
   const configured = process.env.TRUEFORGE_DEMO_SESSION_ID?.trim();
-  if (configured && /^[0-9a-z]{26}$/.test(configured)) return configured;
+  if (configured && /^[0-9a-z]{26}$/.test(configured) && sessions.some((session) => session.id === configured)) return configured;
   const session = sessions.find((value) => typeof value.id === "string");
   return session && typeof session.id === "string" ? session.id : null;
 }
