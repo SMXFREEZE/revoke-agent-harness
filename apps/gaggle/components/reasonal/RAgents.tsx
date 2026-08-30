@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { withBasePath } from "@/lib/utils/base-path";
 import { verifyTraceIntegrity } from "@/lib/utils/trace-integrity";
+import { RLiveAgents } from "./RLiveAgents";
 import { RWordReveal } from "./reveal";
 
 type TraceAgent = {
@@ -191,7 +192,7 @@ function isPendingApproval(event: TraceEvent): boolean {
   );
 }
 
-export function RAgents() {
+function RAgentsReplay() {
   const [trace, setTrace] = useState<TracePayload | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [requestKey, setRequestKey] = useState(0);
@@ -328,7 +329,7 @@ export function RAgents() {
   }
 
   return (
-    <section className="rz-sec" id="agents">
+    <section className="rz-sec" id="verified-run">
       <div className="rz-card-w">
         <div className="rz-agents rz-agents--replay">
           <div className="rz-agents__copy">
@@ -522,5 +523,14 @@ export function RAgents() {
         </div>
       </div>
     </section>
+  );
+}
+
+export function RAgents() {
+  return (
+    <>
+      <RLiveAgents />
+      <RAgentsReplay />
+    </>
   );
 }

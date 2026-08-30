@@ -8,7 +8,7 @@
     "build": "next build",
     "test": "vitest run",
     "start": "next start",
-    "lint": "eslint components/reasonal/RAgents.tsx components/reasonal/RHero.tsx components/reasonal/RConsoleTeaser.tsx components/reasonal/RNav.tsx components/reasonal/RGooseBand.tsx lib/data/site.ts",
+    "lint": "eslint app/api/trueforge/route.ts components/reasonal/RAgents.tsx components/reasonal/RLiveAgents.tsx components/reasonal/RHero.tsx components/reasonal/RConsoleTeaser.tsx components/reasonal/RNav.tsx components/reasonal/RGooseBand.tsx lib/data/site.ts lib/trueforge-live-contract.ts lib/trueforge-live-contract.test.ts",
     "photos": "node --env-file=.env.local scripts/fetch-photos.mjs"
   },
   "dependencies": {

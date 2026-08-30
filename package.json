@@ -20,6 +20,8 @@
     "trueforge:start": "trueforge --port 8790",
     "trueforge:configure": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/configure-trueforge.ps1",
     "trueforge:configure:gaggle": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/configure-gaggle-trueforge.ps1",
+    "trueforge:configure:gaggle:portable": "node ./scripts/configure-gaggle-trueforge.mjs",
+    "trueforge:deploy:daytona": "node ./scripts/deploy-trueforge-daytona.mjs",
     "lint": "eslint eslint.config.js scripts && npm run lint --workspace gutgutgoose && npm run lint --workspace @revoke/console && npm run lint --workspace @revoke/domain && npm run lint --workspace @revoke/commerce-mcp && npm run lint --workspace @revoke/evidence-mcp && npm run lint --workspace @gaggle/lab-mcp",
     "test": "npm run test --workspaces --if-present && npm run sponsor:test:bright-data:gaggle",
     "test:coverage": "npm run test:coverage --workspaces --if-present",
@@ -46,6 +48,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@daytona/sdk": "0.207.0",
     "@eslint/js": "10.0.1",
     "@truefoundry/trueforge": "0.1.4",
     "@types/express": "5.0.6",

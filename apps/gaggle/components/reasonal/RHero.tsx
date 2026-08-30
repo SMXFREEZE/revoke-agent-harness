@@ -34,7 +34,7 @@ export function RHero() {
           </p>
           <div className="rz-hero__cta">
             <Link href="/?run=1#agents" className="rz-hero__btn rz-hero__btn--go">
-              Watch the verified replay
+              Run the live investigation
               <span aria-hidden>&rarr;</span>
             </Link>
             <Link href="/#steps" className="rz-hero__btn rz-hero__btn--ghost">
