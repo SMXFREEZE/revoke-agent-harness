@@ -21,7 +21,10 @@ function progress(message) {
 
 async function run(sandbox, command, cwd = REPOSITORY_PATH, timeout = 180) {
   const result = await sandbox.process.executeCommand(command, cwd, undefined, timeout);
-  if (result.exitCode !== 0) throw new Error(`Sandbox command failed with exit code ${result.exitCode}.`);
+  if (result.exitCode !== 0) {
+    const tail = result.result.trim().slice(-1_500);
+    throw new Error(`Sandbox command failed with exit code ${result.exitCode}.${tail ? `\n${tail}` : ""}`);
+  }
   return result.result.trim();
 }
 
@@ -52,12 +55,18 @@ async function findSandbox(daytona) {
 async function main() {
   const daytona = new Daytona({ apiKey: process.env.DAYTONA_API_KEY });
   let sandbox = await findSandbox(daytona);
+  if (sandbox && process.env.GAGGLE_RECREATE_SANDBOX === "1") {
+    progress(`daytona_sandbox=replacing_failed_bootstrap:${sandbox.id}`);
+    await daytona.delete(sandbox, 180, true);
+    sandbox = null;
+  }
   const environment = {
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     DAYTONA_API_KEY: process.env.DAYTONA_API_KEY,
     BRIGHTDATA_API_KEY: process.env.BRIGHTDATA_API_KEY,
-    HOST: "0.0.0.0",
+    HOST: "127.0.0.1",
     PORT: "8790",
+    TRUEFORGE_BASE_URL: "http://127.0.0.1:8790",
     SQLITE_PATH: "/home/daytona/trueforge-data/db.sqlite",
     NODE_ENV: "production",
   };
@@ -68,6 +77,7 @@ async function main() {
       name: SANDBOX_NAME,
       image: "node:22-bookworm",
       language: "typescript",
+      resources: { cpu: 2, memory: 4 },
       public: false,
       envVars: environment,
       labels: { app: "gaggle-live-trueforge", sponsor: "trueforge-daytona" },
@@ -78,6 +88,9 @@ async function main() {
   } else {
     progress("daytona_sandbox=reusing_private_runtime");
     if (sandbox.state !== "started") await daytona.start(sandbox, 180);
+    if (sandbox.memory < 4 || sandbox.cpu < 2) {
+      throw new Error("Existing Daytona sandbox is undersized; redeploy with GAGGLE_RECREATE_SANDBOX=1.");
+    }
     await sandbox.updateEnv(environment);
   }
 
@@ -91,7 +104,7 @@ async function main() {
   }
 
   progress("dependencies=installing");
-  await run(sandbox, "npm ci --no-audit --no-fund", REPOSITORY_PATH, 900);
+  await run(sandbox, "npm ci --include=dev --no-audit --no-fund", REPOSITORY_PATH, 900);
   await run(sandbox, "mkdir -p /home/daytona/trueforge-data", REPOSITORY_PATH, 30);
 
   progress("gaggle_lab=starting");
@@ -106,13 +119,13 @@ async function main() {
   await run(sandbox, "node scripts/configure-gaggle-trueforge.mjs", REPOSITORY_PATH, 360);
   const preview = await sandbox.getPreviewLink(8790);
   const check = await fetch(`${preview.url.replace(/\/$/, "")}/api/v1/agents`, {
-    headers: preview.token ? { "x-daytona-preview-token": preview.token } : undefined,
+    headers: { "x-daytona-preview-token": preview.token },
     signal: AbortSignal.timeout(30_000),
   });
   if (!check.ok) throw new Error(`Private TrueForge preview failed with HTTP ${check.status}.`);
 
   if (process.argv.includes("--json")) {
-    process.stdout.write(JSON.stringify({ sandboxId: sandbox.id, url: preview.url, token: preview.token }));
+    process.stdout.write(JSON.stringify({ sandboxId: sandbox.id, url: preview.url }));
   } else {
     process.stdout.write(`daytona_sandbox=ready:${sandbox.id}\ntrueforge_preview=verified_private\n`);
   }

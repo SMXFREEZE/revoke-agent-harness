@@ -23,7 +23,7 @@ export function RConsoleTeaser() {
                 <NoiseBackground containerClassName="rz-nb">
                   <Link href="/?run=1#agents" className="nb-btn">
                     <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden><path d="M8 5v14l11-7z" /></svg>
-                    Watch the verified replay
+                    Open the live agent console
                   </Link>
                 </NoiseBackground>
                 <span className="rz-teaser__note">verified golden-run replay &middot; synthetic case</span>
